@@ -16,7 +16,7 @@ class UserViewModel : ViewModel() {
     fun createUser(
         ten: String,
         email: String,
-        role: String = "user", // mặc định là user
+        role: String = "user",
         onSuccess: () -> Unit,
         onError: (String) -> Unit
     ) {

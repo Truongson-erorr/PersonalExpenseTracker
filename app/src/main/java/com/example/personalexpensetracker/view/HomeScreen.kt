@@ -76,8 +76,8 @@ fun HomeScreen(
             when (selectedTab) {
                 0 -> HomeContent(userId, navController)
                 1 -> ReportScreen(userId, navController)
-                2 -> Text("danh mục", modifier = Modifier.align(Alignment.Center))
-                3 -> Text("cài đặt", modifier = Modifier.align(Alignment.Center))
+                2 -> CategorySummaryScreen(userId, navController)
+                3 -> ProfileScreen(navController)
             }
         }
     }
@@ -96,7 +96,7 @@ fun BottomNavItem(
     onClick: () -> Unit
 ) {
     val background = if (isSelected) Color.White.copy(alpha = 0.1f) else Color.Transparent
-    val contentColor = if (isSelected) Color(0xFFFFC107) else Color.White
+    val contentColor = if (isSelected) Color(0xFF1976D2) else Color.White
 
     Box(
         modifier = Modifier

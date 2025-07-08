@@ -18,7 +18,7 @@ fun AppNavigation() {
         startDestination = "LoginScreen"
     ) {
         composable("RegisterScreen") {
-            RegisterScreen(navController = navController, onRegisterSuccess = {} )
+            RegisterScreen(navController = navController)
         }
         composable("LoginScreen") {
             LoginScreen(navController = navController)

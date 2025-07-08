@@ -123,4 +123,11 @@ class TransactionViewModel : ViewModel() {
             .mapValues { it.value.sumOf { tx -> tx.amount } }
             .toSortedMap()
     }
+
+    fun getTransactionsByCategoryGroupedByType(): Map<TransactionType, Map<String, Double>> {
+        return transactions.groupBy { it.type }.mapValues { typeEntry ->
+            typeEntry.value.groupBy { it.category }
+                .mapValues { it.value.sumOf { tx -> tx.amount } }
+        }
+    }
 }

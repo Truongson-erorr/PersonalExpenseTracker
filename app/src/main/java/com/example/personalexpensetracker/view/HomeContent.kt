@@ -211,7 +211,7 @@ fun HomeContent(
             onClick = {
                 navController.navigate("AddTransactionScreen/$userId")
             },
-            containerColor = Color(0xFFFFC107),
+            containerColor = Color(0xFF1976D2),
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(16.dp)
