@@ -48,131 +48,93 @@ fun ProfileScreen(
     var error by remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(userId) {
-        if (userId != null) {
-            FirebaseFirestore.getInstance()
-                .collection("Users")
-                .document(userId)
+        userId?.let {
+            FirebaseFirestore.getInstance().collection("Users").document(it)
                 .get()
                 .addOnSuccessListener { document ->
-                    if (document.exists()) {
-                        user = document.toObject(Users::class.java)
-                    } else {
-                        error = "Không tìm thấy người dùng."
-                    }
+                    user = document.toObject(Users::class.java)
                 }
-                .addOnFailureListener { e ->
-                    error = "Lỗi: ${e.message}"
-                }
+                .addOnFailureListener { e -> error = e.localizedMessage }
         }
     }
 
-    Surface(modifier = Modifier.fillMaxSize(), color = Color(0xFFF5F5F5)) {
-        if (error != null) {
-            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text(error ?: "", color = Color.Red)
-            }
-        } else if (user == null) {
-            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
-            }
-        } else {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+    when {
+        error != null -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Text("Lỗi: $error", color = Color.Red)
+        }
+
+        user == null -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            CircularProgressIndicator()
+        }
+
+        else -> LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            item { ProfileHeader(user!!, navController) }
+            item { ProfileMenu(navController) }
+        }
+    }
+}
+
+@Composable
+fun ProfileHeader(user: Users, navController: NavController) {
+    Spacer(modifier = Modifier.height(50.dp))
+    Card(
+        shape = RoundedCornerShape(16.dp),
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(4.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                contentAlignment = Alignment.BottomEnd,
+                modifier = Modifier.size(80.dp)
             ) {
-                item {
-                    Spacer(modifier = Modifier.height(50.dp))
-
-                    // Avatar
-                    Box(contentAlignment = Alignment.BottomEnd) {
-                        Icon(
-                            imageVector = Icons.Default.Person,
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(100.dp)
-                                .background(Color.Gray, shape = CircleShape)
-                                .padding(16.dp),
-                            tint = Color.White
-                        )
-                        Icon(
-                            imageVector = Icons.Default.CameraAlt,
-                            contentDescription = "Change Avatar",
-                            modifier = Modifier
-                                .offset(y = (-8).dp, x = (-8).dp)
-                                .size(28.dp)
-                                .background(Color.White, CircleShape)
-                                .padding(4.dp),
-                            tint = Color.Gray
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    // Name and Email
-                    Text(
-                        user!!.ten,
-                        style = MaterialTheme.typography.headlineSmall,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Text(
-                        user!!.email,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = Color.Gray
-                    )
-
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    // Edit Profile Button
-                    Button(
-                        onClick = { navController.navigate("Chỉnh sua") },
-                        shape = RoundedCornerShape(10.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2DBE60))
-                    ) {
-                        Text("Chỉnh sửa hồ sơ")
-                    }
-
-                    Spacer(modifier = Modifier.height(24.dp))
-                }
-
-                val menuItems = listOf(
-                    Pair("Ngôn ngữ", Icons.Default.Language),
-                    Pair("Vị trí", Icons.Default.LocationOn),
-                    Pair("Tùy chỉnh giao diện", Icons.Default.Bedtime),
+                Icon(
+                    Icons.Default.Person,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.Gray, CircleShape)
+                        .padding(16.dp),
+                    tint = Color.White
                 )
-
-                items(menuItems.size) { index ->
-                    MenuItem(title = menuItems[index].first, icon = menuItems[index].second)
-                }
-
-                item {
-                    Divider(modifier = Modifier.padding(vertical = 8.dp))
-                }
-
-                val systemItems = listOf(
-                    Pair("Xóa bộ nhớ đệm", Icons.Default.Delete),
-                    Pair("Xóa lịch sử", Icons.Default.History)
+                Icon(
+                    Icons.Default.CameraAlt,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(20.dp)
+                        .offset(x = (-4).dp, y = (-4).dp)
+                        .background(Color.White, CircleShape)
+                        .padding(2.dp),
+                    tint = Color.Gray
                 )
+            }
+            Spacer(modifier = Modifier.width(16.dp))
 
-                items(systemItems.size) { index ->
-                    MenuItem(title = systemItems[index].first, icon = systemItems[index].second)
-                }
-
-                item {
-                    MenuItem(
-                        title = "Log Out",
-                        icon = Icons.Default.ExitToApp,
-                        iconTint = Color.Red,
-                        textColor = Color.Red
-                    ) {
-                        FirebaseAuth.getInstance().signOut()
-                        navController.navigate("login") {
-                            popUpTo("profile") { inclusive = true }
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(16.dp))
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(user.ten, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                Text(user.email, color = Color.Gray, fontSize = 14.sp)
+                Spacer(modifier = Modifier.height(8.dp))
+                Button(
+                    onClick = { navController.navigate("Chỉnh sua") },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
+                    shape = RoundedCornerShape(10.dp),
+                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
+                    modifier = Modifier.height(36.dp)
+                ) {
+                    Text("Chỉnh sửa", fontSize = 14.sp)
                 }
             }
         }
@@ -180,24 +142,61 @@ fun ProfileScreen(
 }
 
 @Composable
-fun MenuItem(
-    title: String,
-    icon: ImageVector,
-    iconTint: Color = Color.Black,
-    textColor: Color = Color.Black,
-    onClick: () -> Unit = {}
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick)
-            .padding(vertical = 14.dp),
-        verticalAlignment = Alignment.CenterVertically
+fun ProfileMenu(navController: NavController) {
+    var showLogoutDialog by remember { mutableStateOf(false) }
+
+    val items = listOf(
+        Triple("Ngôn ngữ", Icons.Default.Language) {  },
+        Triple("Vị trí", Icons.Default.LocationOn) {  },
+        Triple("Tùy chỉnh giao diện", Icons.Default.Bedtime) { },
+        Triple("Đăng xuất", Icons.Default.ExitToApp) {
+            showLogoutDialog = true
+        }
+    )
+
+    // Hiển thị dialog xác nhận đăng xuất
+    if (showLogoutDialog) {
+        AlertDialog(
+            onDismissRequest = { showLogoutDialog = false },
+            title = { Text("Xác nhận đăng xuất") },
+            text = { Text("Bạn có chắc chắn muốn đăng xuất không?") },
+            confirmButton = {
+                TextButton(onClick = {
+                    FirebaseAuth.getInstance().signOut()
+                    navController.navigate("LoginScreen") {
+                        popUpTo("HomeScreen/{userId}") { inclusive = true }
+                    }
+                    showLogoutDialog = false
+                }) {
+                    Text("Đăng xuất")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    showLogoutDialog = false
+                }) {
+                    Text("Huỷ")
+                }
+            }
+        )
+    }
+
+    Spacer(Modifier.height(20.dp))
+
+    Card(
+        shape = RoundedCornerShape(16.dp),
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {
-        Icon(icon, contentDescription = null, tint = iconTint, modifier = Modifier.size(18.dp))
-        Spacer(modifier = Modifier.width(16.dp))
-        Text(title, color = textColor, fontSize = 16.sp)
-        Spacer(modifier = Modifier.weight(1f))
-        Icon(Icons.Default.KeyboardArrowRight, contentDescription = null, tint = Color.Gray)
+        Column {
+            items.forEach { (title, icon, action) ->
+                ListItem(
+                    headlineContent = { Text(title) },
+                    leadingContent = { Icon(icon, contentDescription = null) },
+                    trailingContent = { Icon(Icons.Default.KeyboardArrowRight, null) },
+                    modifier = Modifier.clickable { action() }
+                )
+            }
+        }
     }
 }

@@ -26,121 +26,65 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.personalexpensetracker.model.Transaction
 import com.example.personalexpensetracker.model.TransactionType
+import com.example.personalexpensetracker.viewmodel.NotificationViewModel
 import com.example.personalexpensetracker.viewmodel.TransactionViewModel
 import java.util.*
 
 @Composable
-fun AddTransactionScreen(
-    navController: NavController,
+fun AddTransactionDialog(
     userId: String,
-    viewModel: TransactionViewModel = viewModel()
+    onDismiss: () -> Unit,
+    navController: NavController,
+    viewModel: TransactionViewModel,
+    notificationViewModel: NotificationViewModel = viewModel()
 ) {
-    val context = LocalContext.current
     var amount by remember { mutableStateOf("") }
     var category by remember { mutableStateOf("") }
     var note by remember { mutableStateOf("") }
     var type by remember { mutableStateOf(TransactionType.EXPENSE) }
 
-    val categoryVoiceLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        val spokenText = result.data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)?.get(0)
-        spokenText?.let { category = it }
-    }
-
-    val noteVoiceLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        val spokenText = result.data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)?.get(0)
-        spokenText?.let { note = it }
-    }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        Spacer(modifier = Modifier.height(20.dp))
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            IconButton(onClick = { navController.popBackStack() }) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBackIosNew,
-                    contentDescription = "Quay lại"
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text("Thêm giao dịch", fontWeight = FontWeight.Bold)
+        },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                OutlinedTextField(
+                    value = category,
+                    shape = RoundedCornerShape(12.dp),
+                    onValueChange = { category = it },
+                    label = { Text("Danh mục") },
+                    modifier = Modifier.fillMaxWidth()
                 )
+
+                OutlinedTextField(
+                    value = amount,
+                    onValueChange = { amount = it },
+                    shape = RoundedCornerShape(12.dp),
+                    label = { Text("Số tiền") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                OutlinedTextField(
+                    value = note,
+                    onValueChange = { note = it },
+                    shape = RoundedCornerShape(12.dp),
+                    label = { Text("Ghi chú") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                DropdownMenuBox(selectedType = type, onTypeSelected = { type = it })
             }
-
-            Text(
-                text = "Thêm giao dịch",
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold
-            )
-        }
-        OutlinedTextField(
-            value = amount,
-            onValueChange = { amount = it },
-            label = { Text("Số tiền", fontSize = 14.sp) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(16.dp)
-        )
-
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = {
-                val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
-                    putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
-                    putExtra(RecognizerIntent.EXTRA_LANGUAGE, "vi-VN")
-                }
-                categoryVoiceLauncher.launch(intent)
-            }) {
-                Icon(Icons.Default.Mic, contentDescription = "Giọng nói")
-            }
-            OutlinedTextField(
-                value = category,
-                onValueChange = { category = it },
-                label = { Text("Danh mục", fontSize = 14.sp) },
-                modifier = Modifier.weight(1f),
-                shape = RoundedCornerShape(16.dp)
-            )
-        }
-
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = {
-                val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
-                    putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
-                    putExtra(RecognizerIntent.EXTRA_LANGUAGE, "vi-VN")
-                }
-                categoryVoiceLauncher.launch(intent)
-
-            }) {
-                Icon(Icons.Default.Mic, contentDescription = "Giọng nói")
-            }
-            OutlinedTextField(
-                value = note,
-                onValueChange = { note = it },
-                label = { Text("Ghi chú", fontSize = 14.sp) },
-                modifier = Modifier.weight(1f),
-                shape = RoundedCornerShape(16.dp)
-            )
-        }
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            Text("Loại giao dịch:", fontSize = 16.sp)
-            DropdownMenuBox(selectedType = type, onTypeSelected = { type = it })
-        }
-
-        Button(
-            onClick = {
+        },
+        confirmButton = {
+            Button(onClick = {
                 val amountDouble = amount.toDoubleOrNull()
-                if (amountDouble == null || category.isBlank()) {
-                    Toast.makeText(context, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show()
-                    return@Button
-                }
+                if (amountDouble == null || category.isBlank()) return@Button
+
+                val calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"))
+                val currentDate = calendar.timeInMillis
 
                 val transaction = Transaction(
                     id = UUID.randomUUID().toString(),
@@ -149,27 +93,40 @@ fun AddTransactionScreen(
                     amount = amountDouble,
                     category = category,
                     note = note.takeIf { it.isNotBlank() },
-                    date = System.currentTimeMillis()
+                    date = currentDate
                 )
 
                 viewModel.addTransaction(
                     transaction,
                     onSuccess = {
-                        Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show()
-                        navController.popBackStack()
+                        viewModel.getTransactionsByUser(userId)
+                        notificationViewModel.addNotification(
+                            userId = userId,
+                            title = "Giao dịch mới",
+                            message = "Bạn vừa thêm ${if (type == TransactionType.EXPENSE) "khoản chi" else "khoản thu"}: ${String.format("%,.0f", amountDouble)} VND cho $category."
+                        )
+                        onDismiss()
                     },
                     onFailure = {
-                        Toast.makeText(context, "Lỗi khi thêm: ${it.message}", Toast.LENGTH_SHORT).show()
+                        onDismiss()
                     }
                 )
             },
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(12.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1976D2))
-        ) {
-            Text("Lưu giao dịch", color = Color.White)
-        }
-    }
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Black,
+                    contentColor = Color.White
+                )
+            ) {
+                Text("Lưu")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Hủy", color = Color.Gray)
+            }
+        },
+        shape = RoundedCornerShape(16.dp)
+    )
 }
 
 @Composable
@@ -206,5 +163,19 @@ fun DropdownMenuBox(
                 }
             )
         }
+    }
+}
+
+@Composable
+fun SummaryItem(title: String, amount: Double, color: Color) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(text = title, fontWeight = FontWeight.Bold, fontSize = 13.sp)
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = "${String.format("%,.0f", amount)} VND",
+            color = color,
+            fontSize = 10.sp,
+            fontWeight = FontWeight.Bold
+        )
     }
 }

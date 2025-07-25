@@ -1,21 +1,50 @@
 package com.example.personalexpensetracker.navigation
 
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.personalexpensetracker.view.AddTransactionScreen
+import com.example.personalexpensetracker.admin.AdminScreen
+import com.example.personalexpensetracker.admin.StatisticCard
+import com.example.personalexpensetracker.admin.StatisticsScreen
+import com.example.personalexpensetracker.admin.UserManagement
+import com.example.personalexpensetracker.model.Saving
 import com.example.personalexpensetracker.view.HomeScreen
 import com.example.personalexpensetracker.view.LoginScreen
 import com.example.personalexpensetracker.view.RegisterScreen
+import com.example.personalexpensetracker.view.SavingDetailScreen
+import com.example.personalexpensetracker.view.SavingsScreen
+import com.example.personalexpensetracker.viewmodel.BudgetViewModel
+import com.example.personalexpensetracker.viewmodel.SavingViewModel
+import com.example.personalexpensetracker.viewmodel.TransactionViewModel
+import com.example.personalexpensetracker.viewmodel.UserViewModel
+import com.google.accompanist.navigation.animation.AnimatedNavHost
 
+const val SAVING_DETAIL_SCREEN = "saving_detail"
+
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
+    val userViewModel: UserViewModel = viewModel()
+    val budgetViewModel: BudgetViewModel = viewModel()
+    val transactionViewModel: TransactionViewModel = viewModel()
+    val savingViewModel: SavingViewModel = viewModel()
 
-    NavHost(
+    AnimatedNavHost(
         navController = navController,
-        startDestination = "LoginScreen"
+        startDestination = "LoginScreen",
+        enterTransition = { slideInHorizontally { it } + fadeIn() },
+        exitTransition = { slideOutHorizontally { -it } + fadeOut() },
+        popEnterTransition = { slideInHorizontally { -it } + fadeIn() },
+        popExitTransition = { slideOutHorizontally { it } + fadeOut() }
     ) {
         composable("RegisterScreen") {
             RegisterScreen(navController = navController)
@@ -27,9 +56,18 @@ fun AppNavigation() {
             val userId = backStackEntry.arguments?.getString("userId") ?: ""
             HomeScreen(navController = navController, userId = userId)
         }
-        composable("AddTransactionScreen/{userId}") { backStackEntry ->
+        composable("AdminScreen/{userId}") { backStackEntry ->
             val userId = backStackEntry.arguments?.getString("userId") ?: ""
-            AddTransactionScreen(navController = navController, userId = userId)
+            AdminScreen(navController = navController, userId = userId)
+        }
+        composable("SavingsScreen") {
+            SavingsScreen(navController = navController, savingViewModel )
+        }
+        composable("UserManagement") {
+            UserManagement(navController = navController, userViewModel)
+        }
+        composable("StatisticsScreen") {
+            StatisticsScreen(navController = navController, userViewModel, transactionViewModel , budgetViewModel )
         }
 
     }

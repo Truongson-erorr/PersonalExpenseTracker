@@ -47,19 +47,19 @@ fun RegisterScreen(navController: NavController) {
         ) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.Start
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Create Account",
+                    text = "Tạo tài khoản ",
                     fontSize = 26.sp,
                     style = MaterialTheme.typography.headlineLarge.copy(
                         fontWeight = FontWeight.Bold,
-                        color = Color(0xFF1976D2)
+                        color = Color(0xFFFFB300)
                     )
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "Register to get started",
+                    text = "Đăng ký để tiến hành quản lí chi tiêu",
                     fontSize = 13.sp,
                     style = MaterialTheme.typography.bodyLarge.copy(
                         color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -67,54 +67,69 @@ fun RegisterScreen(navController: NavController) {
                 )
             }
 
-            Spacer(modifier = Modifier.height(28.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
-            OutlinedTextField(
+            TextField(
                 value = name,
                 onValueChange = { name = it },
-                label = { Text("Full name", fontSize = 12.sp,) },
+                placeholder = { Text("Họ và tên", fontSize = 12.sp) },
                 leadingIcon = { Icon(Icons.Default.Person, contentDescription = null) },
                 shape = MaterialTheme.shapes.extraSmall,
-                colors = TextFieldDefaults.outlinedTextFieldColors(),
+                colors = TextFieldDefaults.textFieldColors(
+                    containerColor =  Color(0xFFEEEEEE),
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
+                ),
                 modifier = Modifier.fillMaxWidth()
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            OutlinedTextField(
+            TextField(
                 value = email,
                 onValueChange = { email = it },
-                label = { Text("Email address", fontSize = 12.sp,) },
+                placeholder = { Text("Địa chỉ Email", fontSize = 12.sp) },
                 leadingIcon = { Icon(Icons.Default.Email, contentDescription = null) },
                 shape = MaterialTheme.shapes.extraSmall,
-                colors = TextFieldDefaults.outlinedTextFieldColors(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                colors = TextFieldDefaults.textFieldColors(
+                    containerColor =  Color(0xFFEEEEEE),
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
+                ),
                 modifier = Modifier.fillMaxWidth()
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            OutlinedTextField(
+            TextField(
                 value = password,
                 onValueChange = { password = it },
-                label = { Text("Password", fontSize = 12.sp,) },
+                placeholder = { Text("Mật khẩu", fontSize = 12.sp) },
                 leadingIcon = { Icon(Icons.Default.Lock, contentDescription = null) },
                 visualTransformation = PasswordVisualTransformation(),
                 shape = MaterialTheme.shapes.extraSmall,
-                colors = TextFieldDefaults.outlinedTextFieldColors(),
+                colors = TextFieldDefaults.textFieldColors(
+                    containerColor =  Color(0xFFEEEEEE),
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
+                ),
                 modifier = Modifier.fillMaxWidth()
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            OutlinedTextField(
+            TextField(
                 value = confirmPassword,
                 onValueChange = { confirmPassword = it },
-                label = { Text("Confirm password", fontSize = 12.sp,) },
+                placeholder = { Text("Xác nhận mật khẩu", fontSize = 12.sp) },
                 leadingIcon = { Icon(Icons.Default.Lock, contentDescription = null) },
                 visualTransformation = PasswordVisualTransformation(),
                 shape = MaterialTheme.shapes.extraSmall,
-                colors = TextFieldDefaults.outlinedTextFieldColors(),
+                colors = TextFieldDefaults.textFieldColors(
+                    containerColor =  Color(0xFFEEEEEE),
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
+                ),
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -182,7 +197,7 @@ fun RegisterScreen(navController: NavController) {
                 shape = MaterialTheme.shapes.extraSmall,
                 enabled = !isLoading,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF1976D2),
+                    containerColor = Color(0xFFFFB300),
                     contentColor = Color.White
                 )
             ) {
@@ -194,7 +209,7 @@ fun RegisterScreen(navController: NavController) {
                     )
                 } else {
                     Text(
-                        text = "SIGN UP",
+                        text = "Đăng ký",
                         fontWeight = FontWeight.Bold,
                         fontSize = 14.sp
                     )
@@ -231,12 +246,12 @@ fun RegisterScreen(navController: NavController) {
                 horizontalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = "Already have an account? ",
+                    text = "Đã có tài khoản? ",
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Text(
-                    text = "Login",
-                    color = Color(0xFF1976D2),
+                    text = "Đăng nhập",
+                    color = Color(0xFFFFB300),
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.clickable {
                         navController.navigate("LoginScreen")

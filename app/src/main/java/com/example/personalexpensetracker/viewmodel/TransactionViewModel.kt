@@ -9,6 +9,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -18,6 +21,9 @@ class TransactionViewModel : ViewModel() {
 
     private val db = FirebaseFirestore.getInstance()
 
+    private val _totalTransactionCount = MutableStateFlow(0)
+    val totalTransactionCount: StateFlow<Int> = _totalTransactionCount.asStateFlow()
+
     fun addTransaction(transaction: Transaction, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
         viewModelScope.launch {
             try {
@@ -25,9 +31,13 @@ class TransactionViewModel : ViewModel() {
                     .document(transaction.id)
                     .set(transaction)
                     .await()
+
+                transactions.add(transaction)
+
+                _totalTransactionCount.value = transactions.size
                 onSuccess()
             } catch (e: Exception) {
-                Log.e("TransactionViewModel", "Error adding transaction", e)
+                Log.e("TransactionViewModel", "Lỗi khi thêm giao dịch", e)
                 onFailure(e)
             }
         }
@@ -43,14 +53,13 @@ class TransactionViewModel : ViewModel() {
                     .get()
                     .await()
 
-                val list = snapshot.documents.mapNotNull {
-                    it.toObject(Transaction::class.java)
-                }
-
+                val list = snapshot.documents.mapNotNull { it.toObject(Transaction::class.java) }
                 transactions.clear()
                 transactions.addAll(list)
+
+                _totalTransactionCount.value = transactions.size
             } catch (e: Exception) {
-                Log.e("TransactionViewModel", "Lỗi khi lấy dữ liệu", e)
+                Log.e("TransactionViewModel", "Lỗi khi lấy giao dịch", e)
             }
         }
     }
@@ -58,8 +67,14 @@ class TransactionViewModel : ViewModel() {
     fun deleteTransaction(transactionId: String, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
         viewModelScope.launch {
             try {
-                db.collection("transactions").document(transactionId).delete().await()
+                db.collection("transactions")
+                    .document(transactionId)
+                    .delete()
+                    .await()
+
                 transactions.removeAll { it.id == transactionId }
+
+                _totalTransactionCount.value = transactions.size
                 onSuccess()
             } catch (e: Exception) {
                 Log.e("TransactionViewModel", "Lỗi khi xoá giao dịch", e)
@@ -130,4 +145,10 @@ class TransactionViewModel : ViewModel() {
                 .mapValues { it.value.sumOf { tx -> tx.amount } }
         }
     }
+
+    fun getTotalTransactionCount(): Int {
+        return transactions.size
+    }
+
+
 }

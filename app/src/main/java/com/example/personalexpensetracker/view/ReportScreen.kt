@@ -1,17 +1,34 @@
 package com.example.personalexpensetracker.view
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.FilterAlt
+import androidx.compose.material.icons.filled.FilterList
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -24,7 +41,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.personalexpensetracker.model.TransactionType
 import com.example.personalexpensetracker.viewmodel.TransactionViewModel
-
+import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,314 +50,199 @@ fun ReportScreen(
     navController: NavController,
     viewModel: TransactionViewModel = viewModel()
 ) {
+    var expanded by remember { mutableStateOf(false) }
+    var selectedMonth by remember { mutableStateOf(7) }
+
     val monthlySummary = viewModel.getMonthlySummary()
     val expenseByCategory = viewModel.getExpenseByCategory()
-    val totalIncome = viewModel.getCurrentMonthTotal(TransactionType.INCOME)
-    val totalExpense = viewModel.getCurrentMonthTotal(TransactionType.EXPENSE)
-    val balance = totalIncome - totalExpense
 
-    Column(
+    val selectedMonthSummary = viewModel.filterByMonthYear(
+        selectedMonth - 1,
+        Calendar.getInstance().get(Calendar.YEAR)
+    )
+    val income = selectedMonthSummary.filter { it.type == TransactionType.INCOME }.sumOf { it.amount }
+    val expense = selectedMonthSummary.filter { it.type == TransactionType.EXPENSE }.sumOf { it.amount }
+    val balance = income - expense
+    var expandedDetail by remember { mutableStateOf(false) }
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFF5F7FA))
             .padding(16.dp)
     ) {
-        Spacer(modifier = Modifier.height(50.dp))
-        Text(
-            "Báo cáo tài chính",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color(0xFF1976D2)
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            "Tổng quan chi tiêu của bạn",
-            fontSize = 14.sp,
-            color = Color.Gray.copy(alpha = 0.8f)
-        )
-
-        Column(
-            modifier = Modifier
-                .verticalScroll(rememberScrollState())
-                .padding(6.dp)
-        ) {
-        // Balance Card
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 6.dp),
-            shape = RoundedCornerShape(16.dp),
-            colors = CardDefaults.cardColors(containerColor = Color.White),
-            elevation = CardDefaults.cardElevation(8.dp)
-        ) {
-            Column(
-                modifier = Modifier.padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    "Số dư tháng này",
-                    fontSize = 16.sp,
-                    color = Color.Gray
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    "${String.format("%,.0f", balance)} VND",
-                    fontSize = 28.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = if (balance >= 0) Color(0xFF2E7D32) else Color(0xFFD32F2F)
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(
-                            "Thu nhập",
-                            fontSize = 12.sp,
-                            color = Color.Gray
-                        )
-                        Text(
-                            "${String.format("%,.0f", totalIncome)} VND",
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            color = Color(0xFF2E7D32)
-                        )
-                    }
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(
-                            "Chi tiêu",
-                            fontSize = 12.sp,
-                            color = Color.Gray
-                        )
-                        Text(
-                            "${String.format("%,.0f", totalExpense)} VND",
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            color = Color(0xFFD32F2F)
-                        )
-                    }
-                }
-            }
-        }
-
-        // Monthly Chart Section
-        Text(
-            "Biểu đồ thu chi trong tháng này",
-            fontSize = 18.sp,
-            fontWeight = FontWeight.SemiBold,
-            modifier = Modifier.padding(vertical = 8.dp)
-        )
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 6.dp),
-            shape = RoundedCornerShape(16.dp),
-            colors = CardDefaults.cardColors(containerColor = Color.White),
-            elevation = CardDefaults.cardElevation(4.dp)
-        ) {
-            Column(
-                modifier = Modifier.padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                MonthlyBarChart(monthlySummary)
-                Spacer(modifier = Modifier.height(8.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceAround
-                ) {
-                    LegendItem(Color(0xFF4CAF50), "Thu nhập")
-                    LegendItem(Color(0xFFF44336), "Chi tiêu")
-                }
-            }
-        }
-
-        // Category Chart Section
-        Text(
-            "Biểu đồ thống kê",
-            fontSize = 18.sp,
-            fontWeight = FontWeight.SemiBold,
-            modifier = Modifier.padding(vertical = 8.dp)
-        )
-        Card(
-            modifier = Modifier
-                .fillMaxWidth(),
-            shape = RoundedCornerShape(16.dp),
-            colors = CardDefaults.cardColors(containerColor = Color.White),
-            elevation = CardDefaults.cardElevation(4.dp)
-        ) {
-            Column(
-                modifier = Modifier.padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                CategoryPieChart(expenseByCategory)
-                Spacer(modifier = Modifier.height(16.dp))
-                CategoryLegend(expenseByCategory)
-            }
-        }
-    }
-    }
-}
-
-@Composable
-fun MonthlyBarChart(data: Map<String, Pair<Double, Double>>) {
-    val maxAmount = data.values.maxOfOrNull { maxOf(it.first, it.second) } ?: 1.0
-    val barHeight = 120.dp
-
-    Column(modifier = Modifier.fillMaxWidth()) {
-        data.forEach { (month, pair) ->
-            val incomeRatio = (pair.first / maxAmount).toFloat()
-            val expenseRatio = (pair.second / maxAmount).toFloat()
-
-            Column(modifier = Modifier.padding(vertical = 4.dp)) {
-                Row(
-                    verticalAlignment = Alignment.Bottom,
-                    modifier = Modifier.height(barHeight)
-                ) {
-                    // Income bar
-                    Box(
-                        modifier = Modifier
-                            .weight(1f)
-                            .height(barHeight * incomeRatio)
-                            .background(
-                                color = Color(0xFF4CAF50),
-                                shape = RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp)
-                            )
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    // Expense bar
-                    Box(
-                        modifier = Modifier
-                            .weight(1f)
-                            .height(barHeight * expenseRatio)
-                            .background(
-                                color = Color(0xFFF44336),
-                                shape = RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp)
-                            )
-                    )
-                }
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        text = "${String.format("%,.0f", pair.first)}",
-                        fontSize = 10.sp,
-                        color = Color.Gray,
-                        modifier = Modifier.weight(1f)
-                    )
-                    Text(
-                        text = month,
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Medium,
-                        modifier = Modifier.padding(horizontal = 16.dp)
-                    )
-                    Text(
-                        text = "${String.format("%,.0f", pair.second)}",
-                        fontSize = 10.sp,
-                        color = Color.Gray,
-                        modifier = Modifier.weight(1f),
-                        textAlign = TextAlign.End
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun CategoryPieChart(data: Map<String, Double>) {
-    val total = data.values.sum()
-    val angleData = data.mapValues { (it.value / total * 360f).toFloat() }
-
-    val colors = listOf(
-        Color(0xFF4285F4), // Blue
-        Color(0xFF34A853), // Green
-        Color(0xFFFBBC05), // Yellow
-        Color(0xFFEA4335), // Red
-        Color(0xFF673AB7), // Purple
-        Color(0xFFFF6D00), // Orange
-        Color(0xFF00ACC1)  // Cyan
-    )
-
-    Canvas(modifier = Modifier.size(200.dp)) {
-        var startAngle = -90f
-        var index = 0
-
-        angleData.forEach { (_, angle) ->
-            drawArc(
-                color = colors[index % colors.size],
-                startAngle = startAngle,
-                sweepAngle = angle,
-                useCenter = true
+        item {
+            Spacer(modifier = Modifier.height(40.dp))
+            Text(
+                "Báo cáo tài chính",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black
             )
-            startAngle += angle
-            index++
-        }
-    }
-}
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                "Tổng quan chi tiêu của bạn",
+                fontSize = 14.sp,
+                color = Color.Gray.copy(alpha = 0.8f)
+            )
 
-@Composable
-fun CategoryLegend(data: Map<String, Double>) {
-    val colors = listOf(
-        Color(0xFF4285F4),
-        Color(0xFF34A853),
-        Color(0xFFFBBC05),
-        Color(0xFFEA4335),
-        Color(0xFF673AB7),
-        Color(0xFFFF6D00),
-        Color(0xFF00ACC1)
-    )
-
-    val total = data.values.sum()
-
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        data.entries.forEachIndexed { index, entry ->
-            val percentage = (entry.value / total * 100).toFloat()
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                elevation = CardDefaults.cardElevation(4.dp)
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(16.dp)
-                        .background(colors[index % colors.size], shape = CircleShape)
-                )
-                Spacer(modifier = Modifier.width(12.dp))
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Text("Tổng kết tháng", fontSize = 16.sp, fontWeight = FontWeight.Medium)
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column {
+                            Text("Số dư", fontSize = 14.sp, color = Color.Gray)
+                            Text(
+                                "${"%,.0f".format(balance)} VND",
+                                color = Color.Black,
+                                fontSize = 25.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+
+                        TextButton(onClick = { expandedDetail = !expandedDetail }) {
+                            Text(if (expandedDetail) "Ẩn" else "Chi tiết", color = Color.Black)
+                            Icon(
+                                imageVector = if (expandedDetail) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                                contentDescription = null,
+                                tint = Color.Black
+                            )
+                        }
+                    }
+
+                    AnimatedVisibility(visible = expandedDetail) {
+                        Column {
+                            Spacer(modifier = Modifier.height(12.dp))
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Column {
+                                    Text("Thu nhập", fontSize = 14.sp, color = Color.Gray)
+                                    Text(
+                                        "+${"%,.0f".format(income)} VND",
+                                        color = Color(0xFF4CAF50),
+                                        fontWeight = FontWeight.SemiBold
+                                    )
+                                }
+                                Column {
+                                    Text("Chi tiêu", fontSize = 14.sp, color = Color.Gray)
+                                    Text(
+                                        "-${"%,.0f".format(expense)} VND",
+                                        color = Color(0xFFF44336),
+                                        fontWeight = FontWeight.SemiBold
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            Spacer(modifier = Modifier.height(10.dp))
+        }
+        item {
+            Text(
+                "Biểu đồ thu chi trong tháng này",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.padding(vertical = 8.dp)
+            )
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 6.dp),
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                elevation = CardDefaults.cardElevation(4.dp)
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    MonthlyBarChart(monthlySummary)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceAround
+                    ) {
+                        LegendItem(Color(0xFF4CAF50), "Thu nhập")
+                        LegendItem(Color(0xFFF44336), "Chi tiêu")
+                    }
+                }
+            }
+        }
+
+        item {
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Text(
-                    text = entry.key,
-                    fontSize = 14.sp,
-                    modifier = Modifier.weight(1f)
-                )
-                Text(
-                    text = "${String.format("%.1f", percentage)}%",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = Color.Gray
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = "${String.format("%,.0f", entry.value)} VND",
-                    fontSize = 14.sp,
+                    text = "Thống kê theo tháng: $selectedMonth",
+                    fontSize = 16.sp,
                     fontWeight = FontWeight.Medium
                 )
+
+                Box {
+                    IconButton(onClick = { expanded = true }) {
+                        Icon(
+                            imageVector = Icons.Default.FilterAlt,
+                            contentDescription = "Chọn tháng",
+                            tint = Color.Black
+                        )
+                    }
+
+                    DropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false },
+                        modifier = Modifier
+                            .background(Color.White)
+                    ) {
+                        (1..12).forEach { month ->
+                            DropdownMenuItem(
+                                text = { Text("Tháng $month") },
+                                onClick = {
+                                    selectedMonth = month
+                                    expanded = false
+                                }
+                            )
+                        }
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                elevation = CardDefaults.cardElevation(4.dp)
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    CategoryPieChart(expenseByCategory)
+                    Spacer(modifier = Modifier.height(16.dp))
+                    CategoryLegend(expenseByCategory)
+                }
             }
         }
-    }
-}
-
-@Composable
-fun LegendItem(color: Color, text: String) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Box(
-            modifier = Modifier
-                .size(12.dp)
-                .background(color, shape = CircleShape)
-        )
-        Spacer(modifier = Modifier.width(6.dp))
-        Text(text, fontSize = 12.sp)
     }
 }

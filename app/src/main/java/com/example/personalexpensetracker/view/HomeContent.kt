@@ -1,6 +1,8 @@
 package com.example.personalexpensetracker.view
 
+import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -8,22 +10,30 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.FilterAlt
 import androidx.compose.material.icons.filled.FilterList
+import androidx.compose.material.icons.filled.Savings
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.personalexpensetracker.model.Transaction
 import com.example.personalexpensetracker.model.TransactionType
+import com.example.personalexpensetracker.viewmodel.BudgetViewModel
 import com.example.personalexpensetracker.viewmodel.TransactionViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -32,14 +42,32 @@ import java.util.*
 fun HomeContent(
     userId: String,
     navController: NavController,
-    viewModel: TransactionViewModel = viewModel()
+    viewModel: TransactionViewModel = viewModel(),
+    budgetViewModel: BudgetViewModel = viewModel()
 ) {
     var searchQuery by remember { mutableStateOf("") }
     var selectedType by remember { mutableStateOf<TransactionType?>(null) }
     var expanded by remember { mutableStateOf(false) }
+    var showDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(userId) {
         viewModel.getTransactionsByUser(userId)
+
+        val now = Calendar.getInstance()
+        budgetViewModel.loadBudgets(userId, now.get(Calendar.MONTH), now.get(Calendar.YEAR))
+    }
+
+    val expenseByCategory = viewModel.transactions
+        .filter { it.type == TransactionType.EXPENSE }
+        .groupBy { it.category.normalize() }
+        .mapValues { it.value.sumOf { tx -> tx.amount } }
+
+    val budgetWarnings = budgetViewModel.budgets.filter { budget ->
+        val spent = expenseByCategory.entries.firstOrNull {
+            it.key.normalize() == budget.category.normalize()
+        }?.value ?: 0.0
+
+        spent > budget.amount
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -58,7 +86,7 @@ fun HomeContent(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "Xin chào, Sơn!",
+                    text = "Xin chào!",
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Medium,
                     color = Color.Gray
@@ -79,7 +107,7 @@ fun HomeContent(
                 text = "Biến động số dư",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color(0xFF1976D2)
+                color = Color.Black
             )
 
             Row(
@@ -88,15 +116,58 @@ fun HomeContent(
             ) {
                 SummaryItem("Tổng thu", viewModel.totalIncome, Color(0xFF2E7D32))
                 SummaryItem("Chi tiêu", viewModel.totalExpense, Color(0xFFD32F2F))
-                SummaryItem("Số dư", viewModel.balance, Color(0xFF1976D2))
+                SummaryItem("Số dư", viewModel.balance, Color.Black)
             }
 
-            Text(
-                text = "Hoạt động hôm nay",
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.Black
-            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp, vertical = 8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Hũ tích lũy",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
+                )
+
+                Spacer(modifier = Modifier.weight(1f))
+                IconButton(onClick = { navController.navigate("SavingsScreen") }) {
+                    Icon(
+                        imageVector = Icons.Default.Savings,
+                        contentDescription = "Tiết kiệm",
+                        tint = Color.Black,
+                        modifier = Modifier.size(28.dp)
+                    )
+                }
+            }
+
+            if (budgetWarnings.isNotEmpty()) {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color(0xFFFFEBEE))
+                ) {
+                    Column(modifier = Modifier.padding(12.dp)) {
+                        Text("Cảnh báo ngân sách!", fontWeight = FontWeight.Bold, color = Color.Red)
+                        Spacer(modifier = Modifier.height(6.dp))
+
+                        for (budget in budgetWarnings) {
+                            val spent = expenseByCategory.entries.firstOrNull {
+                                it.key.normalize() == budget.category.normalize()
+                            }?.value ?: 0.0
+
+                            Text(
+                                text = "• ${budget.category}: đã chi quá ngân sách của tháng này",
+                                color = Color.Black,
+                                fontSize = 13.sp
+                            )
+                        }
+                    }
+                }
+            }
 
             OutlinedTextField(
                 value = searchQuery,
@@ -131,15 +202,17 @@ fun HomeContent(
                     color = Color.Black
                 )
 
+                var expanded by remember { mutableStateOf(false) }
+
                 Box {
                     IconButton(
                         onClick = { expanded = true },
                         modifier = Modifier.size(40.dp)
                     ) {
                         Icon(
-                            imageVector = Icons.Default.FilterList,
+                            imageVector = Icons.Default.FilterAlt,
                             contentDescription = "Lọc",
-                            tint = Color(0xFF1976D2),
+                            tint = Color.Black,
                             modifier = Modifier.size(20.dp)
                         )
                     }
@@ -201,17 +274,19 @@ fun HomeContent(
                     verticalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
                     items(filteredTransactions) { transaction ->
-                        TransactionCard(transaction)
+                        TransactionCard(
+                            transaction = transaction,
+                            viewModel = viewModel,
+                            userId = userId
+                        )
                     }
                 }
             }
         }
 
         FloatingActionButton(
-            onClick = {
-                navController.navigate("AddTransactionScreen/$userId")
-            },
-            containerColor = Color(0xFF1976D2),
+            onClick = { showDialog = true },
+            containerColor = Color.Black,
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(16.dp)
@@ -219,67 +294,120 @@ fun HomeContent(
             Text("+", color = Color.White, fontSize = 20.sp)
         }
     }
+
+    if (showDialog) {
+        AddTransactionDialog(
+            userId = userId,
+            onDismiss = { showDialog = false },
+            viewModel = viewModel,
+            navController = navController
+        )
+    }
+}
+
+fun formatDate(dateMillis: Long): String {
+    val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).apply {
+        timeZone = TimeZone.getTimeZone("Asia/Ho_Chi_Minh")
+    }
+    return dateFormat.format(Date(dateMillis))
 }
 
 @Composable
-fun TransactionCard(transaction: Transaction) {
+fun TransactionCard(
+    transaction: Transaction,
+    userId: String,
+    viewModel: TransactionViewModel = viewModel()
+) {
+    val context = LocalContext.current
     val bgColor = if (transaction.type == TransactionType.INCOME) Color(0xFFC8E6C9) else Color(0xFFFFCDD2)
-    val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-    val dateString = dateFormat.format(Date(transaction.date))
+    val dateString = formatDate(transaction.date)
     val formattedAmount = String.format("%,.0f", transaction.amount)
+    var showDialog by remember { mutableStateOf(false) }
 
-    Card(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 4.dp),
-        colors = CardDefaults.cardColors(containerColor = bgColor)
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(12.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Column {
-                Text(text = transaction.category, fontWeight = FontWeight.Bold, fontSize = 14.sp)
-                Text(
-                    text = if (transaction.type == TransactionType.INCOME) "+ $formattedAmount VND"
-                    else "- $formattedAmount VND",
-                    fontSize = 13.sp,
-                    color = Color.DarkGray
+            .padding(horizontal = 4.dp)
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onLongPress = { showDialog = true }
                 )
-                transaction.note?.let {
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text("Ghi chú: $it", fontSize = 11.sp, color = Color.Gray)
+            }
+    ) {
+        Card(
+            colors = CardDefaults.cardColors(containerColor = bgColor)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(12.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column {
+                    Text(text = transaction.category, fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                    Text(
+                        text = if (transaction.type == TransactionType.INCOME) "+ $formattedAmount VND"
+                        else "- $formattedAmount VND",
+                        fontSize = 13.sp,
+                        color = Color.DarkGray
+                    )
+                    transaction.note?.let {
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text("Ghi chú: $it", fontSize = 11.sp, color = Color.Gray)
+                    }
+                }
+
+                Column(
+                    horizontalAlignment = Alignment.End,
+                    verticalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(text = dateString, fontSize = 11.sp, color = Color.Gray)
+                    Text(
+                        text = if (transaction.type == TransactionType.INCOME) "Thu nhập" else "Chi tiêu",
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = if (transaction.type == TransactionType.INCOME) Color(0xFF2E7D32) else Color(0xFFD32F2F)
+                    )
                 }
             }
+        }
 
-            Column(
-                horizontalAlignment = Alignment.End,
-                verticalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(text = dateString, fontSize = 11.sp, color = Color.Gray)
-                Text(
-                    text = if (transaction.type == TransactionType.INCOME) "Thu nhập" else "Chi tiêu",
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = if (transaction.type == TransactionType.INCOME) Color(0xFF2E7D32) else Color(0xFFD32F2F)
-                )
-            }
+        if (showDialog) {
+            AlertDialog(
+                onDismissRequest = { showDialog = false },
+                title = { Text("Tuỳ chọn giao dịch", fontWeight = FontWeight.Bold) },
+                text = {
+                    Column {
+                        Text("Bạn muốn làm gì với giao dịch này?")
+                    }
+                },
+                confirmButton = {
+                    TextButton(onClick = {
+                        showDialog = false
+                        Toast.makeText(context, "Chức năng sửa chưa làm", Toast.LENGTH_SHORT).show()
+                    }) {
+                        Text("Sửa")
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = {
+                        showDialog = false
+                        viewModel.deleteTransaction(
+                            transaction.id,
+                            onSuccess = {
+                                Toast.makeText(context, "Đã xoá", Toast.LENGTH_SHORT).show()
+                            },
+                            onFailure = {
+                                Toast.makeText(context, "Lỗi khi xoá", Toast.LENGTH_SHORT).show()
+                            }
+                        )
+                    }) {
+                        Text("Xoá", color = Color.Red)
+                    }
+                }
+            )
         }
     }
 }
 
-@Composable
-fun SummaryItem(title: String, amount: Double, color: Color) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(text = title, fontWeight = FontWeight.Bold, fontSize = 13.sp)
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(
-            text = "${String.format("%,.0f", amount)} VND",
-            color = color,
-            fontSize = 10.sp,
-            fontWeight = FontWeight.Bold
-        )
-    }
-}
+
