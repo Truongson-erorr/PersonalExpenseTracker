@@ -16,12 +16,16 @@ import com.example.personalexpensetracker.admin.StatisticCard
 import com.example.personalexpensetracker.admin.StatisticsScreen
 import com.example.personalexpensetracker.admin.UserManagement
 import com.example.personalexpensetracker.model.Saving
+import com.example.personalexpensetracker.model.Users
+import com.example.personalexpensetracker.view.EditProfileScreen
 import com.example.personalexpensetracker.view.HomeScreen
 import com.example.personalexpensetracker.view.LoginScreen
+import com.example.personalexpensetracker.view.NotificationScreen
 import com.example.personalexpensetracker.view.RegisterScreen
 import com.example.personalexpensetracker.view.SavingDetailScreen
 import com.example.personalexpensetracker.view.SavingsScreen
 import com.example.personalexpensetracker.viewmodel.BudgetViewModel
+import com.example.personalexpensetracker.viewmodel.NotificationViewModel
 import com.example.personalexpensetracker.viewmodel.SavingViewModel
 import com.example.personalexpensetracker.viewmodel.TransactionViewModel
 import com.example.personalexpensetracker.viewmodel.UserViewModel
@@ -37,7 +41,7 @@ fun AppNavigation() {
     val budgetViewModel: BudgetViewModel = viewModel()
     val transactionViewModel: TransactionViewModel = viewModel()
     val savingViewModel: SavingViewModel = viewModel()
-
+    val notificationViewmodel: NotificationViewModel = viewModel()
     AnimatedNavHost(
         navController = navController,
         startDestination = "LoginScreen",
@@ -63,12 +67,30 @@ fun AppNavigation() {
         composable("SavingsScreen") {
             SavingsScreen(navController = navController, savingViewModel )
         }
+        composable("NotificationScreen/{userId}") { backStackEntry ->
+            val userId = backStackEntry.arguments?.getString("userId") ?: ""
+            NotificationScreen(navController = navController, userId = userId)
+        }
         composable("UserManagement") {
             UserManagement(navController = navController, userViewModel)
         }
         composable("StatisticsScreen") {
             StatisticsScreen(navController = navController, userViewModel, transactionViewModel , budgetViewModel )
         }
+        composable("edit_profile/{userId}") { backStackEntry ->
+            val userId = backStackEntry.arguments?.getString("userId")
+            val user = userViewModel.getUserById(userId ?: "")
+            user?.let {
+                EditProfileScreen(
+                    navController = navController,
+                    user = it,
+                    userViewModel = userViewModel
+                )
+            }
+        }
+
+
+
 
     }
 }

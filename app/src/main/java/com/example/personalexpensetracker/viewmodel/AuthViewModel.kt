@@ -100,4 +100,37 @@ class UserViewModel : ViewModel() {
                 onError("Cập nhật thất bại: ${e.message}")
             }
     }
+
+    fun updateUserInfo(
+        user: Users,
+        newPassword: String? = null,
+        onSuccess: () -> Unit = {},
+        onError: (String) -> Unit = {}
+    ) {
+        val currentUser = auth.currentUser
+
+        if (currentUser == null) {
+            onError("Không tìm thấy người dùng hiện tại.")
+            return
+        }
+
+        if (!newPassword.isNullOrEmpty()) {
+            currentUser.updatePassword(newPassword)
+                .addOnFailureListener { e ->
+                    Log.e("UserViewModel", "Lỗi đổi mật khẩu: ${e.message}")
+                    onError("Không thể đổi mật khẩu: ${e.message}")
+                }
+                .addOnSuccessListener {
+                    Log.d("UserViewModel", "Đổi mật khẩu thành công")
+                    updateUser(user, onSuccess, onError)
+                }
+        } else {
+            updateUser(user, onSuccess, onError)
+        }
+    }
+
+    fun getUserById(userId: String): Users? {
+        return _userList.value.find { it.userId == userId }
+    }
+
 }

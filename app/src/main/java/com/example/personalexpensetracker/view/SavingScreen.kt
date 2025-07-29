@@ -72,7 +72,7 @@ fun SavingsScreen(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 IconButton(onClick = { navController.popBackStack() }) {
                     Icon(
-                        imageVector = Icons.Default.ArrowBackIosNew,
+                        imageVector = Icons.Default.ArrowBack,
                         contentDescription = "Back"
                     )
                 }

@@ -84,7 +84,7 @@ fun HomeScreen(
                 0 -> HomeContent(userId, navController)
                 1 -> BudgetScreen(userId, navController)
                 2 -> ReportScreen(userId, navController)
-                3 -> NotificationScreen(userId)
+                3 -> NotificationScreen(navController, userId)
                 4 -> ProfileScreen(navController)
             }
 

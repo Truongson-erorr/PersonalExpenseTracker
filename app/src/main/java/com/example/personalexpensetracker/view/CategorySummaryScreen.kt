@@ -20,9 +20,11 @@ import java.text.SimpleDateFormat
 import java.util.*
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.navigation.NavController
 
 @Composable
 fun NotificationScreen(
+    navController: NavController,
     userId: String,
     viewModel: NotificationViewModel = viewModel()
 ) {
@@ -40,7 +42,7 @@ fun NotificationScreen(
     ) {
         Spacer(modifier = Modifier.height(30.dp))
         Text(
-            text = "Thông báo",
+            text = "Hoạt động gần đây",
             fontSize = 22.sp,
             fontWeight = FontWeight.Bold,
             color = Color.Black

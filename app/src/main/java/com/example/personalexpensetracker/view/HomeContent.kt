@@ -2,6 +2,7 @@ package com.example.personalexpensetracker.view
 
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -13,6 +14,7 @@ import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.FilterAlt
 import androidx.compose.material.icons.filled.FilterList
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Savings
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
@@ -70,7 +72,10 @@ fun HomeContent(
         spent > budget.amount
     }
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -92,15 +97,19 @@ fun HomeContent(
                     color = Color.Gray
                 )
 
-                Icon(
-                    imageVector = Icons.Default.AccountCircle,
-                    contentDescription = "Avatar người dùng",
-                    modifier = Modifier
-                        .size(48.dp)
-                        .clip(CircleShape)
-                        .background(Color.LightGray),
-                    tint = Color.DarkGray
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Notifications,
+                        contentDescription = "Thông báo",
+                        modifier = Modifier
+                            .size(45.dp)
+                            .padding(end = 12.dp)
+                            .clickable { navController.navigate("NotificationScreen/{userId}")},
+                        tint = Color.DarkGray
+                    )
+                }
             }
 
             Text(
@@ -382,12 +391,7 @@ fun TransactionCard(
                     }
                 },
                 confirmButton = {
-                    TextButton(onClick = {
-                        showDialog = false
-                        Toast.makeText(context, "Chức năng sửa chưa làm", Toast.LENGTH_SHORT).show()
-                    }) {
-                        Text("Sửa")
-                    }
+
                 },
                 dismissButton = {
                     TextButton(onClick = {

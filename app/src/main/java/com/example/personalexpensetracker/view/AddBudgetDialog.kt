@@ -167,7 +167,7 @@ fun BudgetDetailDialog(
                         .fillMaxWidth()
                         .height(10.dp)
                         .clip(RoundedCornerShape(5.dp)),
-                    color = Color(0xFF2196F3),
+                    color = Color.Black,
                     backgroundColor = Color.LightGray
                 )
 

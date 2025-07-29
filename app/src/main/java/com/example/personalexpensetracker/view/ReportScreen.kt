@@ -103,7 +103,11 @@ fun ReportScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Column {
-                            Text("Số dư", fontSize = 14.sp, color = Color.Gray)
+                            Text(
+                                "Số dư",
+                                fontSize = 14.sp,
+                                color = Color.Gray
+                            )
                             Text(
                                 "${"%,.0f".format(balance)} VND",
                                 color = Color.Black,

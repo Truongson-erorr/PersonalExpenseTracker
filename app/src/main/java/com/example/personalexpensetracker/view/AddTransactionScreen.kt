@@ -1,6 +1,7 @@
 package com.example.personalexpensetracker.view
 
 import android.content.Intent
+import android.provider.MediaStore
 import android.speech.RecognizerIntent
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -38,6 +39,8 @@ fun AddTransactionDialog(
     viewModel: TransactionViewModel,
     notificationViewModel: NotificationViewModel = viewModel()
 ) {
+    val context = LocalContext.current
+
     var amount by remember { mutableStateOf("") }
     var category by remember { mutableStateOf("") }
     var note by remember { mutableStateOf("") }
@@ -50,68 +53,117 @@ fun AddTransactionDialog(
         },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                OutlinedTextField(
+                // Danh mục + micro
+                TextField(
                     value = category,
-                    shape = RoundedCornerShape(12.dp),
                     onValueChange = { category = it },
                     label = { Text("Danh mục") },
-                    modifier = Modifier.fillMaxWidth()
+                    shape = RoundedCornerShape(12.dp),
+                    modifier = Modifier.fillMaxWidth(),
+                    trailingIcon = {
+                        IconButton(onClick = {
+                            // Mở app ghi âm mặc định
+                            val intent = Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION)
+                            if (intent.resolveActivity(context.packageManager) != null) {
+                                context.startActivity(intent)
+                            } else {
+                                Toast.makeText(context, "Thiết bị không hỗ trợ ghi âm", Toast.LENGTH_SHORT).show()
+                            }
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.Mic,
+                                contentDescription = "Ghi âm danh mục"
+                            )
+                        }
+                    },
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent
+                    )
                 )
 
-                OutlinedTextField(
+                // Số tiền
+                TextField(
                     value = amount,
                     onValueChange = { amount = it },
-                    shape = RoundedCornerShape(12.dp),
                     label = { Text("Số tiền") },
+                    shape = RoundedCornerShape(12.dp),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent
+                    )
                 )
 
-                OutlinedTextField(
+                // Ghi chú + micro
+                TextField(
                     value = note,
                     onValueChange = { note = it },
-                    shape = RoundedCornerShape(12.dp),
                     label = { Text("Ghi chú") },
-                    modifier = Modifier.fillMaxWidth()
+                    shape = RoundedCornerShape(12.dp),
+                    modifier = Modifier.fillMaxWidth(),
+                    trailingIcon = {
+                        IconButton(onClick = {
+                            val intent = Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION)
+                            if (intent.resolveActivity(context.packageManager) != null) {
+                                context.startActivity(intent)
+                            } else {
+                                Toast.makeText(context, "Thiết bị không hỗ trợ ghi âm", Toast.LENGTH_SHORT).show()
+                            }
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.Mic,
+                                contentDescription = "Ghi âm ghi chú"
+                            )
+                        }
+                    },
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent
+                    )
                 )
 
-                DropdownMenuBox(selectedType = type, onTypeSelected = { type = it })
+                // Loại giao dịch
+                DropdownMenuBox(
+                    selectedType = type,
+                    onTypeSelected = { type = it }
+                )
             }
         },
         confirmButton = {
-            Button(onClick = {
-                val amountDouble = amount.toDoubleOrNull()
-                if (amountDouble == null || category.isBlank()) return@Button
+            Button(
+                onClick = {
+                    val amountDouble = amount.toDoubleOrNull()
+                    if (amountDouble == null || category.isBlank()) return@Button
 
-                val calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"))
-                val currentDate = calendar.timeInMillis
+                    val calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"))
+                    val currentDate = calendar.timeInMillis
 
-                val transaction = Transaction(
-                    id = UUID.randomUUID().toString(),
-                    userId = userId,
-                    type = type,
-                    amount = amountDouble,
-                    category = category,
-                    note = note.takeIf { it.isNotBlank() },
-                    date = currentDate
-                )
+                    val transaction = Transaction(
+                        id = UUID.randomUUID().toString(),
+                        userId = userId,
+                        type = type,
+                        amount = amountDouble,
+                        category = category,
+                        note = note.takeIf { it.isNotBlank() },
+                        date = currentDate
+                    )
 
-                viewModel.addTransaction(
-                    transaction,
-                    onSuccess = {
-                        viewModel.getTransactionsByUser(userId)
-                        notificationViewModel.addNotification(
-                            userId = userId,
-                            title = "Giao dịch mới",
-                            message = "Bạn vừa thêm ${if (type == TransactionType.EXPENSE) "khoản chi" else "khoản thu"}: ${String.format("%,.0f", amountDouble)} VND cho $category."
-                        )
-                        onDismiss()
-                    },
-                    onFailure = {
-                        onDismiss()
-                    }
-                )
-            },
+                    viewModel.addTransaction(
+                        transaction,
+                        onSuccess = {
+                            viewModel.getTransactionsByUser(userId)
+                            notificationViewModel.addNotification(
+                                userId = userId,
+                                title = "Giao dịch mới",
+                                message = "Bạn vừa thêm ${if (type == TransactionType.EXPENSE) "khoản chi" else "khoản thu"}: ${String.format("%,.0f", amountDouble)} VND cho $category."
+                            )
+                            onDismiss()
+                        },
+                        onFailure = { onDismiss() }
+                    )
+                },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.Black,
                     contentColor = Color.White

@@ -128,7 +128,9 @@ fun ProfileHeader(user: Users, navController: NavController) {
                 Text(user.email, color = Color.Gray, fontSize = 14.sp)
                 Spacer(modifier = Modifier.height(8.dp))
                 Button(
-                    onClick = { navController.navigate("Chỉnh sua") },
+                    onClick = {
+                        navController.navigate("edit_profile/${user.userId}")
+                    },
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
                     shape = RoundedCornerShape(10.dp),
                     contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
