@@ -36,7 +36,8 @@ import kotlin.math.abs
 @Composable
 fun SavingsScreen(
     navController: NavController,
-    viewModel: SavingViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+    viewModel: SavingViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
+    userId: String
 ) {
     val savings = viewModel.savings.collectAsState().value
     var filter by remember { mutableStateOf(SavingFilter.ALL) }

@@ -106,7 +106,7 @@ fun HomeContent(
                         modifier = Modifier
                             .size(45.dp)
                             .padding(end = 12.dp)
-                            .clickable { navController.navigate("NotificationScreen/{userId}")},
+                            .clickable { navController.navigate("Notification/{userId}")},
                         tint = Color.DarkGray
                     )
                 }

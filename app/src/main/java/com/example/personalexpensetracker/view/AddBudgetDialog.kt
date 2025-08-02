@@ -199,7 +199,7 @@ fun String.normalize(): String {
     val temp = Normalizer.normalize(this, Normalizer.Form.NFD)
     val pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+")
     return pattern.matcher(temp)
-        .replaceAll("") // remove accents
-        .lowercase(Locale.getDefault()) // to lowercase
-        .trim() // remove leading/trailing spaces
+        .replaceAll("")
+        .lowercase(Locale.getDefault())
+        .trim()
 }
