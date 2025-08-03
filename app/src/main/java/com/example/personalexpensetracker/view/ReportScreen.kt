@@ -64,6 +64,7 @@ fun ReportScreen(
     val expense = selectedMonthSummary.filter { it.type == TransactionType.EXPENSE }.sumOf { it.amount }
     val balance = income - expense
     var expandedDetail by remember { mutableStateOf(false) }
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -158,11 +159,12 @@ fun ReportScreen(
         }
         item {
             Text(
-                "Biểu đồ thu chi trong tháng này",
+                "Biểu đồ thu chi theo tháng",
                 fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(vertical = 8.dp)
             )
+
             Card(
                 modifier = Modifier
                     .fillMaxWidth()

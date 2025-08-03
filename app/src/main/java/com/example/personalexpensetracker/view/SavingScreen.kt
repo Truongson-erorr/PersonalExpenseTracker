@@ -39,6 +39,9 @@ fun SavingsScreen(
     viewModel: SavingViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
     userId: String
 ) {
+    var selectedSaving by remember { mutableStateOf<Saving?>(null) }
+    var showContributeDialog by remember { mutableStateOf(false) }
+
     val savings = viewModel.savings.collectAsState().value
     var filter by remember { mutableStateOf(SavingFilter.ALL) }
     var expandedFilter by remember { mutableStateOf(false) }
@@ -168,6 +171,10 @@ fun SavingsScreen(
                     saving = saving,
                     onComplete = {
                         viewModel.updateSaving(it.copy(completed = true))
+                    },
+                    onAddMoney = {
+                        selectedSaving = it
+                        showContributeDialog = true
                     }
                 )
             }
@@ -198,144 +205,18 @@ fun SavingsScreen(
             }
         )
     }
-}
 
-val vibrantColors = listOf(
-    Color(0xFFF44336), // Bright Red
-    Color(0xFFE91E63), // Pink
-    Color(0xFF9C27B0), // Purple
-    Color(0xFF673AB7), // Deep Purple
-    Color(0xFF3F51B5), // Indigo
-    Color(0xFF2196F3), // Blue
-    Color(0xFF03A9F4), // Light Blue
-    Color(0xFF009688), // Teal
-    Color(0xFFFF9800), // Orange
-    Color(0xFFFF5722)  // Deep Orange
-)
-
-fun formatTimestamp(timestamp: Long): String {
-    val date = Date(timestamp)
-    val format = java.text.SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-    return format.format(date)
-}
-
-@Composable
-fun SavingItem(
-    saving: Saving,
-    onComplete: (Saving) -> Unit = {},
-    onAddMoney: (Saving) -> Unit = {}
-) {
-    var expanded by remember { mutableStateOf(false) }
-
-    val backgroundColor = remember(saving.id) {
-        vibrantColors[abs(saving.id.hashCode()) % vibrantColors.size]
-    }
-
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { expanded = !expanded },
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = backgroundColor),
-        elevation = CardDefaults.cardElevation(4.dp)
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(
-                    text = saving.title,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White,
-                    modifier = Modifier.weight(1f)
-                )
-                Text(
-                    text = "${formatTimestamp(saving.timestamp)}",
-                    fontSize = 14.sp,
-                    color = Color.White.copy(alpha = 0.7f),
-                    modifier = Modifier.padding(end = 8.dp)
-                )
-                Text(
-                    text = if (expanded) "Ẩn" else "Xem",
-                    color = Color.White.copy(alpha = 0.7f),
-                    fontSize = 14.sp
-                )
+    if (showContributeDialog && selectedSaving != null) {
+        ContributeMoneyDialog(
+            saving = selectedSaving!!,
+            onDismiss = {
+                showContributeDialog = false
+                selectedSaving = null
+            },
+            onContribute = { amount ->
+                val updated = selectedSaving!!.copy(amount = selectedSaving!!.amount + amount)
+                viewModel.updateSaving(updated)
             }
-
-            AnimatedVisibility(
-                visible = expanded,
-                enter = expandVertically(),
-                exit = shrinkVertically()
-            ) {
-                Column {
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    val goal = saving.goalAmount.takeIf { it != 0.0 } ?: 1.0
-                    val progress = (saving.amount / goal).coerceIn(0.0, 1.0)
-                    val percent = (progress * 100).toInt()
-
-                    LinearProgressIndicator(
-                        progress = progress.toFloat(),
-                        color = Color.White,
-                        trackColor = Color.White.copy(alpha = 0.3f),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(6.dp)
-                    )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        "Đã tiết kiệm: ${"%,.0f".format(saving.amount)}đ / ${"%,.0f".format(goal)}đ ($percent%)",
-                        color = Color.White
-                    )
-
-                    if (saving.note.isNotBlank()) {
-                        Text("Ghi chú: ${saving.note}", fontSize = 14.sp, color = Color.White.copy(alpha = 0.8f))
-                    }
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    // Row chứa "Đánh dấu hoàn thành" và nút "Góp thêm"
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        if (!saving.completed && saving.amount >= goal) {
-                            Button(
-                                onClick = { onComplete(saving) },
-                                colors = ButtonDefaults.buttonColors(containerColor = Color.White),
-                            ) {
-                                Text("Đánh dấu hoàn thành", color = backgroundColor)
-                            }
-                        } else if (saving.completed) {
-                            Text(
-                                "Đã hoàn thành",
-                                fontWeight = FontWeight.Bold,
-                                color = Color.Yellow,
-                                modifier = Modifier.padding(end = 8.dp)
-                            )
-                        }
-
-                        if (!saving.completed) {
-                            TextButton(
-                                onClick = { onAddMoney(saving) },
-                                modifier = Modifier.padding(start = 8.dp)
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.AddCircle,
-                                    contentDescription = "Góp thêm",
-                                    tint = Color.White
-                                )
-                                Spacer(modifier = Modifier.width(4.dp))
-                                Text("Góp thêm", color = Color.White)
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        )
     }
 }
