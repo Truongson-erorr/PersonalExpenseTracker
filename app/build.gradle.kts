@@ -41,6 +41,7 @@ android {
 }
 
 dependencies {
+    implementation ("com.google.firebase:firebase-messaging:23.4.0")
     implementation("io.coil-kt:coil-compose:2.4.0")
     implementation("com.google.accompanist:accompanist-navigation-animation:0.34.0")
     implementation ("androidx.compose.material:material:1.6.8")

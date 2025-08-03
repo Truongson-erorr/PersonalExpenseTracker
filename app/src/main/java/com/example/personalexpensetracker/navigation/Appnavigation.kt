@@ -94,9 +94,5 @@ fun AppNavigation() {
                 )
             }
         }
-
-
-
-
     }
 }

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -37,12 +38,22 @@ fun Notification(
             .padding(16.dp)
     ) {
         Spacer(modifier = Modifier.height(30.dp))
-        Text(
-            text = "Thông báo",
-            fontSize = 22.sp,
-            fontWeight = FontWeight.Bold,
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(bottom = 12.dp)
-        )
+        ) {
+            IconButton(onClick = { navController.popBackStack() }) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Back"
+                )
+            }
+            Text(
+                text = "Thông báo",
+                fontSize = 22.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
 
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(10.dp)
