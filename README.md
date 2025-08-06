@@ -1,12 +1,16 @@
-<h1 align="center">💰 Personal Expense Tracker</h1>
-<h3 align="center">📊 An Android app to track personal income, expenses, and manage monthly budgets.</h3>
+# 💰 Personal Expense Tracker
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Kotlin-%230095D5.svg?style=for-the-badge&logo=kotlin&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Jetpack%20Compose-%23000000.svg?style=for-the-badge&logo=android&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black"/>
-  <img src="https://img.shields.io/badge/MVVM-architecture-blueviolet?style=for-the-badge"/>
-</p>
+**Personal Expense Tracker** is an Android application built with **Kotlin** and **Jetpack Compose**, designed to help users manage their personal finances more effectively.
+
+With this app, users can:
+
+- Track their income and expenses by category
+- Set monthly budgets and monitor spending progress
+- View real-time reports and visual summaries
+- Receive notifications when limits are exceeded
+- Store and sync data securely using Firebase
+
+The app is structured using the **MVVM architecture**, and integrates modern tools such as **Firebase**, **State management with ViewModel**, and **Coroutines** for responsive UI and performance.
 
 ---
 
