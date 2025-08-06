@@ -84,7 +84,7 @@ fun SavingsScreen(
                     text = "Hũ Tiết Kiệm",
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.Gray
+                    color = Color.Black
                 )
             }
 

@@ -4,6 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -38,12 +40,20 @@ fun NotificationScreen(
             .padding(horizontal = 16.dp, vertical = 24.dp)
     ) {
         Spacer(modifier = Modifier.height(30.dp))
-        Text(
-            text = "Hoạt động gần đây",
-            fontSize = 22.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.Black
-        )
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            IconButton(onClick = { navController.popBackStack() }) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Back"
+                )
+            }
+            Text(
+                text = "Hoạt động gần đây",
+                fontSize = 22.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black
+            )
+        }
         Spacer(modifier = Modifier.height(16.dp))
 
         if (notifications.isEmpty()) {
@@ -62,7 +72,7 @@ fun NotificationScreen(
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         colors = CardDefaults.cardColors(
-                            containerColor = if (notification.isRead) Color(0xFFF0F0F0) else Color(0xFFFFE5E5) // đỏ nhạt
+                            containerColor = if (!notification.isRead) Color(0xFFFFF8E1) else Color.White
                         ),
                         onClick = {
                             selectedNotification = notification
@@ -82,13 +92,13 @@ fun NotificationScreen(
                                     text = notification.title,
                                     fontWeight = if (notification.isRead) FontWeight.Normal else FontWeight.Bold,
                                     fontSize = 16.sp,
-                                    color = if (notification.isRead) Color(0xFF333333) else Color.Red
+                                    color = Color.Black
                                 )
                                 Spacer(modifier = Modifier.height(4.dp))
                                 Text(
                                     text = notification.message,
                                     fontSize = 14.sp,
-                                    color = if (notification.isRead) Color(0xFF555555) else Color.Red,
+                                    color = Color.DarkGray,
                                     fontWeight = if (notification.isRead) FontWeight.Normal else FontWeight.Medium
                                 )
                                 Spacer(modifier = Modifier.height(6.dp))
@@ -106,7 +116,7 @@ fun NotificationScreen(
         }
     }
 
-    // Hiển thị dialog chi tiết khi chọn thông báo
+    // Hiển thị dialog chi tiết
     selectedNotification?.let { notification ->
         AlertDialog(
             onDismissRequest = { selectedNotification = null },
@@ -136,3 +146,4 @@ fun NotificationScreen(
         )
     }
 }
+

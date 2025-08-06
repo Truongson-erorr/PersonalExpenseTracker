@@ -48,7 +48,6 @@ fun EditProfileScreen(
             .padding(24.dp)
     ) {
         Spacer(modifier = Modifier.height(30.dp))
-        // Header
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
@@ -61,7 +60,7 @@ fun EditProfileScreen(
                 text = "Chỉnh sửa hồ sơ",
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.titleLarge,
-                color = Color.Gray,
+                color = Color.Black,
                 modifier = Modifier.padding(start = 8.dp)
             )
         }
@@ -146,14 +145,13 @@ fun EditProfileScreen(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // Nút lưu
         Button(
             onClick = {
                 val updatedUser = user.copy(ten = name)
                 userViewModel.updateUser(
                     updatedUser,
                     onSuccess = { navController.popBackStack() },
-                    onError = { /* xử lý lỗi nếu cần */ }
+                    onError = {  }
                 )
                 if (password.isNotBlank()) {
                     FirebaseAuth.getInstance().currentUser?.updatePassword(password)
