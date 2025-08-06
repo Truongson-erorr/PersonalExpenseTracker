@@ -31,6 +31,7 @@ The app is structured using the **MVVM architecture**, and integrates modern too
 - 🧠 **Kotlin + Jetpack Compose**
 - 🔥 **Firebase (Auth, Firestore, Storage)**
 - 🧭 **MVVM + ViewModel + State management**
+- 📊 **Charts & Data Visualization using Jetpack Compose libraries**
 - 💾 **Room Database** (if offline support added)
 - 💡 **Coroutines & Flow**
 
