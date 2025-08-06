@@ -20,7 +20,6 @@ import com.example.personalexpensetracker.model.Users
 import com.example.personalexpensetracker.view.EditProfileScreen
 import com.example.personalexpensetracker.view.HomeScreen
 import com.example.personalexpensetracker.view.LoginScreen
-import com.example.personalexpensetracker.view.Notification
 import com.example.personalexpensetracker.view.NotificationScreen
 import com.example.personalexpensetracker.view.RegisterScreen
 import com.example.personalexpensetracker.view.SavingDetailScreen
@@ -68,10 +67,6 @@ fun AppNavigation() {
         composable("SavingsScreen") { backStackEntry ->
             val userId = backStackEntry.arguments?.getString("userId") ?: ""
             SavingsScreen(navController = navController, savingViewModel , userId = userId)
-        }
-        composable("Notification/{userId}") { backStackEntry ->
-            val userId = backStackEntry.arguments?.getString("userId") ?: ""
-            Notification(navController = navController, userId = userId)
         }
         composable("NotificationScreen/{userId}") { backStackEntry ->
             val userId = backStackEntry.arguments?.getString("userId") ?: ""

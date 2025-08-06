@@ -28,9 +28,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.personalexpensetracker.model.Budget
 import com.example.personalexpensetracker.model.TransactionType
 import com.example.personalexpensetracker.viewmodel.BudgetViewModel
+import com.example.personalexpensetracker.viewmodel.NotificationViewModel
 import com.example.personalexpensetracker.viewmodel.TransactionViewModel
 import java.text.Normalizer
 import java.util.Calendar
@@ -42,7 +44,8 @@ import java.util.regex.Pattern
 fun AddBudgetDialog(
     userId: String,
     onDismiss: () -> Unit,
-    budgetViewModel: BudgetViewModel
+    budgetViewModel: BudgetViewModel,
+    notificationViewModel: NotificationViewModel = viewModel()
 ) {
     var category by remember { mutableStateOf("") }
     var amount by remember { mutableStateOf("") }
@@ -105,7 +108,14 @@ fun AddBudgetDialog(
 
                 budgetViewModel.addBudget(
                     budget,
-                    onSuccess = { onDismiss() },
+                    onSuccess = {
+                        notificationViewModel.addNotification(
+                            userId = userId,
+                            title = "Ngân sách mới",
+                            message = "Bạn vừa thêm ngân sách ${String.format("%,.0f", amountDouble)} VND cho danh mục $category trong tháng $selectedMonth/$selectedYear."
+                        )
+                        onDismiss()
+                    },
                     onFailure = { onDismiss() }
                 )
             },

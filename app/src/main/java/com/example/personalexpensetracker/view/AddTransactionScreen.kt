@@ -53,7 +53,6 @@ fun AddTransactionDialog(
         },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                // Danh mục + micro
                 TextField(
                     value = category,
                     onValueChange = { category = it },
@@ -82,7 +81,6 @@ fun AddTransactionDialog(
                     )
                 )
 
-                // Số tiền
                 TextField(
                     value = amount,
                     onValueChange = { amount = it },
@@ -96,7 +94,6 @@ fun AddTransactionDialog(
                     )
                 )
 
-                // Ghi chú + micro
                 TextField(
                     value = note,
                     onValueChange = { note = it },
@@ -124,7 +121,6 @@ fun AddTransactionDialog(
                     )
                 )
 
-                // Loại giao dịch
                 DropdownMenuBox(
                     selectedType = type,
                     onTypeSelected = { type = it }

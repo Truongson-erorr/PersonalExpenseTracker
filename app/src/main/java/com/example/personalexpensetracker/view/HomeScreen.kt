@@ -33,7 +33,6 @@ fun HomeScreen(
         NavItem("Giao dịch", Icons.Default.AttachMoney),
         NavItem("Ngân sách", Icons.Default.Wallet),
         NavItem("Báo cáo", Icons.Default.Report),
-        NavItem("Thông báo", Icons.Default.Notifications),
         NavItem("Cá nhân", Icons.Default.Person)
     )
 
@@ -84,8 +83,7 @@ fun HomeScreen(
                 0 -> HomeContent(userId, navController)
                 1 -> BudgetScreen(userId, navController)
                 2 -> ReportScreen(userId, navController)
-                3 -> NotificationScreen(navController, userId)
-                4 -> ProfileScreen(navController)
+                3 -> ProfileScreen(navController)
             }
 
         }
