@@ -156,7 +156,6 @@ fun ProfileMenu(navController: NavController) {
         }
     )
 
-    // Hiển thị dialog xác nhận đăng xuất
     if (showLogoutDialog) {
         AlertDialog(
             onDismissRequest = { showLogoutDialog = false },

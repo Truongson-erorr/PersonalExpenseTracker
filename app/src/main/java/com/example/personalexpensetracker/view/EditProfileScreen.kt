@@ -121,9 +121,12 @@ fun EditProfileScreen(
                 focusedIndicatorColor = Color.Black,
                 unfocusedIndicatorColor = Color.Gray,
                 focusedLabelColor = Color.Black,
-                cursorColor = Color.Black
+                cursorColor = Color.Black,
+                unfocusedContainerColor = Color.White,
+                focusedContainerColor = Color.White
             )
         )
+
 
         Spacer(modifier = Modifier.height(16.dp))
         TextField(
@@ -138,10 +141,11 @@ fun EditProfileScreen(
                 focusedIndicatorColor = Color.Black,
                 unfocusedIndicatorColor = Color.Gray,
                 focusedLabelColor = Color.Black,
-                cursorColor = Color.Black
+                cursorColor = Color.Black,
+                unfocusedContainerColor = Color.White,
+                focusedContainerColor = Color.White
             )
         )
-
         Spacer(modifier = Modifier.height(32.dp))
 
         Button(
