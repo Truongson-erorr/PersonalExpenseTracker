@@ -94,13 +94,13 @@ fun CategoryPieChart(data: Map<String, Double>) {
     val angleData = data.mapValues { (it.value / total * 360f).toFloat() }
 
     val colors = listOf(
-        Color(0xFF4285F4), // Blue
-        Color(0xFF34A853), // Green
-        Color(0xFFFBBC05), // Yellow
-        Color(0xFFEA4335), // Red
-        Color(0xFF673AB7), // Purple
-        Color(0xFFFF6D00), // Orange
-        Color(0xFF00ACC1)  // Cyan
+        Color(0xFF4285F4),
+        Color(0xFF34A853),
+        Color(0xFFFBBC05),
+        Color(0xFFEA4335),
+        Color(0xFF673AB7),
+        Color(0xFFFF6D00),
+        Color(0xFF00ACC1)
     )
 
     Canvas(modifier = Modifier.size(200.dp)) {

@@ -1,5 +1,6 @@
 package com.example.personalexpensetracker.viewmodel
 
+import android.os.Build
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.personalexpensetracker.model.Transaction
@@ -8,11 +9,14 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.mutableStateListOf
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.ZoneId
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -132,8 +136,16 @@ class TransactionViewModel : ViewModel() {
         }.toSortedMap()
     }
 
-    fun getExpenseByCategory(): Map<String, Double> {
-        return transactions.filter { it.type == TransactionType.EXPENSE }
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getExpenseByCategory(selectedMonth: Int): Map<String, Double> {
+        return transactions
+            .filter {
+                it.type == TransactionType.EXPENSE &&
+                        Instant.ofEpochMilli(it.date)
+                            .atZone(ZoneId.systemDefault())
+                            .toLocalDate()
+                            .monthValue == selectedMonth
+            }
             .groupBy { it.category }
             .mapValues { it.value.sumOf { tx -> tx.amount } }
             .toSortedMap()

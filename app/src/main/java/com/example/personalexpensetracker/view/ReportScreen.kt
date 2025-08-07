@@ -1,5 +1,7 @@
 package com.example.personalexpensetracker.view
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -43,6 +45,7 @@ import com.example.personalexpensetracker.model.TransactionType
 import com.example.personalexpensetracker.viewmodel.TransactionViewModel
 import java.util.Calendar
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ReportScreen(
@@ -54,7 +57,7 @@ fun ReportScreen(
     var selectedMonth by remember { mutableStateOf(7) }
 
     val monthlySummary = viewModel.getMonthlySummary()
-    val expenseByCategory = viewModel.getExpenseByCategory()
+    val expenseByCategory = viewModel.getExpenseByCategory(selectedMonth)
 
     val selectedMonthSummary = viewModel.filterByMonthYear(
         selectedMonth - 1,
@@ -216,8 +219,7 @@ fun ReportScreen(
                     DropdownMenu(
                         expanded = expanded,
                         onDismissRequest = { expanded = false },
-                        modifier = Modifier
-                            .background(Color.White)
+                        modifier = Modifier.background(Color.White)
                     ) {
                         (1..12).forEach { month ->
                             DropdownMenuItem(
@@ -231,7 +233,6 @@ fun ReportScreen(
                     }
                 }
             }
-
             Spacer(modifier = Modifier.height(8.dp))
 
             Card(
