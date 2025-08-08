@@ -6,13 +6,20 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Divider
 import androidx.compose.material.LinearProgressIndicator
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBalanceWallet
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -21,6 +28,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -154,52 +162,103 @@ fun BudgetDetailDialog(
     val progress = (spent / budget.amount).coerceIn(0.0, 1.0)
     val percent = (progress * 100).toInt()
 
+    val (reminderMsg, reminderColor) = when {
+        progress >= 1.0 -> "Đã đạt hoặc vượt quá ngân sách! Cần điều chỉnh ngay" to Color.Red
+        progress > 0.8 -> "Sắp đạt ngân sách. Hãy cân nhắc chi tiêu!" to Color(0xFFFFC107)
+        progress > 0.5 -> "Bạn đã dùng hơn nửa ngân sách" to Color(0xFF03A9F4)
+        else -> "Chi tiêu đang trong tầm kiểm soát" to Color(0xFF4CAF50)
+    }
+
     AlertDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text("Đóng")
+                Text("Đóng", fontWeight = FontWeight.Bold)
             }
         },
         title = {
-            Text("Chi tiết ngân sách", fontWeight = FontWeight.Bold)
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.AccountBalanceWallet,
+                    contentDescription = null,
+                    tint = Color(0xFF4CAF50)
+                )
+                Text(
+                    "Chi tiết ngân sách",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp
+                )
+            }
         },
         text = {
-            Column {
-                Text("Danh mục: ${budget.category}")
-                Text("Hạn mức: ${String.format("%,.0f", budget.amount)} VND")
-                Text("Đã chi: ${String.format("%,.0f", spent)} VND")
-                Spacer(modifier = Modifier.height(8.dp))
-
-                LinearProgressIndicator(
-                    progress = progress.toFloat(),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(10.dp)
-                        .clip(RoundedCornerShape(5.dp)),
-                    color = Color.Black,
-                    backgroundColor = Color.LightGray
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
+            Column(
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
                 Text(
-                    "Đã sử dụng: $percent%",
-                    color = if (progress > 1) Color.Red else Color.Black
+                    text = "${budget.category} • Tháng ${budget.month}/${budget.year}",
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 16.sp
                 )
-                Spacer(modifier = Modifier.height(16.dp))
 
-                val reminderText = when {
-                    progress >= 1.0 -> "Đã đạt hoặc vượt quá ngân sách! Cần điều chỉnh ngay" to Color.Red
-                    progress > 0.8 -> "Sắp đạt ngân sách. Hãy cân nhắc chi tiêu!" to Color(0xFFFFC107) // vàng
-                    progress > 0.5 -> "Bạn đã dùng hơn nửa ngân sách" to Color(0xFF03A9F4) // xanh dương
-                    else -> "Chi tiêu đang trong tầm kiểm soát" to Color(0xFF4CAF50) // xanh lá
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Column {
+                        Text("Hạn mức", fontSize = 14.sp, color = Color.Gray)
+                        Text(
+                            "${String.format("%,.0f", budget.amount)} VND",
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    }
+                    Column {
+                        Text("Đã chi", fontSize = 14.sp, color = Color.Gray)
+                        Text(
+                            "${String.format("%,.0f", spent)} VND",
+                            fontWeight = FontWeight.SemiBold,
+                            color = if (progress > 1) Color.Red else Color.Black
+                        )
+                    }
                 }
 
-                Text(
-                    text = reminderText.first,
-                    color = reminderText.second,
-                    fontWeight = FontWeight.SemiBold
-                )
+                Column {
+                    LinearProgressIndicator(
+                        progress = progress.toFloat(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(12.dp)
+                            .clip(RoundedCornerShape(6.dp)),
+                        color = if (progress > 1) Color.Red else Color.DarkGray,
+                        backgroundColor = Color.LightGray.copy(alpha = 0.3f)
+                    )
+                    Text(
+                        text = "$percent% đã sử dụng",
+                        fontSize = 14.sp,
+                        color = if (progress > 1) Color.Red else Color.Gray,
+                        modifier = Modifier.padding(top = 4.dp)
+                    )
+                }
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Info,
+                        contentDescription = null,
+                        tint = reminderColor,
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Spacer(Modifier.width(6.dp))
+                    Text(
+                        text = reminderMsg,
+                        color = reminderColor,
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 14.sp
+                    )
+                }
             }
         }
     )
