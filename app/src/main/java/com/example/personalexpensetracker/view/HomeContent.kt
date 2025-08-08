@@ -1,6 +1,11 @@
 package com.example.personalexpensetracker.view
 
 import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -14,6 +19,7 @@ import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.FilterAlt
 import androidx.compose.material.icons.filled.FilterList
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Savings
 import androidx.compose.material.icons.filled.Search
@@ -22,6 +28,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
@@ -112,20 +119,44 @@ fun HomeContent(
                 }
             }
 
-            Text(
-                text = "Biến động số dư",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.Black
-            )
-
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { expanded = !expanded },
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                SummaryItem("Tổng thu", viewModel.totalIncome, Color(0xFF2E7D32))
-                SummaryItem("Chi tiêu", viewModel.totalExpense, Color(0xFFD32F2F))
-                SummaryItem("Số dư", viewModel.balance, Color.Black)
+                Text(
+                    text = "Biến động số dư",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+                    modifier = Modifier.weight(1f)
+                )
+
+                Icon(
+                    imageVector = Icons.Default.KeyboardArrowRight,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .rotate(if (expanded) 90f else 0f)
+                        .size(24.dp)
+                )
+            }
+
+            AnimatedVisibility(
+                visible = expanded,
+                enter = expandVertically() + fadeIn(),
+                exit = shrinkVertically() + fadeOut()
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    SummaryItem("Tổng thu", viewModel.totalIncome, Color(0xFF2E7D32))
+                    SummaryItem("Chi tiêu", viewModel.totalExpense, Color(0xFFD32F2F))
+                    SummaryItem("Số dư", viewModel.balance, Color.Black)
+                }
             }
 
             Row(
