@@ -208,7 +208,6 @@ fun HomeContent(
                         Text(
                             text = item.second,
                             fontSize = 13.sp,
-                            fontWeight = FontWeight.Bold,
                             color = Color.Black
                         )
                     }
