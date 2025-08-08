@@ -328,41 +328,62 @@ fun TransactionCard(
     viewModel: TransactionViewModel = viewModel()
 ) {
     val context = LocalContext.current
-    val bgColor = if (transaction.type == TransactionType.INCOME) Color.White else Color.White
     val dateString = formatDate(transaction.date)
     val formattedAmount = String.format("%,.0f", transaction.amount)
     var showDialog by remember { mutableStateOf(false) }
 
+    val bgColor = if (transaction.type == TransactionType.INCOME)
+        Color(0xFFE8F5E9)
+    else
+        Color(0xFFFFEBEE)
+
+    val amountColor = if (transaction.type == TransactionType.INCOME)
+        Color(0xFF2E7D32)
+    else
+        Color(0xFFD32F2F)
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 4.dp)
+            .padding(horizontal = 6.dp, vertical = 4.dp)
             .pointerInput(Unit) {
-                detectTapGestures(
-                    onLongPress = { showDialog = true }
-                )
+                detectTapGestures(onLongPress = { showDialog = true })
             }
     ) {
         Card(
-            colors = CardDefaults.cardColors(containerColor = bgColor)
+            colors = CardDefaults.cardColors(containerColor = bgColor),
+            shape = RoundedCornerShape(16.dp),
+            elevation = CardDefaults.cardElevation(6.dp)
         ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(12.dp),
+                    .padding(14.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Column {
-                    Text(text = transaction.category, fontWeight = FontWeight.Bold, fontSize = 14.sp)
                     Text(
-                        text = if (transaction.type == TransactionType.INCOME) "+ $formattedAmount VND"
-                        else "- $formattedAmount VND",
-                        fontSize = 13.sp,
-                        color = Color.DarkGray
+                        text = transaction.category,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 15.sp,
+                        color = Color.Black
+                    )
+                    Text(
+                        text = if (transaction.type == TransactionType.INCOME)
+                            "+ $formattedAmount VND"
+                        else
+                            "- $formattedAmount VND",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = amountColor
                     )
                     transaction.note?.let {
                         Spacer(modifier = Modifier.height(4.dp))
-                        Text("Ghi chú: $it", fontSize = 11.sp, color = Color.Gray)
+                        Text(
+                            "Ghi chú: $it",
+                            fontSize = 12.sp,
+                            color = Color.Gray
+                        )
                     }
                 }
 
@@ -370,12 +391,12 @@ fun TransactionCard(
                     horizontalAlignment = Alignment.End,
                     verticalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(text = dateString, fontSize = 11.sp, color = Color.Gray)
+                    Text(dateString, fontSize = 12.sp, color = Color.Gray)
                     Text(
                         text = if (transaction.type == TransactionType.INCOME) "Thu nhập" else "Chi tiêu",
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = if (transaction.type == TransactionType.INCOME) Color(0xFF2E7D32) else Color(0xFFD32F2F)
+                        fontSize = 13.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = amountColor
                     )
                 }
             }
@@ -385,13 +406,13 @@ fun TransactionCard(
             AlertDialog(
                 onDismissRequest = { showDialog = false },
                 title = { Text("Tuỳ chọn giao dịch", fontWeight = FontWeight.Bold) },
-                text = {
-                    Column {
-                        Text("Bạn muốn làm gì với giao dịch này?")
-                    }
-                },
+                text = { Text("Bạn muốn làm gì với giao dịch này?") },
                 confirmButton = {
-
+                    TextButton(onClick = {
+                        showDialog = false
+                    }) {
+                        Text("Sửa")
+                    }
                 },
                 dismissButton = {
                     TextButton(onClick = {
@@ -413,5 +434,3 @@ fun TransactionCard(
         }
     }
 }
-
-

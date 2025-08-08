@@ -3,6 +3,8 @@ package com.example.personalexpensetracker.view
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,10 +13,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Savings
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -22,6 +28,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -32,6 +39,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -41,17 +49,17 @@ import java.util.Date
 import java.util.Locale
 import kotlin.math.abs
 
-val vibrantColors = listOf(
-    Color(0xFFF44336),
-    Color(0xFFE91E63),
-    Color(0xFF9C27B0),
-    Color(0xFF673AB7),
-    Color(0xFF3F51B5),
-    Color(0xFF2196F3),
-    Color(0xFF03A9F4),
-    Color(0xFF009688),
-    Color(0xFFFF9800),
-    Color(0xFFFF5722)
+val pastelColors = listOf(
+    Color(0xFFFFCDD2), // đỏ nhạt
+    Color(0xFFF8BBD0), // hồng nhạt
+    Color(0xFFE1BEE7), // tím nhạt
+    Color(0xFFD1C4E9), // tím xám nhạt
+    Color(0xFFC5CAE9), // xanh dương nhạt
+    Color(0xFFBBDEFB), // xanh da trời nhạt
+    Color(0xFFB2EBF2), // xanh ngọc nhạt
+    Color(0xFFC8E6C9), // xanh lá nhạt
+    Color(0xFFFFE0B2), // cam nhạt
+    Color(0xFFFFCCBC)  // cam đỏ nhạt
 )
 
 fun formatTimestamp(timestamp: Long): String {
@@ -69,109 +77,128 @@ fun SavingItem(
     var expanded by remember { mutableStateOf(false) }
 
     val backgroundColor = remember(saving.id) {
-        vibrantColors[abs(saving.id.hashCode()) % vibrantColors.size]
+        pastelColors[abs(saving.id.hashCode()) % pastelColors.size]
     }
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
+            .padding(vertical = 6.dp)
             .clickable { expanded = !expanded },
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(containerColor = backgroundColor),
-        elevation = CardDefaults.cardElevation(4.dp)
+        elevation = CardDefaults.cardElevation(6.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(
-                    text = saving.title,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White,
-                    modifier = Modifier.weight(1f)
+                Icon(
+                    imageVector = Icons.Default.Savings,
+                    contentDescription = "Saving Icon",
+                    tint = Color.White,
+                    modifier = Modifier
+                        .size(28.dp)
+                        .background(Color.Black.copy(alpha = 0.2f), CircleShape)
+                        .padding(4.dp)
                 )
-                Text(
-                    text = "${formatTimestamp(saving.timestamp)}",
-                    fontSize = 14.sp,
-                    color = Color.White.copy(alpha = 0.7f),
-                    modifier = Modifier.padding(end = 8.dp)
-                )
+                Spacer(modifier = Modifier.width(10.dp))
+
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = saving.title,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black
+                    )
+                    Text(
+                        text = formatTimestamp(saving.timestamp),
+                        fontSize = 13.sp,
+                        color = Color.DarkGray
+                    )
+                }
+
                 Text(
                     text = if (expanded) "Ẩn" else "Xem",
-                    color = Color.White.copy(alpha = 0.7f),
-                    fontSize = 14.sp
+                    fontSize = 14.sp,
+                    color = Color.DarkGray
                 )
             }
 
+            // Nội dung mở rộng
             AnimatedVisibility(
                 visible = expanded,
                 enter = expandVertically(),
                 exit = shrinkVertically()
             ) {
                 Column {
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(12.dp))
 
                     val goal = saving.goalAmount.takeIf { it != 0.0 } ?: 1.0
                     val progress = (saving.amount / goal).coerceIn(0.0, 1.0)
                     val percent = (progress * 100).toInt()
 
+                    // Thanh tiến độ bo tròn
                     LinearProgressIndicator(
                         progress = progress.toFloat(),
-                        color = Color.White,
-                        trackColor = Color.White.copy(alpha = 0.3f),
+                        color = Color(0xFF4CAF50),
+                        trackColor = Color.White.copy(alpha = 0.4f),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(6.dp)
+                            .height(8.dp)
+                            .clip(RoundedCornerShape(4.dp))
                     )
 
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         "Đã tiết kiệm: ${"%,.0f".format(saving.amount)}đ / ${"%,.0f".format(goal)}đ ($percent%)",
-                        color = Color.White
+                        color = Color.Black,
+                        fontSize = 14.sp
                     )
 
                     if (saving.note.isNotBlank()) {
-                        Text("Ghi chú: ${saving.note}", fontSize = 14.sp, color = Color.White.copy(alpha = 0.8f))
+                        Text(
+                            "Ghi chú: ${saving.note}",
+                            fontSize = 13.sp,
+                            color = Color.DarkGray
+                        )
                     }
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(12.dp))
 
-                    // Row chứa "Đánh dấu hoàn thành" và nút "Góp thêm"
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
                         if (!saving.completed && saving.amount >= goal) {
                             Button(
                                 onClick = { onComplete(saving) },
-                                colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4CAF50)),
+                                shape = RoundedCornerShape(12.dp)
                             ) {
-                                Text("Đánh dấu hoàn thành", color = backgroundColor)
+                                Icon(Icons.Default.Check, contentDescription = "Hoàn thành", tint = Color.White)
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Text("Hoàn thành", color = Color.White)
                             }
                         } else if (saving.completed) {
                             Text(
-                                "Đã hoàn thành",
+                                "✅ Đã hoàn thành",
                                 fontWeight = FontWeight.Bold,
-                                color = Color.Yellow,
-                                modifier = Modifier.padding(end = 8.dp)
+                                color = Color(0xFF388E3C)
                             )
                         }
 
                         if (!saving.completed) {
-                            TextButton(
+                            OutlinedButton(
                                 onClick = { onAddMoney(saving) },
-                                modifier = Modifier.padding(start = 8.dp)
+                                shape = RoundedCornerShape(12.dp),
+                                border = BorderStroke(1.dp, Color(0xFF4CAF50))
                             ) {
-                                Icon(
-                                    imageVector = Icons.Default.AddCircle,
-                                    contentDescription = "Góp thêm",
-                                    tint = Color.White
-                                )
+                                Icon(Icons.Default.AddCircle, contentDescription = "Góp thêm", tint = Color(0xFF4CAF50))
                                 Spacer(modifier = Modifier.width(4.dp))
-                                Text("Góp thêm", color = Color.White)
+                                Text("Góp thêm", color = Color(0xFF4CAF50))
                             }
                         }
                     }
