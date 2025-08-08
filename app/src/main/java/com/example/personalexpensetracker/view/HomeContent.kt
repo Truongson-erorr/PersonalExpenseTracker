@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBalanceWallet
 import androidx.compose.material.icons.filled.AccountCircle
@@ -81,6 +82,15 @@ fun HomeContent(
 
         spent > budget.amount
     }
+
+    val colors = listOf(
+        Color(0xFFFFF9C4),
+        Color(0xFFBBDEFB),
+        Color(0xFFC8E6C9),
+        Color(0xFFFFCDD2),
+        Color(0xFFD1C4E9),
+        Color(0xFFFFE0B2)
+    )
 
     Box(
         modifier = Modifier
@@ -169,66 +179,37 @@ fun HomeContent(
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                IconButton(onClick = { navController.navigate("SavingsScreen") }) {
-                    Box(
-                        modifier = Modifier
-                            .size(40.dp)
-                            .background(Color(0xFF4CAF50), shape = CircleShape),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Savings,
-                            contentDescription = "Tiết kiệm",
-                            tint = Color.White,
-                            modifier = Modifier.size(24.dp)
-                        )
-                    }
-                }
+                val items = listOf(
+                    Triple(Icons.Default.Savings, "Tiết kiệm", "SavingsScreen"),
+                    Triple(Icons.Default.AccountBalanceWallet, "Ngân sách", "BudgetScreen"),
+                    Triple(Icons.Default.Book, "Báo cáo", "ReportScreen"),
+                    Triple(Icons.Default.Flag, "Mục tiêu", "GoalScreen")
+                )
 
-                IconButton(onClick = { navController.navigate("BudgetScreen") }) {
-                    Box(
-                        modifier = Modifier
-                            .size(40.dp)
-                            .background(Color(0xFF2196F3), shape = CircleShape),
-                        contentAlignment = Alignment.Center
+                items.forEachIndexed { index, item ->
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.clickable { navController.navigate(item.third) }
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.AccountBalanceWallet,
-                            contentDescription = "Ngân sách",
-                            tint = Color.White,
-                            modifier = Modifier.size(24.dp)
-                        )
-                    }
-                }
-
-                IconButton(onClick = { navController.navigate("ReportScreen") }) {
-                    Box(
-                        modifier = Modifier
-                            .size(40.dp)
-                            .background(Color(0xFFFF9800), shape = CircleShape),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Book,
-                            contentDescription = "Báo cáo",
-                            tint = Color.White,
-                            modifier = Modifier.size(24.dp)
-                        )
-                    }
-                }
-
-                IconButton(onClick = { navController.navigate("GoalScreen") }) {
-                    Box(
-                        modifier = Modifier
-                            .size(40.dp)
-                            .background(Color(0xFFF44336), shape = CircleShape),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Flag,
-                            contentDescription = "Mục tiêu",
-                            tint = Color.White,
-                            modifier = Modifier.size(24.dp)
+                        Box(
+                            modifier = Modifier
+                                .size(48.dp)
+                                .background(colors[index % colors.size], shape = RoundedCornerShape(8.dp)),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                imageVector = item.first,
+                                contentDescription = item.second,
+                                tint = Color.Black,
+                                modifier = Modifier.size(24.dp)
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = item.second,
+                            fontSize = 13.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.Black
                         )
                     }
                 }
