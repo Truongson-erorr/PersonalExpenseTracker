@@ -166,44 +166,69 @@ fun HomeContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 12.dp, vertical = 8.dp),
-                horizontalArrangement = Arrangement.Center,
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp) // khoảng cách giữa icon
-                ) {
-                    IconButton(onClick = { navController.navigate("SavingsScreen") }) {
+                IconButton(onClick = { navController.navigate("SavingsScreen") }) {
+                    Box(
+                        modifier = Modifier
+                            .size(40.dp)
+                            .background(Color(0xFF4CAF50), shape = CircleShape),
+                        contentAlignment = Alignment.Center
+                    ) {
                         Icon(
                             imageVector = Icons.Default.Savings,
                             contentDescription = "Tiết kiệm",
-                            tint = Color.Black,
-                            modifier = Modifier.size(28.dp)
+                            tint = Color.White,
+                            modifier = Modifier.size(24.dp)
                         )
                     }
+                }
 
-                    IconButton(onClick = { navController.navigate("BudgetScreen") }) {
+                IconButton(onClick = { navController.navigate("BudgetScreen") }) {
+                    Box(
+                        modifier = Modifier
+                            .size(40.dp)
+                            .background(Color(0xFF2196F3), shape = CircleShape),
+                        contentAlignment = Alignment.Center
+                    ) {
                         Icon(
                             imageVector = Icons.Default.AccountBalanceWallet,
                             contentDescription = "Ngân sách",
-                            tint = Color.Black,
-                            modifier = Modifier.size(28.dp)
+                            tint = Color.White,
+                            modifier = Modifier.size(24.dp)
                         )
                     }
+                }
 
-                    IconButton(onClick = { navController.navigate("ReportScreen") }) {
+                IconButton(onClick = { navController.navigate("ReportScreen") }) {
+                    Box(
+                        modifier = Modifier
+                            .size(40.dp)
+                            .background(Color(0xFFFF9800), shape = CircleShape),
+                        contentAlignment = Alignment.Center
+                    ) {
                         Icon(
                             imageVector = Icons.Default.Book,
                             contentDescription = "Báo cáo",
-                            tint = Color.Black,
-                            modifier = Modifier.size(28.dp)
+                            tint = Color.White,
+                            modifier = Modifier.size(24.dp)
                         )
                     }
+                }
 
-                    IconButton(onClick = { navController.navigate("GoalScreen") }) {
+                IconButton(onClick = { navController.navigate("GoalScreen") }) {
+                    Box(
+                        modifier = Modifier
+                            .size(40.dp)
+                            .background(Color(0xFFF44336), shape = CircleShape),
+                        contentAlignment = Alignment.Center
+                    ) {
                         Icon(
                             imageVector = Icons.Default.Flag,
                             contentDescription = "Mục tiêu",
-                            tint = Color.Black,
-                            modifier = Modifier.size(28.dp)
+                            tint = Color.White,
+                            modifier = Modifier.size(24.dp)
                         )
                     }
                 }
