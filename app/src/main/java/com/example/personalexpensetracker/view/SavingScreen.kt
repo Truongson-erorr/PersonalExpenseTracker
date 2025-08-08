@@ -170,7 +170,6 @@ fun SavingsScreen(
                 )
             }
         }
-
         Spacer(modifier = Modifier.weight(1f))
     }
 

@@ -50,16 +50,16 @@ import java.util.Locale
 import kotlin.math.abs
 
 val pastelColors = listOf(
-    Color(0xFFFFCDD2), // đỏ nhạt
-    Color(0xFFF8BBD0), // hồng nhạt
-    Color(0xFFE1BEE7), // tím nhạt
-    Color(0xFFD1C4E9), // tím xám nhạt
-    Color(0xFFC5CAE9), // xanh dương nhạt
-    Color(0xFFBBDEFB), // xanh da trời nhạt
-    Color(0xFFB2EBF2), // xanh ngọc nhạt
-    Color(0xFFC8E6C9), // xanh lá nhạt
-    Color(0xFFFFE0B2), // cam nhạt
-    Color(0xFFFFCCBC)  // cam đỏ nhạt
+    Color(0xFFFFCDD2),
+    Color(0xFFF8BBD0),
+    Color(0xFFE1BEE7),
+    Color(0xFFD1C4E9),
+    Color(0xFFC5CAE9),
+    Color(0xFFBBDEFB),
+    Color(0xFFB2EBF2),
+    Color(0xFFC8E6C9),
+    Color(0xFFFFE0B2),
+    Color(0xFFFFCCBC)
 )
 
 fun formatTimestamp(timestamp: Long): String {
@@ -83,7 +83,7 @@ fun SavingItem(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 6.dp)
+            .padding(vertical = 4.dp)
             .clickable { expanded = !expanded },
         shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(containerColor = backgroundColor),
@@ -140,7 +140,7 @@ fun SavingItem(
 
                     LinearProgressIndicator(
                         progress = progress.toFloat(),
-                        color = Color(0xFF4CAF50),
+                        color = Color.DarkGray,
                         trackColor = Color.White.copy(alpha = 0.4f),
                         modifier = Modifier
                             .fillMaxWidth()
@@ -173,7 +173,7 @@ fun SavingItem(
                         if (!saving.completed && saving.amount >= goal) {
                             Button(
                                 onClick = { onComplete(saving) },
-                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4CAF50)),
+                                colors = ButtonDefaults.buttonColors(containerColor = Color.DarkGray),
                                 shape = RoundedCornerShape(12.dp)
                             ) {
                                 Icon(Icons.Default.Check, contentDescription = "Hoàn thành", tint = Color.White)
