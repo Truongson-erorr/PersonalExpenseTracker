@@ -126,7 +126,6 @@ fun SavingItem(
                 )
             }
 
-            // Nội dung mở rộng
             AnimatedVisibility(
                 visible = expanded,
                 enter = expandVertically(),
@@ -139,7 +138,6 @@ fun SavingItem(
                     val progress = (saving.amount / goal).coerceIn(0.0, 1.0)
                     val percent = (progress * 100).toInt()
 
-                    // Thanh tiến độ bo tròn
                     LinearProgressIndicator(
                         progress = progress.toFloat(),
                         color = Color(0xFF4CAF50),
@@ -184,7 +182,7 @@ fun SavingItem(
                             }
                         } else if (saving.completed) {
                             Text(
-                                "✅ Đã hoàn thành",
+                                "Đã hoàn thành",
                                 fontWeight = FontWeight.Bold,
                                 color = Color(0xFF388E3C)
                             )
@@ -194,11 +192,11 @@ fun SavingItem(
                             OutlinedButton(
                                 onClick = { onAddMoney(saving) },
                                 shape = RoundedCornerShape(12.dp),
-                                border = BorderStroke(1.dp, Color(0xFF4CAF50))
+                                border = BorderStroke(1.dp, Color.Black)
                             ) {
-                                Icon(Icons.Default.AddCircle, contentDescription = "Góp thêm", tint = Color(0xFF4CAF50))
+                                Icon(Icons.Default.AddCircle, contentDescription = "Góp thêm", tint = Color.Black)
                                 Spacer(modifier = Modifier.width(4.dp))
-                                Text("Góp thêm", color = Color(0xFF4CAF50))
+                                Text("Góp thêm", color = Color.Black)
                             }
                         }
                     }
