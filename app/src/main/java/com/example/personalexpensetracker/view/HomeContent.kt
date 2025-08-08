@@ -15,10 +15,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBalanceWallet
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.Book
 import androidx.compose.material.icons.filled.FilterAlt
 import androidx.compose.material.icons.filled.FilterList
+import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Savings
@@ -171,15 +174,46 @@ fun HomeContent(
                     fontWeight = FontWeight.Bold,
                     color = Color.Black
                 )
-
                 Spacer(modifier = Modifier.weight(1f))
-                IconButton(onClick = { navController.navigate("SavingsScreen") }) {
-                    Icon(
-                        imageVector = Icons.Default.Savings,
-                        contentDescription = "Tiết kiệm",
-                        tint = Color.Black,
-                        modifier = Modifier.size(28.dp)
-                    )
+
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp) // khoảng cách giữa icon
+                ) {
+                    IconButton(onClick = { navController.navigate("SavingsScreen") }) {
+                        Icon(
+                            imageVector = Icons.Default.Savings,
+                            contentDescription = "Tiết kiệm",
+                            tint = Color.Black,
+                            modifier = Modifier.size(28.dp)
+                        )
+                    }
+
+                    IconButton(onClick = { navController.navigate("BudgetScreen") }) {
+                        Icon(
+                            imageVector = Icons.Default.AccountBalanceWallet,
+                            contentDescription = "Ngân sách",
+                            tint = Color.Black,
+                            modifier = Modifier.size(28.dp)
+                        )
+                    }
+
+                    IconButton(onClick = { navController.navigate("ReportScreen") }) {
+                        Icon(
+                            imageVector = Icons.Default.Book,
+                            contentDescription = "Báo cáo",
+                            tint = Color.Black,
+                            modifier = Modifier.size(28.dp)
+                        )
+                    }
+
+                    IconButton(onClick = { navController.navigate("GoalScreen") }) {
+                        Icon(
+                            imageVector = Icons.Default.Flag,
+                            contentDescription = "Mục tiêu",
+                            tint = Color.Black,
+                            modifier = Modifier.size(28.dp)
+                        )
+                    }
                 }
             }
 
