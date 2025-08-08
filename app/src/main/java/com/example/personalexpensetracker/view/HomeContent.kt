@@ -328,7 +328,7 @@ fun TransactionCard(
     viewModel: TransactionViewModel = viewModel()
 ) {
     val context = LocalContext.current
-    val bgColor = if (transaction.type == TransactionType.INCOME) Color(0xFFC8E6C9) else Color(0xFFFFCDD2)
+    val bgColor = if (transaction.type == TransactionType.INCOME) Color.White else Color.White
     val dateString = formatDate(transaction.date)
     val formattedAmount = String.format("%,.0f", transaction.amount)
     var showDialog by remember { mutableStateOf(false) }
