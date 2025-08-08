@@ -36,7 +36,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.personalexpensetracker.model.Budget
 
-
 @Composable
 fun BudgetCard(budget: Budget, onClick: () -> Unit) {
     val colors = listOf(
@@ -47,7 +46,6 @@ fun BudgetCard(budget: Budget, onClick: () -> Unit) {
         Color(0xFFD1C4E9),
         Color(0xFFFFE0B2)
     )
-
     val backgroundColor = remember { colors.random() }
 
     Card(

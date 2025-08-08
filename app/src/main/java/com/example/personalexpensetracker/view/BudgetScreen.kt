@@ -80,7 +80,9 @@ fun BudgetScreen(
         it.month == selectedMonth && it.year == currentYear
     }
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -121,7 +123,7 @@ fun BudgetScreen(
                             rowBudgets.forEach { budget ->
                                 Box(modifier = Modifier.weight(1f)) {
                                     BudgetCard(budget = budget) {
-                                        selectedBudget = budget
+                                        navController.navigate("budgetDetail/${budget.id}")
                                     }
                                 }
                             }
