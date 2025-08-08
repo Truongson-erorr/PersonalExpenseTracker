@@ -166,16 +166,8 @@ fun HomeContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 12.dp, vertical = 8.dp),
-                verticalAlignment = Alignment.CenterVertically
+                horizontalArrangement = Arrangement.Center,
             ) {
-                Text(
-                    text = "Hũ tích lũy",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black
-                )
-                Spacer(modifier = Modifier.weight(1f))
-
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp) // khoảng cách giữa icon
                 ) {
