@@ -123,7 +123,7 @@ fun BudgetScreen(
                             rowBudgets.forEach { budget ->
                                 Box(modifier = Modifier.weight(1f)) {
                                     BudgetCard(budget = budget) {
-                                        navController.navigate("budgetDetail/${budget.id}")
+                                        selectedBudget = budget
                                     }
                                 }
                             }

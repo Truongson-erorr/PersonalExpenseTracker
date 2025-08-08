@@ -5,6 +5,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -17,9 +18,6 @@ import com.example.personalexpensetracker.admin.AdminScreen
 import com.example.personalexpensetracker.admin.StatisticCard
 import com.example.personalexpensetracker.admin.StatisticsScreen
 import com.example.personalexpensetracker.admin.UserManagement
-import com.example.personalexpensetracker.model.Saving
-import com.example.personalexpensetracker.model.Users
-import com.example.personalexpensetracker.view.BudgetDetailScreen
 import com.example.personalexpensetracker.view.EditProfileScreen
 import com.example.personalexpensetracker.view.HomeScreen
 import com.example.personalexpensetracker.view.LoginScreen
@@ -92,21 +90,5 @@ fun AppNavigation() {
                 )
             }
         }
-        composable(
-            route = "budget_detail/{budgetId}",
-            arguments = listOf(navArgument("budgetId") { type = NavType.StringType })
-        ) { backStackEntry ->
-            val budgetId = backStackEntry.arguments?.getString("budgetId") ?: ""
-            val budget = budgetViewModel.budgets.find { it.id == budgetId }
-
-            budget?.let {
-                BudgetDetailScreen(
-                    budget = it,
-                    transactionViewModel = transactionViewModel,
-                    navController = navController
-                )
-            }
-        }
-
     }
 }
