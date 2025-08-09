@@ -87,13 +87,6 @@ fun HomeContent(
         spent > budget.amount
     }
 
-    val colors = listOf(
-        Color(0xFFFFF4E6),
-        Color(0xFFE6F7FF),
-        Color(0xFFE6FFEA),
-        Color(0xFFFFE6F1)
-    )
-
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -184,29 +177,24 @@ fun HomeContent(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 12.dp, vertical = 8.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(25.dp)
             ) {
-                items.forEachIndexed { index, item ->
+                items.forEach { item ->
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier
                             .clickable { navController.navigate(item.third) }
-                            .padding(4.dp)
                     ) {
                         Box(
                             modifier = Modifier
-                                .size(60.dp)
-                                .clip(RoundedCornerShape(16.dp))
-                                .background(colors[index % colors.size])
-                                .shadow(4.dp, RoundedCornerShape(16.dp)),
+                                .size(60.dp),
                             contentAlignment = Alignment.Center
                         ) {
                             Icon(
                                 imageVector = item.first,
                                 contentDescription = item.second,
-                                tint = Color(0xFF333333),
+                                tint = Color.DarkGray,
                                 modifier = Modifier.size(28.dp)
                             )
                         }
@@ -215,7 +203,7 @@ fun HomeContent(
                             text = item.second,
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Medium,
-                            color = Color(0xFF333333)
+                            color = Color.LightGray
                         )
                     }
                 }
