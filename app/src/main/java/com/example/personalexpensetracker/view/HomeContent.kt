@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBalance
 import androidx.compose.material.icons.filled.AccountBalanceWallet
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowForward
@@ -23,16 +24,19 @@ import androidx.compose.material.icons.filled.Book
 import androidx.compose.material.icons.filled.FilterAlt
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.Flag
+import androidx.compose.material.icons.filled.Help
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Savings
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.ShowChart
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
@@ -84,12 +88,10 @@ fun HomeContent(
     }
 
     val colors = listOf(
-        Color(0xFFFFF9C4),
-        Color(0xFFBBDEFB),
-        Color(0xFFC8E6C9),
-        Color(0xFFFFCDD2),
-        Color(0xFFD1C4E9),
-        Color(0xFFFFE0B2)
+        Color(0xFFFFF4E6),
+        Color(0xFFE6F7FF),
+        Color(0xFFE6FFEA),
+        Color(0xFFFFE6F1)
     )
 
     Box(
@@ -172,6 +174,13 @@ fun HomeContent(
                 }
             }
 
+            val items = listOf(
+                Triple(Icons.Default.Savings, "Tiết kiệm", "SavingsScreen"),
+                Triple(Icons.Default.AccountBalance, "Vay / Nợ", "DebtLoanScreen"),
+                Triple(Icons.Default.ShowChart, "Đầu tư", "InvestmentScreen"),
+                Triple(Icons.Default.Help, "Trợ giúp", "HelpScreen")
+            )
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -179,36 +188,34 @@ fun HomeContent(
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                val items = listOf(
-                    Triple(Icons.Default.Savings, "Tiết kiệm", "SavingsScreen"),
-                    Triple(Icons.Default.AccountBalanceWallet, "Ngân sách", "BudgetScreen"),
-                    Triple(Icons.Default.Book, "Báo cáo", "ReportScreen"),
-                    Triple(Icons.Default.Flag, "Mục tiêu", "GoalScreen")
-                )
-
                 items.forEachIndexed { index, item ->
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.clickable { navController.navigate(item.third) }
+                        modifier = Modifier
+                            .clickable { navController.navigate(item.third) }
+                            .padding(4.dp)
                     ) {
                         Box(
                             modifier = Modifier
-                                .size(48.dp)
-                                .background(colors[index % colors.size], shape = RoundedCornerShape(8.dp)),
+                                .size(60.dp)
+                                .clip(RoundedCornerShape(16.dp))
+                                .background(colors[index % colors.size])
+                                .shadow(4.dp, RoundedCornerShape(16.dp)),
                             contentAlignment = Alignment.Center
                         ) {
                             Icon(
                                 imageVector = item.first,
                                 contentDescription = item.second,
-                                tint = Color.Black,
-                                modifier = Modifier.size(24.dp)
+                                tint = Color(0xFF333333),
+                                modifier = Modifier.size(28.dp)
                             )
                         }
-                        Spacer(modifier = Modifier.height(4.dp))
+                        Spacer(modifier = Modifier.height(6.dp))
                         Text(
                             text = item.second,
-                            fontSize = 13.sp,
-                            color = Color.Black
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = Color(0xFF333333)
                         )
                     }
                 }
