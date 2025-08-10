@@ -91,7 +91,6 @@ fun LoginScreen(navController: NavController) {
                 disabledIndicatorColor = Color.Transparent
             )
         )
-
         Spacer(modifier = Modifier.height(12.dp))
 
         TextField(
@@ -138,7 +137,6 @@ fun LoginScreen(navController: NavController) {
                 tint = Color.Gray
             )
         }
-
         Spacer(modifier = Modifier.height(6.dp))
 
         TextField(
@@ -157,12 +155,11 @@ fun LoginScreen(navController: NavController) {
                 disabledIndicatorColor = Color.Transparent
             )
         )
-
         Spacer(modifier = Modifier.height(20.dp))
 
         Button(
             onClick = {
-                errorMessage = null.toString()
+                errorMessage = ""
                 if (email.isBlank() || password.isBlank() || captchaInput.isBlank()) {
                     errorMessage = "Vui lòng điền đầy đủ thông tin"
                     return@Button
@@ -238,14 +235,61 @@ fun LoginScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(12.dp))
             Text(text = errorMessage, color = Color.Red, fontSize = 14.sp)
         }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        TextButton(
-            onClick = { navController.navigate("RegisterScreen") },
-            modifier = Modifier.align(Alignment.CenterHorizontally)
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.End
         ) {
-            Text("Chưa có tài khoản? Đăng ký", color = Color(0xFFFFB300))
+            TextButton(
+                onClick = {
+                    navController.navigate("ForgotPasswordScreen")
+                }
+            ) {
+                Text(
+                    text = "Quên mật khẩu?",
+                    fontSize = 12.sp,
+                    color = Color(0xFFFFB300)
+                )
+            }
+        }
+        Spacer(modifier = Modifier.height(10.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Divider(
+                modifier = Modifier.weight(1f),
+                color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
+            )
+            Text(
+                text = "OR",
+                modifier = Modifier.padding(horizontal = 16.dp),
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Divider(
+                modifier = Modifier.weight(1f),
+                color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
+            )
+        }
+        Spacer(modifier = Modifier.height(10.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = "Đã chưa có tài khoản? ",
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Text(
+                text = "Đăng ký",
+                color = Color(0xFFFFB300),
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.clickable {
+                    navController.navigate("RegisterScreen")
+                }
+            )
         }
 
     }
