@@ -61,7 +61,6 @@ fun AddTransactionDialog(
                     modifier = Modifier.fillMaxWidth(),
                     trailingIcon = {
                         IconButton(onClick = {
-                            // Mở app ghi âm mặc định
                             val intent = Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION)
                             if (intent.resolveActivity(context.packageManager) != null) {
                                 context.startActivity(intent)

@@ -201,7 +201,7 @@ fun HomeContent(
                             text = item.second,
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Medium,
-                            color = Color.DarkGray
+                            color = Color.Gray
                         )
                     }
                 }

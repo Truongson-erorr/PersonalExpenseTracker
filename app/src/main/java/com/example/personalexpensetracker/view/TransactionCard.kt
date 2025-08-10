@@ -132,11 +132,7 @@ fun TransactionCard(
                 title = { Text("Tuỳ chọn giao dịch", fontWeight = FontWeight.Bold) },
                 text = { Text("Bạn muốn làm gì với giao dịch này?") },
                 confirmButton = {
-                    TextButton(onClick = {
-                        showDialog = false
-                    }) {
-                        Text("Sửa")
-                    }
+
                 },
                 dismissButton = {
                     TextButton(onClick = {
