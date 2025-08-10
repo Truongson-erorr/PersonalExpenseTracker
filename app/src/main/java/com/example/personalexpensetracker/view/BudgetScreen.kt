@@ -95,7 +95,7 @@ fun BudgetScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    "Ngân sách của bạn",
+                    "Ngân sách hàng tháng",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color(0xFF333333)
