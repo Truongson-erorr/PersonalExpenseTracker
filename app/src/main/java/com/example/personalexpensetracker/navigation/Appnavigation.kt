@@ -19,6 +19,7 @@ import com.example.personalexpensetracker.admin.StatisticCard
 import com.example.personalexpensetracker.admin.StatisticsScreen
 import com.example.personalexpensetracker.admin.UserManagement
 import com.example.personalexpensetracker.view.EditProfileScreen
+import com.example.personalexpensetracker.view.ForgotPasswordScreen
 import com.example.personalexpensetracker.view.HelpGuideScreen
 import com.example.personalexpensetracker.view.HelpScreen
 import com.example.personalexpensetracker.view.HomeScreen
@@ -97,6 +98,9 @@ fun AppNavigation() {
         }
         composable("HelpGuideScreen") {
             HelpGuideScreen(navController = navController)
+        }
+        composable("ForgotPasswordScreen") {
+            ForgotPasswordScreen(navController = navController)
         }
     }
 }
