@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.fontResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -35,6 +36,7 @@ fun RegisterScreen(navController: NavController) {
     var isLoading by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
     val role = "user"
+
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
@@ -43,12 +45,12 @@ fun RegisterScreen(navController: NavController) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 32.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.Start
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
+            Spacer(modifier = Modifier.height(66.dp))
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
                 IconButton(onClick = { navController.popBackStack() }) {
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
@@ -62,6 +64,7 @@ fun RegisterScreen(navController: NavController) {
                     color = Color.Black
                 )
             }
+
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
