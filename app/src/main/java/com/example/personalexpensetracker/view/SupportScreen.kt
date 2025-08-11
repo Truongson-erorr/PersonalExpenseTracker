@@ -81,7 +81,14 @@ fun HelpScreen(navController: NavController) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 6.dp)
-                    .clickable {  }
+                    .clickable {
+                        when (item.title) {
+                            "Hướng dẫn sử dụng" -> navController.navigate("HelpGuideScreen")
+                            "Mẹo quản lý tài chính" -> navController.navigate("FinanceTipsScreen")
+                            "Liên hệ hỗ trợ" -> navController.navigate("SupportScreen")
+                            "Thông tin ứng dụng" -> navController.navigate("AppInfoScreen")
+                        }
+                    }
             ) {
                 Row(
                     modifier = Modifier
