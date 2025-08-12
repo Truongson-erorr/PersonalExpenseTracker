@@ -137,15 +137,41 @@ fun ProfileHeader(user: Users, navController: NavController) {
 @Composable
 fun ProfileMenu(navController: NavController) {
     var showLogoutDialog by remember { mutableStateOf(false) }
+    var showLanguageDialog by remember { mutableStateOf(false) }
+    var selectedLanguage by remember { mutableStateOf("Tiếng Việt") }
 
     val items = listOf(
-        Triple("Ngôn ngữ", Icons.Default.Language) {  },
+        Triple("Ngôn ngữ", Icons.Default.Language) {
+            showLanguageDialog = true
+        },
         Triple("Vị trí", Icons.Default.LocationOn) {  },
         Triple("Tùy chỉnh giao diện", Icons.Default.Bedtime) { },
         Triple("Đăng xuất", Icons.Default.ExitToApp) {
             showLogoutDialog = true
         }
     )
+
+    if (showLanguageDialog) {
+        AlertDialog(
+            onDismissRequest = { showLanguageDialog = false },
+            title = { Text("Chọn ngôn ngữ") },
+            text = {
+                Column {
+                    LanguageOption("Tiếng Việt", selectedLanguage) {
+                        selectedLanguage = "Tiếng Việt"
+                        showLanguageDialog = false
+                    }
+                    Spacer(Modifier.height(8.dp))
+                    LanguageOption("English", selectedLanguage) {
+                        selectedLanguage = "English"
+                        showLanguageDialog = false
+                    }
+                }
+            },
+            confirmButton = {},
+            dismissButton = {},
+        )
+    }
 
     if (showLogoutDialog) {
         AlertDialog(
@@ -172,7 +198,6 @@ fun ProfileMenu(navController: NavController) {
             }
         )
     }
-
     Spacer(Modifier.height(20.dp))
 
     Card(
@@ -190,5 +215,22 @@ fun ProfileMenu(navController: NavController) {
                 )
             }
         }
+    }
+}
+
+@Composable
+fun LanguageOption(language: String, selectedLanguage: String, onClick: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() }
+            .padding(8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        RadioButton(
+            selected = language == selectedLanguage,
+            onClick = onClick
+        )
+        Text(language, modifier = Modifier.padding(start = 8.dp))
     }
 }
