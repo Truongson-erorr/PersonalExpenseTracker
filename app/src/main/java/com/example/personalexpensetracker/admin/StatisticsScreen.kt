@@ -1,19 +1,14 @@
-package com.example.personalexpensetracker.admin
-
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -25,6 +20,7 @@ import com.example.personalexpensetracker.viewmodel.BudgetViewModel
 import com.example.personalexpensetracker.viewmodel.TransactionViewModel
 import com.example.personalexpensetracker.viewmodel.UserViewModel
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun StatisticsScreen(
     navController: NavController,
@@ -44,16 +40,32 @@ fun StatisticsScreen(
     val budgets = budgetViewModel.budgets
     val totalBudgets = budgets.size
 
+    val items = listOf(
+        Triple("Người dùng", "$totalUsers", Color(0xFFE1F5FE)),
+        Triple("Giao dịch", "$totalTransactions", Color(0xFFFFF3E0)),
+        Triple("Ngân sách", "$totalBudgets", Color(0xFFE8F5E9)),
+    )
+
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         Spacer(modifier = Modifier.height(40.dp))
-        Text("Thống kê chung", fontSize = 24.sp, fontWeight = FontWeight.Bold)
 
-        StatisticCard("Người dùng", "$totalUsers người dùng", Color(0xFFE1F5FE))
-        StatisticCard("Giao dịch", "$totalTransactions giao dịch", Color(0xFFFFF3E0))
-        StatisticCard("Ngân sách", "$totalBudgets ngân sách được tạo", Color(0xFFE8F5E9))
+
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            contentPadding = PaddingValues(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            items(items) { item ->
+                StatisticCard(
+                    title = item.first,
+                    value = item.second,
+                    backgroundColor = item.third
+                )
+            }
+        }
     }
 }
-
 
 @Composable
 fun StatisticCard(title: String, value: String, backgroundColor: Color) {
@@ -62,16 +74,17 @@ fun StatisticCard(title: String, value: String, backgroundColor: Color) {
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(6.dp),
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp)
+            .size(100.dp)
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(text = title, fontSize = 18.sp, fontWeight = FontWeight.Medium)
-            Text(text = value, fontSize = 16.sp)
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(8.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(text = title, fontSize = 14.sp, fontWeight = FontWeight.Medium)
+            Text(text = value, fontSize = 16.sp, fontWeight = FontWeight.Bold)
         }
     }
-}
-
-fun formatCurrency(amount: Double): String {
-    return "%,.0f đ".format(amount)
 }

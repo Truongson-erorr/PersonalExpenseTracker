@@ -1,5 +1,6 @@
 package com.example.personalexpensetracker.navigation
 
+import StatisticsScreen
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -15,8 +16,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.personalexpensetracker.admin.AdminScreen
-import com.example.personalexpensetracker.admin.StatisticCard
-import com.example.personalexpensetracker.admin.StatisticsScreen
 import com.example.personalexpensetracker.admin.UserManagement
 import com.example.personalexpensetracker.view.ChangePasswordScreen
 import com.example.personalexpensetracker.view.EditProfileScreen

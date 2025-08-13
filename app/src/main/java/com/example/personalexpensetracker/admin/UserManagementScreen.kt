@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
@@ -32,13 +33,22 @@ fun UserManagement(
             .background(Color.White)
             .padding(16.dp)
     ) {
-        Spacer(modifier = Modifier.height(30.dp))
-        Text(
-            text = "Quản lý người dùng",
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold
-        )
-
+        Spacer(modifier = Modifier.height(40.dp))
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(onClick = { navController.popBackStack() }) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Quay lại"
+                )
+            }
+            Text(
+                text = "Quản lý người dùng",
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold
+            )
+        }
         Spacer(modifier = Modifier.height(16.dp))
 
         LazyColumn {
@@ -46,7 +56,7 @@ fun UserManagement(
                 UserItem(
                     user = user,
                     onEdit = {
-                        // TODO: Navigate to update screen or show dialog
+
                     },
                     onDelete = {
                         userViewModel.deleteUser(user.userId)
