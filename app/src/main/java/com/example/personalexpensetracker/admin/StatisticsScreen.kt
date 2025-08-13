@@ -46,9 +46,27 @@ fun StatisticsScreen(
         Triple("Ngân sách", "$totalBudgets", Color(0xFFE8F5E9)),
     )
 
-    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
         Spacer(modifier = Modifier.height(40.dp))
-
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(onClick = { navController.popBackStack() }) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Quay lại"
+                )
+            }
+            Text(
+                text = "Thống kê chung",
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold
+            )
+        }
 
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
