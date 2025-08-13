@@ -7,7 +7,8 @@ With this app, users can:
 - Track their income and expenses by category  
 - Set monthly budgets and monitor spending progress  
 - View real-time reports and visual summaries  
-- Receive notifications when limits are exceeded  
+- Receive notifications when limits are exceeded or for app updates  
+- Access an **in-app Support Center** for guidance and troubleshooting  
 - Store and sync data securely using Firebase  
 
 The app is structured using the **MVVM architecture**, and integrates modern tools such as **Firebase**, **State management with ViewModel**, and **Coroutines** for responsive UI and performance.
@@ -20,8 +21,10 @@ The app is structured using the **MVVM architecture**, and integrates modern too
 - ✅ Set and manage monthly budgets  
 - ✅ View summaries & progress bars  
 - ✅ Save data to Firebase (Cloud Firestore)  
-- ✅ Receive notifications on events (login, budget exceeded)  
+- ✅ Receive notifications on events (login, budget exceeded, app updates)  
 - ✅ View reports & transaction history with Jetpack Compose  
+- ✅ Support Center: access FAQs, guides, and troubleshooting tips directly within the app  
+- ✅ Notifications: get timely updates about budgets, new features, and reminders  
 
 ---
 
