@@ -127,7 +127,6 @@ fun EditProfileScreen(
             )
         )
 
-
         Spacer(modifier = Modifier.height(16.dp))
         TextField(
             value = password,

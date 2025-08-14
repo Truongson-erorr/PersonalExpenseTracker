@@ -1,5 +1,6 @@
 package com.example.personalexpensetracker.view
 
+import android.app.Activity
 import android.content.Intent
 import android.provider.MediaStore
 import android.speech.RecognizerIntent
@@ -46,6 +47,38 @@ fun AddTransactionDialog(
     var note by remember { mutableStateOf("") }
     var type by remember { mutableStateOf(TransactionType.EXPENSE) }
 
+    var isSpeakingCategory by remember { mutableStateOf(false) }
+
+    val speechRecognizerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data = result.data
+            val resultText =
+                data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)?.get(0)
+            if (resultText != null) {
+                if (isSpeakingCategory) {
+                    category = resultText
+                } else {
+                    note = resultText
+                }
+            }
+        }
+    }
+
+    fun startSpeech(isCategory: Boolean) {
+        isSpeakingCategory = isCategory
+        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+            putExtra(
+                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+            )
+            putExtra(RecognizerIntent.EXTRA_LANGUAGE, "vi-VN")
+            putExtra(RecognizerIntent.EXTRA_PROMPT, "Nói gì đó…")
+        }
+        speechRecognizerLauncher.launch(intent)
+    }
+
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
@@ -60,17 +93,10 @@ fun AddTransactionDialog(
                     shape = RoundedCornerShape(12.dp),
                     modifier = Modifier.fillMaxWidth(),
                     trailingIcon = {
-                        IconButton(onClick = {
-                            val intent = Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION)
-                            if (intent.resolveActivity(context.packageManager) != null) {
-                                context.startActivity(intent)
-                            } else {
-                                Toast.makeText(context, "Thiết bị không hỗ trợ ghi âm", Toast.LENGTH_SHORT).show()
-                            }
-                        }) {
+                        IconButton(onClick = { startSpeech(true) }) {
                             Icon(
                                 imageVector = Icons.Default.Mic,
-                                contentDescription = "Ghi âm danh mục"
+                                contentDescription = "Nói danh mục"
                             )
                         }
                     },
@@ -100,17 +126,10 @@ fun AddTransactionDialog(
                     shape = RoundedCornerShape(12.dp),
                     modifier = Modifier.fillMaxWidth(),
                     trailingIcon = {
-                        IconButton(onClick = {
-                            val intent = Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION)
-                            if (intent.resolveActivity(context.packageManager) != null) {
-                                context.startActivity(intent)
-                            } else {
-                                Toast.makeText(context, "Thiết bị không hỗ trợ ghi âm", Toast.LENGTH_SHORT).show()
-                            }
-                        }) {
+                        IconButton(onClick = { startSpeech(false) }) {
                             Icon(
                                 imageVector = Icons.Default.Mic,
-                                contentDescription = "Ghi âm ghi chú"
+                                contentDescription = "Nói ghi chú"
                             )
                         }
                     },
