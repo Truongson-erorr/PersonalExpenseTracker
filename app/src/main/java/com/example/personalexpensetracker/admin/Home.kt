@@ -13,10 +13,16 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Assessment
+import androidx.compose.material.icons.filled.AttachMoney
 import androidx.compose.material.icons.filled.People
 import androidx.compose.material.icons.filled.BarChart
+import androidx.compose.material.icons.filled.CloudUpload
 import androidx.compose.material.icons.filled.Feedback
+import androidx.compose.material.icons.filled.Help
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -81,13 +87,43 @@ fun Home(navController: NavController) {
             }
             item {
                 AdminOptionCard(
-                    icon = Icons.Default.Settings,
-                    title = "Cài đặt",
-                    backgroundColor = Color(0xFFF3E5F5),
-                    iconTint = Color(0xFF8E24AA)
-                ) {
-                    navController.navigate("Settings")
-                }
+                    icon = Icons.Default.AttachMoney,
+                    title = "Ngân sách",
+                    backgroundColor = Color(0xFFE0F7FA),
+                    iconTint = Color(0xFF00ACC1)
+                ) { navController.navigate("BudgetScreen") }
+            }
+            item {
+                AdminOptionCard(
+                    icon = Icons.Default.ShoppingCart,
+                    title = "Giao dịch",
+                    backgroundColor = Color(0xFFFFEBEE),
+                    iconTint = Color(0xFFD32F2F)
+                ) { navController.navigate("TransactionManagement") }
+            }
+            item {
+                AdminOptionCard(
+                    icon = Icons.Default.Notifications,
+                    title = "Thông báo",
+                    backgroundColor = Color(0xFFFFF8E1),
+                    iconTint = Color(0xFFFBC02D)
+                ) { navController.navigate("NotificationsScreen") }
+            }
+            item {
+                AdminOptionCard(
+                    icon = Icons.Default.Assessment,
+                    title = "Báo cáo",
+                    backgroundColor = Color(0xFFEDE7F6),
+                    iconTint = Color(0xFF5E35B1)
+                ) { navController.navigate("ReportsScreen") }
+            }
+            item {
+                AdminOptionCard(
+                    icon = Icons.Default.Help,
+                    title = "Hỗ trợ",
+                    backgroundColor = Color(0xFFE1F5FE),
+                    iconTint = Color(0xFF0288D1)
+                ) { navController.navigate("SupportScreen") }
             }
         }
     }
