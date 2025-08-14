@@ -79,7 +79,6 @@ fun AdminSettingsScreen(
         Spacer(modifier = Modifier.height(24.dp))
 
         val settingTitles = listOf(
-            "Thông tin cá nhân" to Icons.Default.Person,
             "Quản lý người dùng" to Icons.Default.People,
             "Quản lý giao dịch" to Icons.Default.ShoppingCart,
             "Thông báo" to Icons.Default.Notifications,

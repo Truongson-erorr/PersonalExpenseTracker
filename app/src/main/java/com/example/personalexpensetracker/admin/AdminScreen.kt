@@ -82,7 +82,7 @@ fun AdminScreen(
                             },
                             selected = selectedTab == index,
                             onClick = { selectedTab = index },
-                            alwaysShowLabel = true  // nếu bạn muốn ẩn chữ thì để false
+                            alwaysShowLabel = true
                         )
                     }
                 }
