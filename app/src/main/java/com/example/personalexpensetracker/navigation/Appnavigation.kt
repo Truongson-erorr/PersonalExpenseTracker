@@ -54,6 +54,7 @@ fun AppNavigation() {
         popEnterTransition = { slideInHorizontally { -it } + fadeIn() },
         popExitTransition = { slideOutHorizontally { it } + fadeOut() }
     ) {
+        //navigation phia client
         composable("RegisterScreen") {
             RegisterScreen(navController = navController)
         }
@@ -64,10 +65,6 @@ fun AppNavigation() {
             val userId = backStackEntry.arguments?.getString("userId") ?: ""
             HomeScreen(navController = navController, userId = userId)
         }
-        composable("AdminScreen/{userId}") { backStackEntry ->
-            val userId = backStackEntry.arguments?.getString("userId") ?: ""
-            AdminScreen(navController = navController, userId = userId)
-        }
         composable("SavingsScreen") { backStackEntry ->
             val userId = backStackEntry.arguments?.getString("userId") ?: ""
             SavingsScreen(navController = navController, savingViewModel , userId = userId)
@@ -75,12 +72,6 @@ fun AppNavigation() {
         composable("NotificationScreen/{userId}") { backStackEntry ->
             val userId = backStackEntry.arguments?.getString("userId") ?: ""
             NotificationScreen(navController = navController, userId = userId)
-        }
-        composable("UserManagement") {
-            UserManagement(navController = navController, userViewModel)
-        }
-        composable("StatisticsScreen") {
-            StatisticsScreen(navController = navController, userViewModel, transactionViewModel , budgetViewModel )
         }
         composable("edit_profile/{userId}") { backStackEntry ->
             val userId = backStackEntry.arguments?.getString("userId")
@@ -104,6 +95,18 @@ fun AppNavigation() {
         }
         composable("ChangePasswordScreen") {
             ChangePasswordScreen(navController = navController)
+        }
+
+        //navigation phia admin
+        composable("AdminScreen/{userId}") { backStackEntry ->
+            val userId = backStackEntry.arguments?.getString("userId") ?: ""
+            AdminScreen(navController = navController, userId = userId)
+        }
+        composable("UserManagement") {
+            UserManagement(navController = navController, userViewModel)
+        }
+        composable("StatisticsScreen") {
+            StatisticsScreen(navController = navController, userViewModel, transactionViewModel , budgetViewModel )
         }
     }
 }
