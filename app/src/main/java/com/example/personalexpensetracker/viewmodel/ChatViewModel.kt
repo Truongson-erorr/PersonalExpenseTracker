@@ -2,7 +2,10 @@ package com.example.personalexpensetracker.viewmodel
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.personalexpensetracker.model.Message
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class ChatViewModel : ViewModel() {
     val messages = mutableStateListOf<Message>()
@@ -10,8 +13,14 @@ class ChatViewModel : ViewModel() {
     fun sendMessage(userText: String) {
         messages.add(Message(text = userText, isUser = true))
 
-        val reply = getBotResponse(userText)
-        messages.add(Message(text = reply, isUser = false))
+        val typingMessage = Message(text = "...", isUser = false)
+        messages.add(typingMessage)
+
+        viewModelScope.launch {
+            delay(2500)
+            messages.remove(typingMessage)
+            messages.add(Message(text = getBotResponse(userText), isUser = false))
+        }
     }
 
     private fun getBotResponse(input: String): String {

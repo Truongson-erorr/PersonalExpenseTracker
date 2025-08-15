@@ -33,7 +33,7 @@ val helpItems = listOf(
     ),
     HelpItem(
         icon = Icons.Default.SupportAgent,
-        title = "Liên hệ hỗ trợ",
+        title = "Liên hệ hỗ trợ tư vấn FAQ",
         description = "Gửi phản hồi hoặc chat trực tiếp với đội ngũ hỗ trợ."
     ),
     HelpItem(
@@ -51,7 +51,6 @@ fun HelpScreen(navController: NavController) {
             .padding(16.dp)
     ) {
         Spacer(modifier = Modifier.height(30.dp))
-
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -84,7 +83,7 @@ fun HelpScreen(navController: NavController) {
                         when (item.title) {
                             "Hướng dẫn sử dụng" -> navController.navigate("HelpGuideScreen")
                             "Mẹo quản lý tài chính" -> navController.navigate("FinanceTipsScreen")
-                            "Liên hệ hỗ trợ" -> navController.navigate("ChatScreen")
+                            "Liên hệ hỗ trợ tư vấn FAQ" -> navController.navigate("ChatScreen")
                             "Thông tin ứng dụng" -> navController.navigate("AppInfoScreen")
                         }
                     }
