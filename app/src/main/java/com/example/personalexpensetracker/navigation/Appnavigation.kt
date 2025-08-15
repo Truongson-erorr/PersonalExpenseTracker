@@ -18,6 +18,7 @@ import androidx.navigation.navArgument
 import com.example.personalexpensetracker.admin.AdminScreen
 import com.example.personalexpensetracker.admin.UserManagement
 import com.example.personalexpensetracker.view.ChangePasswordScreen
+import com.example.personalexpensetracker.view.ChatScreen
 import com.example.personalexpensetracker.view.EditProfileScreen
 import com.example.personalexpensetracker.view.ForgotPasswordScreen
 import com.example.personalexpensetracker.view.HelpGuideScreen
@@ -95,6 +96,9 @@ fun AppNavigation() {
         }
         composable("ChangePasswordScreen") {
             ChangePasswordScreen(navController = navController)
+        }
+        composable("ChatScreen") {
+            ChatScreen(navController = navController)
         }
 
         //navigation phia admin

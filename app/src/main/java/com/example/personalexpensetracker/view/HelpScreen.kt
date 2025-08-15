@@ -84,7 +84,7 @@ fun HelpScreen(navController: NavController) {
                         when (item.title) {
                             "Hướng dẫn sử dụng" -> navController.navigate("HelpGuideScreen")
                             "Mẹo quản lý tài chính" -> navController.navigate("FinanceTipsScreen")
-                            "Liên hệ hỗ trợ" -> navController.navigate("SupportScreen")
+                            "Liên hệ hỗ trợ" -> navController.navigate("ChatScreen")
                             "Thông tin ứng dụng" -> navController.navigate("AppInfoScreen")
                         }
                     }
