@@ -332,7 +332,7 @@ fun LoginScreen(navController: NavController) {
                 }
             )
         }
-
+        Spacer(modifier = Modifier.height(10.dp))
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -352,7 +352,7 @@ fun LoginScreen(navController: NavController) {
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = "Đăng nhập với Google",
-                color = Color.Black,
+                color = Color.Gray,
                 fontWeight = FontWeight.Bold,
                 fontSize = 14.sp
             )
