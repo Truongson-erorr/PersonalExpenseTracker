@@ -41,6 +41,8 @@ android {
 }
 
 dependencies {
+    implementation ("com.google.android.gms:play-services-auth:20.7.0")
+    implementation ("com.google.firebase:firebase-auth:22.3.1")
     implementation ("androidx.datastore:datastore-preferences:1.0.0")
     implementation ("com.google.firebase:firebase-messaging:23.4.0")
     implementation("io.coil-kt:coil-compose:2.4.0")
