@@ -84,6 +84,7 @@ fun LoginScreen(navController: NavController) {
         }
     }
 
+    var rememberMe by remember { mutableStateOf(false) }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -278,8 +279,25 @@ fun LoginScreen(navController: NavController) {
         }
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.End
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Checkbox(
+                    checked = rememberMe,
+                    onCheckedChange = { rememberMe = it },
+                    colors = CheckboxDefaults.colors(
+                        checkedColor = Color(0xFFFFB300),
+                        uncheckedColor = Color.Gray
+                    )
+                )
+                Text(
+                    text = "Lưu tài khoản",
+                    fontSize = 12.sp,
+                    color = Color.Black
+                )
+            }
+
             TextButton(
                 onClick = {
                     navController.navigate("ForgotPasswordScreen")
@@ -303,7 +321,7 @@ fun LoginScreen(navController: NavController) {
                 color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
             )
             Text(
-                text = "OR",
+                text = "Hoặc",
                 modifier = Modifier.padding(horizontal = 16.dp),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
