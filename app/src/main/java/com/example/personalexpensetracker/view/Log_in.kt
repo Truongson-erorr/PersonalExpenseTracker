@@ -1,5 +1,6 @@
 package com.example.personalexpensetracker.view
 
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -36,7 +37,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(navController: NavController) {
-    val context = LocalContext.current
     val auth = FirebaseAuth.getInstance()
 
     var isLoading by remember { mutableStateOf(false) }
@@ -50,8 +50,10 @@ fun LoginScreen(navController: NavController) {
         captchaCode.value = generateCaptcha()
         captchaInput = ""
     }
+    val context = LocalContext.current
 
     val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        .requestIdToken(context.getString(R.string.default_web_client_id))
         .requestEmail()
         .build()
 
@@ -335,10 +337,14 @@ fun LoginScreen(navController: NavController) {
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
-                    val signInIntent = googleSignInClient.signInIntent
-                    launcher.launch(signInIntent)
+                    Log.d("GoogleLogin", "Click Google Sign-In button")
+
+                    googleSignInClient.signOut().addOnCompleteListener {
+                        val signInIntent = googleSignInClient.signInIntent
+                        launcher.launch(signInIntent)
+                    }
                 }
-                .background(Color.White, shape = RoundedCornerShape(8.dp))
+                .background(Color.Transparent)
                 .padding(vertical = 10.dp, horizontal = 20.dp),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
@@ -351,7 +357,6 @@ fun LoginScreen(navController: NavController) {
                 fontSize = 14.sp
             )
         }
-
     }
 }
 

@@ -1,3 +1,4 @@
 <resources>
+    <string name="default_web_client_id">381187059566-53elk8jd242kamttcjkpb419a01c704o.apps.googleusercontent.com</string>
     <string name="app_name">Personal Expense Tracker</string>
 </resources>

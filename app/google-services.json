@@ -12,7 +12,20 @@
           "package_name": "com.example.personalexpensetracker"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "381187059566-hrhrnse9mrbaarl08ph8a3ercf1ciei3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.personalexpensetracker",
+            "certificate_hash": "b18fa01cd4ae948b852e6d3ff933924ec34254e3"
+          }
+        },
+        {
+          "client_id": "381187059566-53elk8jd242kamttcjkpb419a01c704o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyC5hoI5cjGQFbOqUj_D-xJw103bkkOgV80"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "381187059566-53elk8jd242kamttcjkpb419a01c704o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
