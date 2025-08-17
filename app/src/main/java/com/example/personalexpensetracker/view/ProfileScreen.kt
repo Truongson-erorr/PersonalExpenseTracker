@@ -144,7 +144,7 @@ fun ProfileMenu(navController: NavController) {
         Triple("Ngôn ngữ", Icons.Default.Language) {
             showLanguageDialog = true
         },
-        Triple("Vị trí", Icons.Default.LocationOn) {  },
+        Triple("Vị trí", Icons.Default.LocationOn) { },
         Triple("Tùy chỉnh giao diện", Icons.Default.Bedtime) { },
         Triple("Đăng xuất", Icons.Default.ExitToApp) {
             showLogoutDialog = true
@@ -190,9 +190,7 @@ fun ProfileMenu(navController: NavController) {
                 }
             },
             dismissButton = {
-                TextButton(onClick = {
-                    showLogoutDialog = false
-                }) {
+                TextButton(onClick = { showLogoutDialog = false }) {
                     Text("Huỷ")
                 }
             }
@@ -202,17 +200,27 @@ fun ProfileMenu(navController: NavController) {
 
     Card(
         shape = RoundedCornerShape(16.dp),
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = Color.White)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(4.dp)
     ) {
-        Column {
-            items.forEach { (title, icon, action) ->
+        Column(
+            modifier = Modifier.padding(vertical = 8.dp)
+        ) {
+            items.forEachIndexed { index, (title, icon, action) ->
                 ListItem(
-                    headlineContent = { Text(title) },
-                    leadingContent = { Icon(icon, contentDescription = null) },
-                    trailingContent = { Icon(Icons.Default.KeyboardArrowRight, null) },
-                    modifier = Modifier.clickable { action() }
+                    headlineContent = { Text(title, fontSize = 16.sp) },
+                    leadingContent = { Icon(icon, contentDescription = null, tint = Color.Black) },
+                    trailingContent = { Icon(Icons.Default.KeyboardArrowRight, null, tint = Color.Gray) },
+                    modifier = Modifier
+                        .clickable { action() }
+                        .padding(horizontal = 8.dp)
                 )
+                if (index != items.lastIndex) {
+                    Divider(color = Color(0xFFF0F0F0))
+                }
             }
         }
     }
