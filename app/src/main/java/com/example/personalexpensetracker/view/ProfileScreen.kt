@@ -61,6 +61,7 @@ fun ProfileScreen(
         else -> LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
+                .background(Color.White)
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -122,7 +123,7 @@ fun ProfileHeader(user: Users, navController: NavController) {
                     onClick = {
                         navController.navigate("edit_profile/${user.userId}")
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFB300)),
                     shape = RoundedCornerShape(10.dp),
                     contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
                     modifier = Modifier.height(36.dp)
@@ -144,7 +145,7 @@ fun ProfileMenu(navController: NavController) {
         Triple("Ngôn ngữ", Icons.Default.Language) {
             showLanguageDialog = true
         },
-        Triple("Vị trí", Icons.Default.LocationOn) { },
+        Triple("Vị trí", Icons.Default.LocationOn) {  },
         Triple("Tùy chỉnh giao diện", Icons.Default.Bedtime) { },
         Triple("Đăng xuất", Icons.Default.ExitToApp) {
             showLogoutDialog = true
@@ -190,7 +191,9 @@ fun ProfileMenu(navController: NavController) {
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showLogoutDialog = false }) {
+                TextButton(onClick = {
+                    showLogoutDialog = false
+                }) {
                     Text("Huỷ")
                 }
             }
@@ -198,28 +201,30 @@ fun ProfileMenu(navController: NavController) {
     }
     Spacer(Modifier.height(20.dp))
 
-    Card(
-        shape = RoundedCornerShape(16.dp),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(4.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(vertical = 8.dp)
+    Box(
+        Modifier
+            .fillMaxSize()
+            .background(Color.White)
+    ){
+        Card(
+            shape = RoundedCornerShape(16.dp),
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(containerColor = Color.White)
         ) {
-            items.forEachIndexed { index, (title, icon, action) ->
-                ListItem(
-                    headlineContent = { Text(title, fontSize = 16.sp) },
-                    leadingContent = { Icon(icon, contentDescription = null, tint = Color.Black) },
-                    trailingContent = { Icon(Icons.Default.KeyboardArrowRight, null, tint = Color.Gray) },
-                    modifier = Modifier
-                        .clickable { action() }
-                        .padding(horizontal = 8.dp)
-                )
-                if (index != items.lastIndex) {
-                    Divider(color = Color(0xFFF0F0F0))
+            Column {
+                items.forEach { (title, icon, action) ->
+                    ListItem(
+                        headlineContent = { Text(title) },
+                        leadingContent = {
+                            Icon(
+                                icon,
+                                contentDescription = null,
+                                tint = Color(0xFFFFB300)
+                            )
+                        },
+                        trailingContent = { Icon(Icons.Default.KeyboardArrowRight, null) },
+                        modifier = Modifier.clickable { action() }
+                    )
                 }
             }
         }
