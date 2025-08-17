@@ -123,7 +123,7 @@ fun ProfileHeader(user: Users, navController: NavController) {
                     onClick = {
                         navController.navigate("edit_profile/${user.userId}")
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFB300)),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
                     shape = RoundedCornerShape(10.dp),
                     contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
                     modifier = Modifier.height(36.dp)
@@ -219,7 +219,7 @@ fun ProfileMenu(navController: NavController) {
                             Icon(
                                 icon,
                                 contentDescription = null,
-                                tint = Color(0xFFFFB300)
+                                tint = Color.Gray
                             )
                         },
                         trailingContent = { Icon(Icons.Default.KeyboardArrowRight, null) },
