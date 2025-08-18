@@ -20,7 +20,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.personalexpensetracker.model.NavItem
+import com.example.personalexpensetracker.viewmodel.TransactionViewModel
 
 @Composable
 fun HomeScreen(
@@ -36,6 +39,7 @@ fun HomeScreen(
         NavItem("Cá nhân", Icons.Default.Person)
     )
 
+    val transactionViewModel: TransactionViewModel = viewModel()
     Scaffold(
         bottomBar = {
             Box(
@@ -66,7 +70,7 @@ fun HomeScreen(
                             onClick = { selectedTab = index },
                             selectedContentColor = Color.White,
                             unselectedContentColor = Color.White.copy(alpha = 0.7f),
-                            alwaysShowLabel = false // hoặc true nếu bạn muốn hiện label luôn
+                            alwaysShowLabel = false
                         )
                     }
                 }
@@ -82,15 +86,12 @@ fun HomeScreen(
             when (selectedTab) {
                 0 -> HomeContent(userId, navController)
                 1 -> BudgetScreen(userId, navController)
-                2 -> ReportScreen(userId, navController)
+                2 -> ReportScreen(userId, navController, transactionViewModel)
                 3 -> ProfileScreen(navController)
             }
-
         }
     }
 }
-
-data class NavItem(val label: String, val icon: ImageVector)
 
 @Composable
 fun BottomNavItem(
