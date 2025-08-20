@@ -122,7 +122,6 @@ fun SavingsScreen(
                 }
             }
         }
-
         Spacer(modifier = Modifier.height(20.dp))
 
         Card(
@@ -173,7 +172,11 @@ fun SavingsScreen(
         Spacer(modifier = Modifier.weight(1f))
     }
 
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomEnd) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize(),
+        contentAlignment = Alignment.BottomEnd
+    ) {
         FloatingActionButton(
             onClick = { showDialog = true },
             containerColor = Color.Black,
