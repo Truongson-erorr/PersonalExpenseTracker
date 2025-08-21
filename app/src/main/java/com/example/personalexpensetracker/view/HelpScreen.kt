@@ -37,9 +37,9 @@ val helpItems = listOf(
         description = "Gửi phản hồi hoặc chat trực tiếp với đội ngũ hỗ trợ."
     ),
     HelpItem(
-        icon = Icons.Default.Info,
-        title = "Thông tin ứng dụng",
-        description = "Xem phiên bản, điều khoản và chính sách bảo mật."
+        icon = Icons.Default.Computer,
+        title = "Dự đoán chi tiêu dựa trên AI phân tích",
+        description = "AI sẽ phân tích lịch sử và dự đoán chi tiêu của bạn vào tháng sau"
     )
 )
 
