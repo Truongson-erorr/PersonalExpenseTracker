@@ -4,6 +4,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -25,6 +26,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
 import com.example.personalexpensetracker.R
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -171,7 +173,7 @@ fun LoginScreen(navController: NavController) {
         Button(
             onClick = {
                 errorMessage = ""
-                if (email.isBlank() || password.isBlank() || captchaInput.isBlank()) {
+                if (email.isBlank() || password.isBlank()) {
                     errorMessage = "Vui lòng điền đầy đủ thông tin"
                     return@Button
                 }
@@ -314,10 +316,17 @@ fun LoginScreen(navController: NavController) {
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
+            Image(
+                painter = rememberAsyncImagePainter("https://res.cloudinary.com/dq64aidpx/image/upload/v1740563359/hc69w29swztvf1y7ozrq.webp"),
+                contentDescription = "Google Icon",
+                modifier = Modifier
+                    .size(20.dp)
+            )
             Spacer(modifier = Modifier.width(8.dp))
+
             Text(
                 text = "Đăng nhập với Google",
-                color = Color.Gray,
+                color = Color.Black,
                 fontWeight = FontWeight.Bold,
                 fontSize = 14.sp
             )
