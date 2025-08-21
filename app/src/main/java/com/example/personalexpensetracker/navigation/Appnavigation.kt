@@ -19,6 +19,7 @@ import com.example.personalexpensetracker.admin.AdminScreen
 import com.example.personalexpensetracker.admin.UserManagement
 import com.example.personalexpensetracker.view.ChangePasswordScreen
 import com.example.personalexpensetracker.view.ChatScreen
+import com.example.personalexpensetracker.view.CompleteProfileScreen
 import com.example.personalexpensetracker.view.EditProfileScreen
 import com.example.personalexpensetracker.view.ForgotPasswordScreen
 import com.example.personalexpensetracker.view.HelpGuideScreen
@@ -27,7 +28,6 @@ import com.example.personalexpensetracker.view.HomeScreen
 import com.example.personalexpensetracker.view.LoginScreen
 import com.example.personalexpensetracker.view.NotificationScreen
 import com.example.personalexpensetracker.view.RegisterScreen
-import com.example.personalexpensetracker.view.SavingDetailScreen
 import com.example.personalexpensetracker.view.SavingsScreen
 import com.example.personalexpensetracker.viewmodel.BudgetViewModel
 import com.example.personalexpensetracker.viewmodel.NotificationViewModel
@@ -99,6 +99,13 @@ fun AppNavigation() {
         }
         composable("ChatScreen") {
             ChatScreen(navController = navController)
+        }
+        composable(
+            "CompleteProfileScreen/{userId}",
+            arguments = listOf(navArgument("userId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val userId = backStackEntry.arguments?.getString("userId") ?: ""
+            CompleteProfileScreen(navController = navController, userId = userId)
         }
 
         //navigation phia admin

@@ -20,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
@@ -44,12 +43,7 @@ fun LoginScreen(navController: NavController) {
     var password by remember { mutableStateOf("") }
     var captchaInput by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf("") }
-    val captchaCode = remember { mutableStateOf(generateCaptcha()) }
 
-    fun resetCaptcha() {
-        captchaCode.value = generateCaptcha()
-        captchaInput = ""
-    }
     val context = LocalContext.current
 
     val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -71,9 +65,29 @@ fun LoginScreen(navController: NavController) {
                 .addOnCompleteListener { signInTask ->
                     if (signInTask.isSuccessful) {
                         val userId = auth.currentUser?.uid
-                        Toast.makeText(context, "Đăng nhập Google thành công!", Toast.LENGTH_SHORT).show()
-                        navController.navigate("HomeScreen/$userId") {
-                            popUpTo("LoginScreen") { inclusive = true }
+                        val firestore = FirebaseFirestore.getInstance()
+
+                        if (userId != null) {
+                            val userDoc = firestore.collection("Users").document(userId)
+                            userDoc.get()
+                                .addOnSuccessListener { document ->
+                                    if (document.exists()) {
+                                        val name = document.getString("ten")
+                                        if (name.isNullOrEmpty()) {
+                                            navController.navigate("CompleteProfileScreen/$userId") {
+                                                popUpTo("LoginScreen") { inclusive = true }
+                                            }
+                                        } else {
+                                            navController.navigate("HomeScreen/$userId") {
+                                                popUpTo("LoginScreen") { inclusive = true }
+                                            }
+                                        }
+                                    } else {
+                                        navController.navigate("CompleteProfileScreen/$userId") {
+                                            popUpTo("LoginScreen") { inclusive = true }
+                                        }
+                                    }
+                                }
                         }
                     } else {
                         Toast.makeText(context, "Đăng nhập Google thất bại", Toast.LENGTH_SHORT).show()
@@ -152,51 +166,6 @@ fun LoginScreen(navController: NavController) {
                 disabledIndicatorColor = Color.Transparent
             )
         )
-        Spacer(modifier = Modifier.height(12.dp))
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
-        ) {
-            Text("Mã xác nhận: ", fontSize = 12.sp)
-            Text(
-                text = captchaCode.value,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color(0xFFFFB300),
-                modifier = Modifier
-                    .background(Color(0xFFEEEEEE), shape = RoundedCornerShape(6.dp))
-                    .padding(horizontal = 8.dp, vertical = 4.dp)
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Icon(
-                imageVector = Icons.Default.Refresh,
-                contentDescription = "Tạo lại mã",
-                modifier = Modifier
-                    .size(20.dp)
-                    .clickable { resetCaptcha() },
-                tint = Color.Gray
-            )
-        }
-        Spacer(modifier = Modifier.height(6.dp))
-
-        TextField(
-            value = captchaInput,
-            onValueChange = { captchaInput = it },
-            placeholder = { Text("Nhập mã xác nhận", fontSize = 12.sp) },
-            leadingIcon = { Icon(imageVector = Icons.Default.Security, contentDescription = null) },
-            singleLine = true,
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color(0xFFEEEEEE), shape = RoundedCornerShape(8.dp)),
-            colors = TextFieldDefaults.textFieldColors(
-                containerColor = Color(0xFFEEEEEE),
-                unfocusedIndicatorColor = Color.Transparent,
-                focusedIndicatorColor = Color.Transparent,
-                disabledIndicatorColor = Color.Transparent
-            )
-        )
         Spacer(modifier = Modifier.height(20.dp))
 
         Button(
@@ -204,12 +173,6 @@ fun LoginScreen(navController: NavController) {
                 errorMessage = ""
                 if (email.isBlank() || password.isBlank() || captchaInput.isBlank()) {
                     errorMessage = "Vui lòng điền đầy đủ thông tin"
-                    return@Button
-                }
-
-                if (!captchaInput.equals(captchaCode.value, ignoreCase = true)) {
-                    errorMessage = "Mã xác nhận không đúng"
-                    resetCaptcha()
                     return@Button
                 }
 
@@ -242,7 +205,6 @@ fun LoginScreen(navController: NavController) {
                             } else {
                                 errorMessage = "Không lấy được thông tin người dùng"
                             }
-
                         } else {
                             errorMessage = "Đăng nhập thất bại: ${task.exception?.message}"
                         }
@@ -280,24 +242,8 @@ fun LoginScreen(navController: NavController) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.End
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Checkbox(
-                    checked = rememberMe,
-                    onCheckedChange = { rememberMe = it },
-                    colors = CheckboxDefaults.colors(
-                        checkedColor = Color(0xFFFFB300),
-                        uncheckedColor = Color.Gray
-                    )
-                )
-                Text(
-                    text = "Lưu tài khoản",
-                    fontSize = 12.sp,
-                    color = Color.Black
-                )
-            }
-
             TextButton(
                 onClick = {
                     navController.navigate("ForgotPasswordScreen")
@@ -351,6 +297,7 @@ fun LoginScreen(navController: NavController) {
             )
         }
         Spacer(modifier = Modifier.height(10.dp))
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -378,7 +325,3 @@ fun LoginScreen(navController: NavController) {
     }
 }
 
-fun generateCaptcha(): String {
-    val chars = ('A'..'Z') + ('0'..'9')
-    return (1..5).map { chars.random() }.joinToString("")
-}
