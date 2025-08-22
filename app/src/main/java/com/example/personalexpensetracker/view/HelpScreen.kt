@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.personalexpensetracker.model.HelpItem
+import com.google.firebase.auth.FirebaseAuth
 
 val helpItems = listOf(
     HelpItem(
@@ -84,7 +85,10 @@ fun HelpScreen(navController: NavController) {
                             "Hướng dẫn sử dụng" -> navController.navigate("HelpGuideScreen")
                             "Mẹo quản lý tài chính" -> navController.navigate("FinanceTipsScreen")
                             "Liên hệ hỗ trợ tư vấn FAQ" -> navController.navigate("ChatScreen")
-                            "Thông tin ứng dụng" -> navController.navigate("AppInfoScreen")
+                            "Dự đoán chi tiêu dựa trên AI phân tích" -> {
+                                val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+                                navController.navigate("AnalysisScreen/$userId")
+                            }
                         }
                     }
             ) {

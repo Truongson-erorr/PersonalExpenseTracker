@@ -46,7 +46,6 @@ class TransactionViewModel : ViewModel() {
             }
         }
     }
-
     val transactions = mutableStateListOf<Transaction>()
 
     fun getTransactionsByUser(userId: String) {

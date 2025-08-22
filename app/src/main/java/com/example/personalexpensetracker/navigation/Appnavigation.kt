@@ -17,6 +17,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.personalexpensetracker.admin.AdminScreen
 import com.example.personalexpensetracker.admin.UserManagement
+import com.example.personalexpensetracker.view.AnalysisScreen
 import com.example.personalexpensetracker.view.ChangePasswordScreen
 import com.example.personalexpensetracker.view.ChatScreen
 import com.example.personalexpensetracker.view.CompleteProfileScreen
@@ -35,6 +36,7 @@ import com.example.personalexpensetracker.viewmodel.SavingViewModel
 import com.example.personalexpensetracker.viewmodel.TransactionViewModel
 import com.example.personalexpensetracker.viewmodel.UserViewModel
 import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.google.firebase.auth.FirebaseAuth
 
 const val SAVING_DETAIL_SCREEN = "saving_detail"
 
@@ -100,6 +102,11 @@ fun AppNavigation() {
         composable("ChatScreen") {
             ChatScreen(navController = navController)
         }
+        composable("AnalysisScreen/{userId}") { backStackEntry ->
+            val userId = backStackEntry.arguments?.getString("userId") ?: ""
+            AnalysisScreen(userId = userId, navController = navController)
+        }
+
         composable(
             "CompleteProfileScreen/{userId}",
             arguments = listOf(navArgument("userId") { type = NavType.StringType })

@@ -37,7 +37,9 @@ import androidx.compose.ui.unit.sp
 import com.example.personalexpensetracker.model.Budget
 
 @Composable
-fun BudgetCard(budget: Budget, onClick: () -> Unit) {
+fun BudgetCard(
+    budget: Budget, onClick: () -> Unit
+) {
     val colors = listOf(
         Color(0xFFFFF9C4),
         Color(0xFFBBDEFB),
@@ -69,7 +71,6 @@ fun BudgetCard(budget: Budget, onClick: () -> Unit) {
                     fontWeight = FontWeight.Bold,
                     color = Color(0xFF333333)
                 )
-
                 Spacer(modifier = Modifier.height(6.dp))
 
                 Text(
