@@ -1,5 +1,6 @@
 package com.example.personalexpensetracker.view
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -31,95 +32,121 @@ fun AnalysisScreen(
 
     var isLoading by remember { mutableStateOf(false) }
     val result by analysisViewModel.analysisResult.collectAsState()
+    val transactions = transactionViewModel.transactions
 
     LaunchedEffect(userId) {
         if (userId.isNotEmpty()) {
             transactionViewModel.getTransactionsByUser(userId)
         }
     }
-
-    val transactions = transactionViewModel.transactions
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-            .verticalScroll(rememberScrollState())
-    ) {
-        Spacer(modifier = Modifier.height(30.dp))
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            IconButton(onClick = { navController.popBackStack() }) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    contentDescription = "Back"
-                )
-            }
-            Text(
-                text = "Dự đoán chi tiêu",
-                fontSize = 22.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.Black
-            )
-        }
-        Spacer(modifier = Modifier.height(12.dp))
-
-        Text(
-            text = "👋 Xin chào! Đây là trợ lý AI giúp bạn phân tích thói quen chi tiêu. " +
-                    "Bạn chỉ cần nhấn nút bên dưới, AI sẽ xem lại dữ liệu giao dịch và dự đoán chi tiêu tháng tới. " +
-                    "Hãy kéo xuống để xem kết quả chi tiết nhé!",
-            fontSize = 15.sp,
-            color = Color.DarkGray,
-            lineHeight = 20.sp,
-            modifier = Modifier.padding(bottom = 20.dp)
-        )
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.End
-        ) {
-            Button(
-                onClick = {
-                    isLoading = true
-                    analysisViewModel.analyzeTransactions(transactions)
-                },
-                enabled = transactions.isNotEmpty(),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Black,
-                    contentColor = Color.White
-                )
-            ) {
-                Text("Phân tích ngay")
-            }
-        }
-
-        if (isLoading && result.isEmpty()) {
-            Spacer(modifier = Modifier.height(16.dp))
-            CircularProgressIndicator()
-        }
-
+    LaunchedEffect(result) {
         if (result.isNotEmpty()) {
+            isLoading = false
+        }
+    }
+
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState())
+        ) {
+            Spacer(modifier = Modifier.height(30.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(onClick = { navController.popBackStack() }) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = "Back"
+                    )
+                }
+                Text(
+                    text = "Dự đoán chi tiêu",
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
+                )
+            }
+            Spacer(modifier = Modifier.height(12.dp))
+
             Text(
-                text = result,
-                fontSize = 16.sp,
-                lineHeight = 22.sp,
-                modifier = Modifier.padding(top = 16.dp)
+                text = "👋 Xin chào! Đây là trợ lý AI giúp bạn phân tích thói quen chi tiêu. " +
+                        "Bạn chỉ cần nhấn nút bên dưới, AI sẽ xem lại dữ liệu giao dịch và dự đoán chi tiêu tháng tới. " +
+                        "Hãy kéo xuống để xem kết quả chi tiết nhé!",
+                fontSize = 15.sp,
+                color = Color.DarkGray,
+                lineHeight = 20.sp,
+                modifier = Modifier.padding(bottom = 20.dp)
             )
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+                Button(
+                    onClick = {
+                        isLoading = true
+                        analysisViewModel.analyzeTransactions(transactions)
+                    },
+                    enabled = transactions.isNotEmpty() && !isLoading,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Black,
+                        contentColor = Color.White
+                    )
+                ) {
+                    Text("Phân tích ngay")
+                }
+            }
+
+            if (result.isNotEmpty()) {
+                Text(
+                    text = result,
+                    fontSize = 16.sp,
+                    lineHeight = 22.sp,
+                    modifier = Modifier.padding(top = 16.dp)
+                )
+            }
+
+            if (!isLoading && transactions.isEmpty()) {
+                Text(
+                    text = "Dữ liệu giao dịch đang được tải hoặc chưa có.",
+                    fontSize = 14.sp,
+                    color = Color.Gray,
+                    modifier = Modifier.padding(top = 16.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(40.dp))
         }
 
-        if (!isLoading && transactions.isEmpty()) {
-            Text(
-                text = "Dữ liệu giao dịch đang được tải hoặc chưa có.",
-                fontSize = 14.sp,
-                color = Color.Gray,
-                modifier = Modifier.padding(top = 16.dp)
-            )
+        // Overlay loading
+        if (isLoading) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.5f)),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    CircularProgressIndicator(
+                        color = Color.White,
+                        strokeWidth = 4.dp
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Text(
+                        text = "Đang phân tích dữ liệu...",
+                        color = Color.White,
+                        fontSize = 16.sp
+                    )
+                }
+            }
         }
-
-        Spacer(modifier = Modifier.height(40.dp))
     }
 }
