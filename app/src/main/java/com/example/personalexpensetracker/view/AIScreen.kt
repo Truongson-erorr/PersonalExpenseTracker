@@ -126,7 +126,6 @@ fun AnalysisScreen(
             Spacer(modifier = Modifier.height(40.dp))
         }
 
-        // Overlay loading
         if (isLoading) {
             Box(
                 modifier = Modifier
@@ -141,7 +140,7 @@ fun AnalysisScreen(
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
-                        text = "Đang phân tích dữ liệu...",
+                        text = "AI đang phân tích dữ liệu...",
                         color = Color.White,
                         fontSize = 16.sp
                     )

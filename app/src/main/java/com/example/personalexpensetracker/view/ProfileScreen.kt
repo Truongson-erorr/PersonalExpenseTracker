@@ -7,9 +7,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBalanceWallet
 import androidx.compose.material.icons.filled.Bedtime
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.ExitToApp
+import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.LocationOn
@@ -116,8 +118,16 @@ fun ProfileHeader(user: Users, navController: NavController) {
                 modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.Center
             ) {
-                Text(user.ten, fontWeight = FontWeight.Bold, fontSize = 20.sp)
-                Text(user.email, color = Color.Gray, fontSize = 14.sp)
+                Text(
+                    user.ten,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp
+                )
+                Text(
+                    user.email,
+                    color = Color.Gray,
+                    fontSize = 14.sp
+                )
                 Spacer(modifier = Modifier.height(8.dp))
                 Button(
                     onClick = {
@@ -145,8 +155,15 @@ fun ProfileMenu(navController: NavController) {
         Triple("Ngôn ngữ", Icons.Default.Language) {
             showLanguageDialog = true
         },
-        Triple("Vị trí", Icons.Default.LocationOn) {  },
-        Triple("Tùy chỉnh giao diện", Icons.Default.Bedtime) { },
+        Triple("Tùy chỉnh giao diện", Icons.Default.Bedtime) {
+
+        },
+        Triple("Ngân sách", Icons.Default.AccountBalanceWallet) {
+
+        },
+        Triple("Lịch sử giao dịch", Icons.Default.History) {
+
+        },
         Triple("Đăng xuất", Icons.Default.ExitToApp) {
             showLogoutDialog = true
         }
@@ -219,7 +236,7 @@ fun ProfileMenu(navController: NavController) {
                             Icon(
                                 icon,
                                 contentDescription = null,
-                                tint = Color.Gray
+                                tint = Color.Black
                             )
                         },
                         trailingContent = { Icon(Icons.Default.KeyboardArrowRight, null) },
