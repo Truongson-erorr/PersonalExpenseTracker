@@ -157,7 +157,7 @@ fun HomeContent(
 
             val items = listOf(
                 Triple(Icons.Default.Savings, "Tiết kiệm", "SavingsScreen"),
-                Triple(Icons.Default.AccountBalance, "Vay / Nợ", "DebtLoanScreen"),
+                Triple(Icons.Default.AccountBalance, "Vay / Nợ", "LoanScreen"),
                 Triple(Icons.Default.ShowChart, "Đầu tư", "InvestmentScreen"),
                 Triple(Icons.Default.Help, "Trợ giúp", "HelpScreen")
             )

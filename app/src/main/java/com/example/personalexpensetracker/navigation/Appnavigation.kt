@@ -26,11 +26,13 @@ import com.example.personalexpensetracker.view.ForgotPasswordScreen
 import com.example.personalexpensetracker.view.HelpGuideScreen
 import com.example.personalexpensetracker.view.HelpScreen
 import com.example.personalexpensetracker.view.HomeScreen
+import com.example.personalexpensetracker.view.LoanScreen
 import com.example.personalexpensetracker.view.LoginScreen
 import com.example.personalexpensetracker.view.NotificationScreen
 import com.example.personalexpensetracker.view.RegisterScreen
 import com.example.personalexpensetracker.view.SavingsScreen
 import com.example.personalexpensetracker.viewmodel.BudgetViewModel
+import com.example.personalexpensetracker.viewmodel.LoanViewModel
 import com.example.personalexpensetracker.viewmodel.NotificationViewModel
 import com.example.personalexpensetracker.viewmodel.SavingViewModel
 import com.example.personalexpensetracker.viewmodel.TransactionViewModel
@@ -48,6 +50,7 @@ fun AppNavigation() {
     val budgetViewModel: BudgetViewModel = viewModel()
     val transactionViewModel: TransactionViewModel = viewModel()
     val savingViewModel: SavingViewModel = viewModel()
+    val loanViewModel: LoanViewModel = viewModel()
     val notificationViewmodel: NotificationViewModel = viewModel()
     AnimatedNavHost(
         navController = navController,
@@ -71,6 +74,10 @@ fun AppNavigation() {
         composable("SavingsScreen") { backStackEntry ->
             val userId = backStackEntry.arguments?.getString("userId") ?: ""
             SavingsScreen(navController = navController, savingViewModel , userId = userId)
+        }
+        composable("LoanScreen") { backStackEntry ->
+            val userId = backStackEntry.arguments?.getString("userId") ?: ""
+            LoanScreen(navController = navController,  userId = userId, loanViewModel )
         }
         composable("NotificationScreen/{userId}") { backStackEntry ->
             val userId = backStackEntry.arguments?.getString("userId") ?: ""
