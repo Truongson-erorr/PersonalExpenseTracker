@@ -49,6 +49,7 @@ fun LoanScreen(
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
+            Spacer(modifier = Modifier.height(30.dp))
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -59,7 +60,7 @@ fun LoanScreen(
                     )
                 }
                 Text(
-                    text = "Quản lý khoản vay / nợ",
+                    text = "Quản Lý Khoản Vay / Nợ",
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black
@@ -102,9 +103,10 @@ fun LoanScreen(
 
     if (showDialog) {
         AddLoanDialog(
+            userId = userId,
             onDismiss = { showDialog = false },
             onAdd = { loan ->
-                viewModel.addLoan(loan.copy(userId = userId))
+                viewModel.addLoan(loan)
                 showDialog = false
             }
         )
@@ -158,13 +160,14 @@ fun LoanItem(
 
 @Composable
 fun AddLoanDialog(
+    userId: String,
     onDismiss: () -> Unit,
     onAdd: (Loan) -> Unit
 ) {
     var borrower by remember { mutableStateOf("") }
     var amount by remember { mutableStateOf("") }
     var reason by remember { mutableStateOf("") }
-    var dueDate by remember { mutableStateOf("") } // dd/MM/yyyy
+    var dueDate by remember { mutableStateOf("") }
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -197,7 +200,15 @@ fun AddLoanDialog(
             Button(onClick = {
                 val df = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                 val timestamp = df.parse(dueDate)?.time ?: System.currentTimeMillis()
-                onAdd(Loan(borrower = borrower, amount = amount.toDoubleOrNull() ?: 0.0, reason = reason, dueDate = timestamp))
+                onAdd(
+                    Loan(
+                        borrower = borrower,
+                        amount = amount.toDoubleOrNull() ?: 0.0,
+                        reason = reason,
+                        dueDate = timestamp,
+                        userId = userId
+                    )
+                )
             }) {
                 Text("Thêm")
             }
