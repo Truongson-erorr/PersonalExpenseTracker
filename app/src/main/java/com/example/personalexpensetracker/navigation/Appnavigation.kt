@@ -77,7 +77,7 @@ fun AppNavigation() {
         }
         composable("LoanScreen") { backStackEntry ->
             val userId = backStackEntry.arguments?.getString("userId") ?: ""
-            LoanScreen(navController = navController,  userId = userId, loanViewModel )
+            LoanScreen(navController = navController, loanViewModel , userId = userId)
         }
         composable("NotificationScreen/{userId}") { backStackEntry ->
             val userId = backStackEntry.arguments?.getString("userId") ?: ""
