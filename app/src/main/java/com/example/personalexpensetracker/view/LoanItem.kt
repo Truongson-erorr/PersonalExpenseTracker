@@ -14,7 +14,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.DeleteOutline
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.DoneAll
 import androidx.compose.material.icons.filled.Event
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Card
@@ -42,6 +44,20 @@ fun LoanItem(
     onDelete: (Loan) -> Unit
 ) {
     val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    val bgStatusColor = if (loan.paid) Color(0xFFE3FCE3) else Color(0xFFFFEBEE)
+
+    val currentTime = System.currentTimeMillis()
+    val daysLeft = ((loan.dueDate - currentTime) / (1000 * 60 * 60 * 24)).toInt()
+    val dueText = when {
+        daysLeft < 0 -> "Quá hạn ${-daysLeft} ngày"
+        daysLeft == 0 -> "Hết hạn hôm nay"
+        else -> "Còn $daysLeft ngày"
+    }
+    val dueColor = when {
+        daysLeft < 0 -> Color.Red
+        daysLeft <= 3 -> Color(0xFFFFA000)
+        else -> Color.Gray
+    }
 
     Card(
         modifier = Modifier
@@ -80,11 +96,22 @@ fun LoanItem(
             }
             Spacer(modifier = Modifier.height(8.dp))
 
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Icon(Icons.Default.Event, contentDescription = "Hạn trả", tint = Color.Gray, modifier = Modifier.size(18.dp))
                 Spacer(modifier = Modifier.width(6.dp))
-                Text("Hạn trả: ${dateFormat.format(Date(loan.dueDate))}", fontSize = 14.sp)
             }
+            Text(
+                "Hạn trả: ${dateFormat.format(Date(loan.dueDate))}",
+                fontSize = 14.sp
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                dueText,
+                fontSize = 14.sp,
+                color = dueColor
+            )
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Default.Info, contentDescription = "Lý do", tint = Color.Gray, modifier = Modifier.size(18.dp))
@@ -102,7 +129,7 @@ fun LoanItem(
                     modifier = Modifier
                         .padding(4.dp)
                         .background(
-                            color = if (loan.paid) Color(0xFFE3FCE3) else Color(0xFFFFEBEE),
+                            color = bgStatusColor,
                             shape = RoundedCornerShape(50)
                         )
                         .padding(horizontal = 12.dp, vertical = 6.dp)
@@ -121,11 +148,15 @@ fun LoanItem(
                             onClick = { onPaid(loan) },
                             modifier = Modifier.size(32.dp)
                         ) {
-                            Icon(
-                                Icons.Default.Done,
-                                contentDescription = "Đã trả",
-                                tint = Color(0xFF2E7D32)
-                            )
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Icon(
+                                    Icons.Default.DoneAll,
+                                    contentDescription = "Đánh dấu đã thanh toán",
+                                    tint = Color.Black
+                                )
+                            }
                         }
                     }
                     IconButton(
@@ -133,9 +164,9 @@ fun LoanItem(
                         modifier = Modifier.size(32.dp)
                     ) {
                         Icon(
-                            Icons.Default.Delete,
+                            Icons.Default.DeleteOutline,
                             contentDescription = "Xoá",
-                            tint = Color(0xFFD32F2F)
+                            tint = Color.DarkGray
                         )
                     }
                 }
@@ -143,4 +174,5 @@ fun LoanItem(
         }
     }
 }
+
 

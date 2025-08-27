@@ -7,6 +7,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AttachMoney
+import androidx.compose.material.icons.filled.DataExploration
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Report
@@ -35,7 +36,7 @@ fun HomeScreen(
     val navItems = listOf(
         NavItem("Giao dịch", Icons.Default.AttachMoney),
         NavItem("Ngân sách", Icons.Default.Wallet),
-        NavItem("Báo cáo", Icons.Default.Report),
+        NavItem("Báo cáo", Icons.Default.DataExploration),
         NavItem("Cá nhân", Icons.Default.Person)
     )
 
