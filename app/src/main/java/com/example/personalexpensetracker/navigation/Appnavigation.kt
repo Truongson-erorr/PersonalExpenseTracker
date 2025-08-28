@@ -113,7 +113,6 @@ fun AppNavigation() {
             val userId = backStackEntry.arguments?.getString("userId") ?: ""
             AnalysisScreen(userId = userId, navController = navController)
         }
-
         composable(
             "CompleteProfileScreen/{userId}",
             arguments = listOf(navArgument("userId") { type = NavType.StringType })

@@ -13,9 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DeleteOutline
-import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.DoneAll
 import androidx.compose.material.icons.filled.Event
 import androidx.compose.material.icons.filled.Info
@@ -50,7 +48,7 @@ fun LoanItem(
     val daysLeft = ((loan.dueDate - currentTime) / (1000 * 60 * 60 * 24)).toInt()
     val dueText = when {
         daysLeft < 0 -> "Quá hạn ${-daysLeft} ngày"
-        daysLeft == 0 -> "Hết hạn hôm nay"
+        daysLeft == 0 -> "Hết hạn trong hôm nay"
         else -> "Còn $daysLeft ngày"
     }
     val dueColor = when {
@@ -113,7 +111,9 @@ fun LoanItem(
                 color = dueColor
             )
 
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Icon(Icons.Default.Info, contentDescription = "Lý do", tint = Color.Gray, modifier = Modifier.size(18.dp))
                 Spacer(modifier = Modifier.width(6.dp))
                 Text("Lý do: ${loan.reason}", fontSize = 14.sp)

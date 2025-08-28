@@ -59,6 +59,7 @@ fun LoanScreen(
                 )
             }
             Spacer(modifier = Modifier.height(15.dp))
+
             if (loans.isEmpty()) {
                 Box(
                     modifier = Modifier.fillMaxSize(),

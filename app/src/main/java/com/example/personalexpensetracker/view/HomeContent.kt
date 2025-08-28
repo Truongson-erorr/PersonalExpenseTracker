@@ -99,7 +99,6 @@ fun HomeContent(
                     fontWeight = FontWeight.Medium,
                     color = Color.Gray
                 )
-
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
