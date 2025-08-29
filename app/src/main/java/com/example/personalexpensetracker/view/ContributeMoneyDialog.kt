@@ -26,7 +26,6 @@ import com.example.personalexpensetracker.model.Saving
 import java.util.Date
 import java.util.Locale
 
-
 val pastelColors = listOf(
     Color(0xFFFFCDD2),
     Color(0xFFF8BBD0),

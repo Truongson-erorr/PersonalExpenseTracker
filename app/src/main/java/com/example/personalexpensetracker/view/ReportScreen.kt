@@ -158,44 +158,10 @@ fun ReportScreen(
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(10.dp))
-        }
-        item {
-            Text(
-                "Biểu đồ thu chi theo tháng",
-                fontSize = 18.sp,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.padding(vertical = 8.dp)
-            )
-
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 6.dp),
-                shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White),
-                elevation = CardDefaults.cardElevation(4.dp)
-            ) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    MonthlyBarChart(monthlySummary)
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceAround
-                    ) {
-                        LegendItem(Color(0xFF4CAF50), "Thu nhập")
-                        LegendItem(Color(0xFFF44336), "Chi tiêu")
-                    }
-                }
-            }
+            Spacer(modifier = Modifier.height(5.dp))
         }
 
         item {
-            Spacer(modifier = Modifier.height(16.dp))
-
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -248,6 +214,40 @@ fun ReportScreen(
                     CategoryPieChart(expenseByCategory)
                     Spacer(modifier = Modifier.height(16.dp))
                     CategoryLegend(expenseByCategory)
+                }
+            }
+        }
+
+        item {
+            Spacer(modifier = Modifier.height(15.dp))
+            Text(
+                "Biểu đồ thu chi theo tháng",
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.padding(vertical = 8.dp)
+            )
+
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 6.dp),
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                elevation = CardDefaults.cardElevation(4.dp)
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    MonthlyBarChart(monthlySummary)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceAround
+                    ) {
+                        LegendItem(Color(0xFF4CAF50), "Thu nhập")
+                        LegendItem(Color(0xFFF44336), "Chi tiêu")
+                    }
                 }
             }
         }

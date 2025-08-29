@@ -94,8 +94,6 @@ fun CategoryPieChart(data: Map<String, Double>) {
     val angleData = data.mapValues { (it.value / total * 360f).toFloat() }
 
     val colors = listOf(
-        Color(0xFF4285F4),
-        Color(0xFF34A853),
         Color(0xFFFBBC05),
         Color(0xFFEA4335),
         Color(0xFF673AB7),
@@ -123,8 +121,6 @@ fun CategoryPieChart(data: Map<String, Double>) {
 @Composable
 fun CategoryLegend(data: Map<String, Double>) {
     val colors = listOf(
-        Color(0xFF4285F4),
-        Color(0xFF34A853),
         Color(0xFFFBBC05),
         Color(0xFFEA4335),
         Color(0xFF673AB7),
