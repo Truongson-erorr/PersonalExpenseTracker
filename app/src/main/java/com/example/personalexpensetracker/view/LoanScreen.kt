@@ -28,6 +28,7 @@ fun LoanScreen(
 ) {
     var showDialog by remember { mutableStateOf(false) }
     val loans by viewModel.loans.collectAsState()
+    var selectedTab by remember { mutableStateOf(0) }
 
     LaunchedEffect(Unit) {
         viewModel.loadLoans()
@@ -42,9 +43,7 @@ fun LoanScreen(
             modifier = Modifier.fillMaxSize()
         ) {
             Spacer(modifier = Modifier.height(30.dp))
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
                 IconButton(onClick = { navController.popBackStack() }) {
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
@@ -60,19 +59,44 @@ fun LoanScreen(
             }
             Spacer(modifier = Modifier.height(15.dp))
 
-            if (loans.isEmpty()) {
+            val tabs = listOf("Khoản Cho Vay", "Khoản Nợ")
+            TabRow(
+                selectedTabIndex = selectedTab,
+                containerColor = Color.White,
+                contentColor = Color.Black
+            ) {
+                tabs.forEachIndexed { index, title ->
+                    Tab(
+                        selected = selectedTab == index,
+                        onClick = { selectedTab = index },
+                        text = { Text(title, fontWeight = FontWeight.Bold) }
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(10.dp))
+
+            val filteredLoans = when (selectedTab) {
+                0 -> loans.filter { !it.isDebt }
+                1 -> loans.filter { it.isDebt }
+                else -> loans
+            }
+
+            if (filteredLoans.isEmpty()) {
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("Chưa có khoản vay nào")
+                    Text(
+                        if (selectedTab == 0) "Chưa có khoản cho vay nào"
+                        else "Chưa có khoản nợ nào"
+                    )
                 }
             } else {
                 LazyColumn(
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    items(loans) { loan ->
+                    items(filteredLoans) { loan ->
                         LoanItem(
                             loan = loan,
                             onPaid = { viewModel.updateLoan(it.copy(paid = true)) },
@@ -105,3 +129,4 @@ fun LoanScreen(
         )
     }
 }
+

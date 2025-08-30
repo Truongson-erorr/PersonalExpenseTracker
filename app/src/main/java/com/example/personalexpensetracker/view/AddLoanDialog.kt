@@ -11,6 +11,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
@@ -38,12 +39,13 @@ fun AddLoanDialog(
     var amount by remember { mutableStateOf("") }
     var reason by remember { mutableStateOf("") }
     var dueDate by remember { mutableStateOf("") }
+    var isDebt by remember { mutableStateOf(false) }
 
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
-            Text("Thêm khoản vay")
-                },
+            Text("Thêm khoản vay / nợ")
+        },
         text = {
             Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -51,7 +53,7 @@ fun AddLoanDialog(
                 TextField(
                     value = borrower,
                     onValueChange = { borrower = it },
-                    label = { Text("Người vay") },
+                    label = { Text("Người liên quan") },
                     shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp),
                     modifier = Modifier.fillMaxWidth(),
                     colors = TextFieldDefaults.textFieldColors(
@@ -96,6 +98,25 @@ fun AddLoanDialog(
                         unfocusedIndicatorColor = Color.Transparent
                     )
                 )
+
+                Text("Loại khoản:", fontWeight = androidx.compose.ui.text.font.FontWeight.Bold)
+                Row {
+                    Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
+                        RadioButton(
+                            selected = !isDebt,
+                            onClick = { isDebt = false }
+                        )
+                        Text("Khoản cho vay")
+                    }
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
+                        RadioButton(
+                            selected = isDebt,
+                            onClick = { isDebt = true }
+                        )
+                        Text("Khoản nợ")
+                    }
+                }
             }
         },
         confirmButton = {
@@ -121,7 +142,9 @@ fun AddLoanDialog(
                                 amount = amount.toDoubleOrNull() ?: 0.0,
                                 reason = reason,
                                 dueDate = timestamp,
-                                userId = userId
+                                userId = userId,
+                                isDebt = isDebt,
+                                paid = false
                             )
                         )
                     },
