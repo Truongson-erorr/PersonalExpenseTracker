@@ -34,6 +34,10 @@ import com.example.personalexpensetracker.model.Loan
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 
 @Composable
 fun LoanItem(
@@ -55,6 +59,50 @@ fun LoanItem(
         daysLeft < 0 -> Color.Red
         daysLeft <= 3 -> Color(0xFFFFA000)
         else -> Color.Gray
+    }
+    var showDeleteDialog = remember { mutableStateOf(false) }
+    var showPaidDialog = remember { mutableStateOf(false) }
+
+    if (showDeleteDialog.value) {
+        AlertDialog(
+            onDismissRequest = { showDeleteDialog.value = false },
+            title = { Text("Xác nhận xoá") },
+            text = { Text("Bạn có chắc chắn muốn xoá khoản vay này không?") },
+            confirmButton = {
+                TextButton(onClick = {
+                    onDelete(loan)
+                    showDeleteDialog.value = false
+                }) {
+                    Text("Có")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDeleteDialog.value = false }) {
+                    Text("Không")
+                }
+            }
+        )
+    }
+
+    if (showPaidDialog.value) {
+        AlertDialog(
+            onDismissRequest = { showPaidDialog.value = false },
+            title = { Text("Xác nhận thanh toán") },
+            text = { Text("Bạn có muốn đánh dấu khoản vay này đã được trả không?") },
+            confirmButton = {
+                TextButton(onClick = {
+                    onPaid(loan)
+                    showPaidDialog.value = false
+                }) {
+                    Text("Có")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showPaidDialog.value = false }) {
+                    Text("Không")
+                }
+            }
+        )
     }
 
     Card(
@@ -94,16 +142,11 @@ fun LoanItem(
             }
             Spacer(modifier = Modifier.height(8.dp))
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Default.Event, contentDescription = "Hạn trả", tint = Color.Gray, modifier = Modifier.size(18.dp))
                 Spacer(modifier = Modifier.width(6.dp))
+                Text("Hạn trả: ${dateFormat.format(Date(loan.dueDate))}", fontSize = 14.sp)
             }
-            Text(
-                "Hạn trả: ${dateFormat.format(Date(loan.dueDate))}",
-                fontSize = 14.sp
-            )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 dueText,
@@ -145,22 +188,18 @@ fun LoanItem(
                 Row {
                     if (!loan.paid) {
                         IconButton(
-                            onClick = { onPaid(loan) },
+                            onClick = { showPaidDialog.value = true },
                             modifier = Modifier.size(32.dp)
                         ) {
-                            Column(
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                Icon(
-                                    Icons.Default.DoneAll,
-                                    contentDescription = "Đánh dấu đã thanh toán",
-                                    tint = Color.Black
-                                )
-                            }
+                            Icon(
+                                Icons.Default.DoneAll,
+                                contentDescription = "Đánh dấu đã thanh toán",
+                                tint = Color.Black
+                            )
                         }
                     }
                     IconButton(
-                        onClick = { onDelete(loan) },
+                        onClick = { showDeleteDialog.value = true },
                         modifier = Modifier.size(32.dp)
                     ) {
                         Icon(
@@ -174,5 +213,3 @@ fun LoanItem(
         }
     }
 }
-
-
