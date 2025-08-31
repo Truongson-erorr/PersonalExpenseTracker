@@ -9,7 +9,6 @@ With this app, users can:
 - View real-time reports and visual summaries  
 - Receive notifications when limits are exceeded or for app updates  
 - Access an **in-app Support Center** for guidance and troubleshooting  
-- Store and sync data securely using Firebase  
 
 The app is structured using the **MVVM architecture**, and integrates modern tools such as **Firebase**, **State management with ViewModel**, and **Coroutines** for responsive UI and performance.
 
