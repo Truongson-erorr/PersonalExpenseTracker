@@ -19,6 +19,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.personalexpensetracker.model.Loan
 import com.example.personalexpensetracker.viewmodel.LoanViewModel
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun LoanScreen(
@@ -30,8 +31,12 @@ fun LoanScreen(
     val loans by viewModel.loans.collectAsState()
     var selectedTab by remember { mutableStateOf(0) }
 
-    LaunchedEffect(Unit) {
-        viewModel.loadLoans()
+    val user = FirebaseAuth.getInstance().currentUser
+
+    LaunchedEffect(userId) {
+        if (userId.isNotEmpty()) {
+            viewModel.loadLoans()
+        }
     }
 
     Box(
@@ -57,7 +62,7 @@ fun LoanScreen(
                     color = Color.Black
                 )
             }
-            Spacer(modifier = Modifier.height(15.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
             val tabs = listOf("Khoản Cho Vay", "Khoản Nợ")
             TabRow(
@@ -76,8 +81,8 @@ fun LoanScreen(
             Spacer(modifier = Modifier.height(10.dp))
 
             val filteredLoans = when (selectedTab) {
-                0 -> loans.filter { !it.isDebt }
-                1 -> loans.filter { it.isDebt }
+                0 -> loans.filter { !it.debt }
+                1 -> loans.filter { it.debt }
                 else -> loans
             }
 

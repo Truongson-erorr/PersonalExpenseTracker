@@ -8,5 +8,5 @@ data class Loan(
     val reason: String = "",
     val dueDate: Long = 0L,
     val paid: Boolean = false,
-    val isDebt: Boolean
+    val debt: Boolean = false
 )

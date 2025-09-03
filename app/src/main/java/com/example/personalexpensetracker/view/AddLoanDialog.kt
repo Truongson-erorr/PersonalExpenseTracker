@@ -39,7 +39,7 @@ fun AddLoanDialog(
     var amount by remember { mutableStateOf("") }
     var reason by remember { mutableStateOf("") }
     var dueDate by remember { mutableStateOf("") }
-    var isDebt by remember { mutableStateOf(false) }
+    var debt by remember { mutableStateOf(false) }
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -103,16 +103,16 @@ fun AddLoanDialog(
                 Row {
                     Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
                         RadioButton(
-                            selected = !isDebt,
-                            onClick = { isDebt = false }
+                            selected = !debt,
+                            onClick = { debt = false }
                         )
                         Text("Khoản cho vay")
                     }
                     Spacer(modifier = Modifier.width(12.dp))
                     Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
                         RadioButton(
-                            selected = isDebt,
-                            onClick = { isDebt = true }
+                            selected = debt,
+                            onClick = { debt = true }
                         )
                         Text("Khoản nợ")
                     }
@@ -143,7 +143,7 @@ fun AddLoanDialog(
                                 reason = reason,
                                 dueDate = timestamp,
                                 userId = userId,
-                                isDebt = isDebt,
+                                debt = debt,
                                 paid = false
                             )
                         )

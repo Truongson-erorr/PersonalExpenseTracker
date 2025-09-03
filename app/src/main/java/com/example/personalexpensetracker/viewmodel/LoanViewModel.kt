@@ -18,9 +18,7 @@ class LoanViewModel : ViewModel() {
     private val _loans = MutableStateFlow<List<Loan>>(emptyList())
     val loans: StateFlow<List<Loan>> = _loans
 
-    fun loadLoans() {
-        val userId = auth.currentUser?.uid ?: return
-
+    fun loadLoans(userId: String) {
         viewModelScope.launch {
             try {
                 val snapshot = db.collection("loan")
