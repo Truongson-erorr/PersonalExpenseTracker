@@ -5,15 +5,18 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -55,79 +58,87 @@ fun AddBudgetDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Thêm ngân sách", fontWeight = FontWeight.Bold) },
+        title = {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    "Thêm ngân sách",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp
+                )
+            }
+        },
         text = {
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedTextField(
+            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                TextField(
                     value = category,
                     onValueChange = { category = it },
                     label = { Text("Danh mục") },
-                    shape = RoundedCornerShape(12.dp),
-                    modifier = Modifier.fillMaxWidth()
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(),
                 )
-                OutlinedTextField(
+                TextField(
                     value = amount,
                     onValueChange = { amount = it },
                     label = { Text("Hạn mức (VND)") },
-                    shape = RoundedCornerShape(12.dp),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    singleLine = true,
                     modifier = Modifier.fillMaxWidth()
                 )
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    OutlinedTextField(
+                Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                    TextField(
                         value = selectedMonth.toString(),
-                        shape = RoundedCornerShape(12.dp),
                         onValueChange = { selectedMonth = it.toIntOrNull() ?: calendar.get(Calendar.MONTH) + 1 },
                         label = { Text("Tháng") },
+                        placeholder = { Text("MM") },
+                        singleLine = true,
                         modifier = Modifier.weight(1f)
                     )
-                    OutlinedTextField(
+                    TextField(
                         value = selectedYear.toString(),
-                        shape = RoundedCornerShape(12.dp),
                         onValueChange = { selectedYear = it.toIntOrNull() ?: calendar.get(Calendar.YEAR) },
                         label = { Text("Năm") },
+                        placeholder = { Text("YYYY") },
+                        singleLine = true,
                         modifier = Modifier.weight(1f)
                     )
                 }
             }
         },
         confirmButton = {
-            Button(onClick = {
-                val amountDouble = amount.toDoubleOrNull() ?: return@Button
-                if (category.isBlank()) return@Button
+            TextButton(
+                onClick = {
+                    val amountDouble = amount.toDoubleOrNull() ?: return@TextButton
+                    if (category.isBlank()) return@TextButton
 
-                val budget = Budget(
-                    id = UUID.randomUUID().toString(),
-                    userId = userId,
-                    category = category,
-                    amount = amountDouble,
-                    month = selectedMonth,
-                    year = selectedYear
-                )
-
-                budgetViewModel.addBudget(
-                    budget,
-                    onSuccess = {
-                        notificationViewModel.addNotification(
-                            userId = userId,
-                            title = "Ngân sách mới",
-                            message = "Bạn vừa thêm ngân sách ${String.format("%,.0f", amountDouble)} VND cho danh mục $category trong tháng $selectedMonth/$selectedYear."
-                        )
-                        onDismiss()
-                    },
-                    onFailure = { onDismiss() }
-                )
-            },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Black,
-                    contentColor = Color.White
-                )
+                    val budget = Budget(
+                        id = UUID.randomUUID().toString(),
+                        userId = userId,
+                        category = category,
+                        amount = amountDouble,
+                        month = selectedMonth,
+                        year = selectedYear
+                    )
+                    budgetViewModel.addBudget(
+                        budget,
+                        onSuccess = {
+                            notificationViewModel.addNotification(
+                                userId,
+                                "Ngân sách mới",
+                                "Bạn vừa thêm ngân sách ${String.format("%,.0f", amountDouble)} VND cho $category trong $selectedMonth/$selectedYear."
+                            )
+                            onDismiss()
+                        },
+                        onFailure = { onDismiss() }
+                    )
+                }
             ) {
-                Text("Lưu")
+                Text("Lưu", fontWeight = FontWeight.Bold, color = Color.Black)
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) {
+            TextButton(
+                onClick = onDismiss
+            ) {
                 Text("Hủy", color = Color.Gray)
             }
         }

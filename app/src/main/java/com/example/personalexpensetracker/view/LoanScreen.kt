@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.personalexpensetracker.model.Loan
 import com.example.personalexpensetracker.viewmodel.LoanViewModel
 import com.google.firebase.auth.FirebaseAuth
 
@@ -35,7 +34,7 @@ fun LoanScreen(
 
     LaunchedEffect(userId) {
         if (userId.isNotEmpty()) {
-            viewModel.loadLoans()
+            viewModel.loadLoans(userId)
         }
     }
 
@@ -48,7 +47,9 @@ fun LoanScreen(
             modifier = Modifier.fillMaxSize()
         ) {
             Spacer(modifier = Modifier.height(30.dp))
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 IconButton(onClick = { navController.popBackStack() }) {
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
