@@ -68,6 +68,8 @@ fun NotificationScreen(
                 modifier = Modifier.fillMaxSize()
             ) {
                 items(notifications) { notification ->
+                    val isNew = System.currentTimeMillis() - notification.timestamp <= 2 * 24 * 60 * 60 * 1000 // 2 ngày
+
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         colors = CardDefaults.cardColors(
@@ -80,33 +82,48 @@ fun NotificationScreen(
                             }
                         }
                     ) {
-                        Row(
+                        Column(
                             modifier = Modifier
                                 .padding(16.dp)
-                                .fillMaxWidth(),
-                            verticalAlignment = Alignment.Top
+                                .fillMaxWidth()
                         ) {
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(
-                                    text = notification.title,
-                                    fontWeight = if (notification.isRead) FontWeight.Normal else FontWeight.Bold,
-                                    fontSize = 16.sp,
-                                    color = Color.Black
-                                )
-                                Spacer(modifier = Modifier.height(4.dp))
-                                Text(
-                                    text = notification.message,
-                                    fontSize = 14.sp,
-                                    color = Color.DarkGray,
-                                    fontWeight = if (notification.isRead) FontWeight.Normal else FontWeight.Medium
-                                )
-                                Spacer(modifier = Modifier.height(6.dp))
-                                Text(
-                                    text = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
-                                        .format(Date(notification.timestamp)),
-                                    fontSize = 12.sp,
-                                    color = Color.Gray
-                                )
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.Top
+                            ) {
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Text(
+                                        text = notification.title,
+                                        fontWeight = if (notification.isRead) FontWeight.Normal else FontWeight.Bold,
+                                        fontSize = 16.sp,
+                                        color = Color.Black
+                                    )
+                                    Spacer(modifier = Modifier.height(4.dp))
+                                    Text(
+                                        text = notification.message,
+                                        fontSize = 14.sp,
+                                        color = Color.DarkGray,
+                                        fontWeight = if (notification.isRead) FontWeight.Normal else FontWeight.Medium
+                                    )
+                                    Spacer(modifier = Modifier.height(6.dp))
+                                    Text(
+                                        text = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+                                            .format(Date(notification.timestamp)),
+                                        fontSize = 12.sp,
+                                        color = Color.Gray
+                                    )
+                                }
+
+                                if (isNew) {
+                                    Text(
+                                        text = "Mới",
+                                        color = Color.Red,
+                                        fontSize = 12.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        modifier = Modifier.align(Alignment.Top)
+                                    )
+                                }
                             }
                         }
                     }
@@ -115,7 +132,6 @@ fun NotificationScreen(
         }
     }
 
-    // Hiển thị dialog chi tiết
     selectedNotification?.let { notification ->
         AlertDialog(
             onDismissRequest = { selectedNotification = null },
