@@ -142,7 +142,9 @@ fun LoanItem(
             }
             Spacer(modifier = Modifier.height(8.dp))
 
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Icon(Icons.Default.Event, contentDescription = "Hạn trả", tint = Color.Gray, modifier = Modifier.size(18.dp))
                 Spacer(modifier = Modifier.width(6.dp))
                 Text("Hạn trả: ${dateFormat.format(Date(loan.dueDate))}", fontSize = 14.sp)

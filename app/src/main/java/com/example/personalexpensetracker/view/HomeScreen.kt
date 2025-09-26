@@ -8,9 +8,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AttachMoney
 import androidx.compose.material.icons.filled.DataExploration
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Report
 import androidx.compose.material.icons.filled.Wallet
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -39,8 +37,8 @@ fun HomeScreen(
         NavItem("Báo cáo", Icons.Default.DataExploration),
         NavItem("Cá nhân", Icons.Default.Person)
     )
-
     val transactionViewModel: TransactionViewModel = viewModel()
+
     Scaffold(
         bottomBar = {
             Box(
@@ -69,7 +67,7 @@ fun HomeScreen(
                             },
                             selected = selectedTab == index,
                             onClick = { selectedTab = index },
-                            selectedContentColor = Color.White,
+                            selectedContentColor = Color(0xFFFFB300),
                             unselectedContentColor = Color.White.copy(alpha = 0.7f),
                             alwaysShowLabel = false
                         )
@@ -105,6 +103,7 @@ fun BottomNavItem(
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
         modifier = Modifier
             .clickable(onClick = onClick)
             .padding(horizontal = 8.dp)
