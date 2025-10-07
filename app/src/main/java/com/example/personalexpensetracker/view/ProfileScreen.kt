@@ -1,5 +1,6 @@
 package com.example.personalexpensetracker.view
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -20,12 +21,15 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
 import com.example.personalexpensetracker.model.Users
 import com.example.personalexpensetracker.viewmodel.UserViewModel
 import com.google.firebase.auth.FirebaseAuth
@@ -90,17 +94,31 @@ fun ProfileHeader(user: Users, navController: NavController) {
         ) {
             Box(
                 contentAlignment = Alignment.BottomEnd,
-                modifier = Modifier.size(80.dp)
+                modifier = Modifier.size(110.dp)
             ) {
-                Icon(
-                    Icons.Default.Person,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color.Gray, CircleShape)
-                        .padding(16.dp),
-                    tint = Color.White
-                )
+                if (!user.image.isNullOrEmpty()) {
+                    Image(
+                        painter = rememberAsyncImagePainter(user.image),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clip(CircleShape)
+                            .background(Color.Gray, CircleShape),
+                        contentScale = ContentScale.Crop
+                    )
+                } else {
+                    Icon(
+                        Icons.Default.Person,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clip(CircleShape)
+                            .background(Color.Gray, CircleShape)
+                            .padding(12.dp),
+                        tint = Color.White
+                    )
+                }
+
                 Icon(
                     Icons.Default.CameraAlt,
                     contentDescription = null,

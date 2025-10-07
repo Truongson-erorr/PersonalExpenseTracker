@@ -43,7 +43,6 @@ fun LoginScreen(navController: NavController) {
     var isLoading by remember { mutableStateOf(false) }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var captchaInput by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf("") }
 
     val context = LocalContext.current
@@ -100,7 +99,6 @@ fun LoginScreen(navController: NavController) {
         }
     }
 
-    var rememberMe by remember { mutableStateOf(false) }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -124,6 +122,7 @@ fun LoginScreen(navController: NavController) {
             color = Color(0xFFFFB300)
         )
         Spacer(modifier = Modifier.height(8.dp))
+
         Text(
             text = "Quản lí chi tiêu thông minh",
             fontSize = 13.sp,

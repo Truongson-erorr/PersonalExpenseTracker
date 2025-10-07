@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,6 +34,7 @@ fun EditProfileScreen(
     user: Users,
     userViewModel: UserViewModel
 ) {
+    var sdt by remember { mutableStateOf("") }
     var name by remember { mutableStateOf(user.ten) }
     var password by remember { mutableStateOf("") }
     var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
@@ -74,27 +76,48 @@ fun EditProfileScreen(
         ) {
             Box(
                 modifier = Modifier
-                    .size(120.dp)
-                    .clip(CircleShape)
-                    .background(Color.LightGray)
-                    .clickable { imagePickerLauncher.launch("image/*") },
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp),
                 contentAlignment = Alignment.Center
             ) {
-                if (selectedImageUri != null) {
-                    Image(
-                        painter = rememberAsyncImagePainter(selectedImageUri),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clip(CircleShape)
-                    )
-                } else {
-                    Icon(
-                        imageVector = Icons.Default.Person,
-                        contentDescription = null,
-                        tint = Color.DarkGray,
-                        modifier = Modifier.size(48.dp)
-                    )
+                Box(
+                    modifier = Modifier
+                        .size(140.dp)
+                        .clip(CircleShape)
+                        .background(Color.LightGray)
+                        .clickable { imagePickerLauncher.launch("image/*") },
+                    contentAlignment = Alignment.Center
+                ) {
+                    when {
+                        selectedImageUri != null -> {
+                            Image(
+                                painter = rememberAsyncImagePainter(selectedImageUri),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .clip(CircleShape),
+                                contentScale = ContentScale.Crop
+                            )
+                        }
+                        !user.image.isNullOrEmpty() -> {
+                            Image(
+                                painter = rememberAsyncImagePainter(user.image),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .clip(CircleShape),
+                                contentScale = ContentScale.Crop
+                            )
+                        }
+                        else -> {
+                            Icon(
+                                imageVector = Icons.Default.Person,
+                                contentDescription = null,
+                                tint = Color.DarkGray,
+                                modifier = Modifier.size(48.dp)
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -106,7 +129,6 @@ fun EditProfileScreen(
             fontSize = 14.sp,
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
-
         Spacer(modifier = Modifier.height(24.dp))
 
         TextField(
@@ -126,8 +148,27 @@ fun EditProfileScreen(
                 focusedContainerColor = Color.White
             )
         )
+        Spacer(modifier = Modifier.height(24.dp))
 
+        TextField(
+            value = sdt,
+            onValueChange = { sdt = it },
+            label = { Text("Số điện thoại") },
+            singleLine = true,
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(12.dp)),
+            colors = TextFieldDefaults.colors(
+                focusedIndicatorColor = Color.Black,
+                unfocusedIndicatorColor = Color.Gray,
+                focusedLabelColor = Color.Black,
+                cursorColor = Color.Black,
+                unfocusedContainerColor = Color.White,
+                focusedContainerColor = Color.White
+            )
+        )
         Spacer(modifier = Modifier.height(16.dp))
+
         TextField(
             value = password,
             onValueChange = { password = it },

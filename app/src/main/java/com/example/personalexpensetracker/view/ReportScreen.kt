@@ -52,7 +52,7 @@ fun ReportScreen(
     viewModel: TransactionViewModel = viewModel()
 ) {
     var expanded by remember { mutableStateOf(false) }
-    var selectedMonth by remember { mutableStateOf(7) }
+    var selectedMonth by remember { mutableStateOf(8) }
 
     val monthlySummary = viewModel.getMonthlySummary()
     val expenseByCategory = viewModel.getExpenseByCategory(selectedMonth)

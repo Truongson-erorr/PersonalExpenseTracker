@@ -67,7 +67,7 @@ fun HomeScreen(
                             },
                             selected = selectedTab == index,
                             onClick = { selectedTab = index },
-                            selectedContentColor = Color(0xFFFFB300),
+                            selectedContentColor = Color.White,
                             unselectedContentColor = Color.White.copy(alpha = 0.7f),
                             alwaysShowLabel = false
                         )
@@ -99,7 +99,7 @@ fun BottomNavItem(
     selected: Boolean,
     onClick: () -> Unit
 ) {
-    val color = if (selected) Color(0xFFFFB300) else Color.White
+    val color = if (selected) Color.White else Color.DarkGray
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
