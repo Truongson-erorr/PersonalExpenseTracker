@@ -1,8 +1,7 @@
 # 💰 Personal Expense Tracker
 
-**Personal Expense Tracker** is a modern Android application built with **Kotlin** and **Jetpack Compose**, designed to help users manage, analyze, and improve their personal financial habits effectively.
-
-This app provides an intuitive way to track spending, set budgets, visualize expenses, and even predict future spending using AI — all within a clean and responsive interface.
+**Personal Expense Tracker** is a modern Android application built with **Kotlin** and **Jetpack Compose**, designed to help users manage, analyze, and improve their personal financial habits effectively.  
+It provides an intuitive way to track spending, set budgets, visualize expenses, and even predict future spending using AI — all within a clean and responsive interface.
 
 ---
 
@@ -24,10 +23,8 @@ With **Personal Expense Tracker**, users can:
 
 ## 🧠 Architecture & Design
 
-The project is built using the **MVVM (Model - ViewModel - View)** architecture to ensure:
-- Clear separation of UI, data, and logic layers  
-- Reactive and responsive UI with **Jetpack Compose**  
-- Scalable and maintainable structure suitable for future updates  
+The app follows the **MVVM (Model - ViewModel - View)** architecture, ensuring clean separation of UI, data, and logic layers.  
+It leverages **Jetpack Compose** for a reactive, declarative UI and provides a modular, scalable structure suitable for long-term maintenance and future updates.
 
 ---
 
@@ -35,56 +32,61 @@ The project is built using the **MVVM (Model - ViewModel - View)** architecture 
 
 ### 💸 Transaction Management
 - Add, edit, or delete income and expense records  
-- Categorize transactions for better analysis  
+- Categorize transactions for better insights  
 - Voice input support using **Speech Recognizer**
 
 ### 💰 Monthly Budget
 - Set monthly spending limits  
 - Track real-time spending progress with **progress bars**  
-- Get alerts when exceeding limits
+- Receive alerts when exceeding limits  
 
 ### 📊 Reports & Analytics
-- Generate bar and pie charts for income vs. expense  
-- View total spending per category  
-- Compare performance over different months
+- Generate **bar and pie charts** for income vs. expense  
+- View total spending by category  
+- Compare financial performance across months  
 
 ### ✅ Saving Jars
-- Create “money jars” for savings goals  
-- Contribute periodically  
-- Track your saving progress visually  
+- Create personalized **money jars** for savings goals  
+- Contribute periodically and monitor progress  
+- Visual tracking of your saving achievements  
 
 ### 💵 Loans & Debts
-- Add new loans or borrowed amounts  
-- Confirm when payments are completed  
-- Maintain clear financial records
+- Manage borrowed or lent money efficiently  
+- Mark payments as completed  
+- Keep transparent financial records  
 
 ### 👤 Personal Profile
-- Update personal information and preferences  
-- Data securely synced with Firebase
+- Edit user details and app preferences  
+- Sync data securely with **Firebase**  
 
 ### 🤖 AI Smart Prediction
-- Predict next month’s expected spending based on user habits  
-- Provide insights for better budgeting decisions  
+- Predict next month’s spending based on historical data  
+- Provide intelligent insights for better budgeting decisions  
 
 ### 🔔 Notifications
-- Real-time notifications for login, budget limits, new updates, and reminders  
-- Stored and managed in Firestore
+- Real-time alerts for login, budget limits, updates, and reminders  
+- Notifications stored and managed through **Firestore**
 
 ### 🧭 Support Center
-- Access FAQs and troubleshooting tips right inside the app  
-- Help users understand app features and resolve issues quickly  
+- In-app FAQs and troubleshooting guides  
+- Helps users navigate features and resolve issues easily  
 
 ---
 
-## 🧱 Project Structure
-com.example.personalexpensetracker/
-│
-├── model/ # Data models (Transaction, Budget, Notification, etc.)
-├── view/ # Jetpack Compose UI Screens & Dialogs
-├── viewmodel/ # ViewModels managing UI state & logic
-├── repository/ # Firebase interaction and data logic
-├── navigation/ # NavHost and route management
-└── utils/ # Constants, formatters, and helpers
+## 🧰 Technologies Used
 
+- 🧠 **Kotlin**
+- 🧩 **Jetpack Compose**
+- 🧭 **MVVM Architecture**
+- 🔥 **Firebase Authentication**
+- 🔥 **Firebase Firestore**
+- 🔥 **Firebase Storage**
+- 💡 **Coroutines & Flow**
+- 📊 **Charts for Jetpack Compose**
+- 🗂 **ViewModel + LiveData**
+- 🎤 **Speech Recognizer API**
+- 🧱 **Material 3 Design Components**
+
+---
 ## 📷 Screenshots
 ...
