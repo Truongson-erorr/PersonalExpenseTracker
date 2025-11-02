@@ -1,61 +1,95 @@
 # 💰 Personal Expense Tracker
 
-**Personal Expense Tracker** is an Android application built with **Kotlin** and **Jetpack Compose**, designed to help users manage their personal finances more effectively.
+**Personal Expense Tracker** is a modern Android application built with **Kotlin** and **Jetpack Compose**, designed to help users manage, analyze, and improve their personal financial habits effectively.
 
-With this app, users can:
-
-- Track their income and expenses by category  
-- Set monthly budgets and monitor spending progress  
-- View real-time reports and visual summaries  
-- Receive notifications when limits are exceeded or for app updates  
-- Access an **in-app Support Center** for guidance and troubleshooting  
-
-The app is structured using the **MVVM architecture**, and integrates modern tools such as **Firebase**, **State management with ViewModel**, and **Coroutines** for responsive UI and performance.
+This app provides an intuitive way to track spending, set budgets, visualize expenses, and even predict future spending using AI — all within a clean and responsive interface.
 
 ---
 
-## 📱 Features
+## 🚀 Overview
 
-- ✅ Track income & expenses by category  
-- ✅ Set and manage monthly budgets  
-- ✅ View summaries & progress bars  
-- ✅ Save data to Firebase (Cloud Firestore)  
-- ✅ Receive notifications on events (login, budget exceeded, app updates)  
-- ✅ View reports & transaction history with Jetpack Compose  
-- ✅ Support Center: access FAQs, guides, and troubleshooting tips directly within the app  
-- ✅ Notifications: get timely updates about budgets, new features, and reminders  
+With **Personal Expense Tracker**, users can:
+
+- 💸 **Add, edit, and delete transactions** (income & expenses)  
+- 📊 **Visualize financial data** through interactive **bar and pie charts**  
+- 💰 **Create and monitor monthly budgets**, receive alerts when limits are exceeded  
+- 🪙 **Manage savings goals (Money Jars)** and contribute progressively  
+- 💵 **Track loans & debts**, and mark them as paid  
+- 👤 **Edit personal information** easily  
+- 🤖 **AI-powered prediction** of next month’s spending based on transaction history  
+- 🔔 **Get notifications** for new activities, app updates, and important reminders  
+- 🧩 **In-app Support Center** for FAQs, guides, and troubleshooting tips  
+
+---
+
+## 🧠 Architecture & Design
+
+The project is built using the **MVVM (Model - ViewModel - View)** architecture to ensure:
+- Clear separation of UI, data, and logic layers  
+- Reactive and responsive UI with **Jetpack Compose**  
+- Scalable and maintainable structure suitable for future updates  
 
 ---
 
 ## ⚙️ Tech Stack
 
-- 🧠 Kotlin + Jetpack Compose  
-- 🔥 Firebase (Authentication, Firestore, Storage)  
-- 🧭 MVVM + ViewModel + State management  
-- 📊 Charts & Data Visualization using Jetpack Compose libraries  
-- 💾 Room Database (if offline support added)  
-- 💡 Coroutines & Flow  
+| Layer | Technology |
+|-------|-------------|
+| **Language** | Kotlin |
+| **UI Framework** | Jetpack Compose |
+| **Architecture** | MVVM + ViewModel + State Management |
+| **Backend / Cloud** | Firebase (Authentication, Firestore, Storage) |
+| **Local Database** | Room (planned for offline mode) |
+| **Async / Performance** | Kotlin Coroutines & Flow |
+| **Charts** | Compose Charts for bar/pie visualization |
+| **AI Prediction** | TensorFlow Lite / simple regression via Kotlin logic (based on transaction history) |
 
 ---
 
-## 🛠️ How to Run
+## 🧩 Core Features
 
-### ✅ Prerequisites
+### 💸 Transaction Management
+- Add, edit, or delete income and expense records  
+- Categorize transactions for better analysis  
+- Voice input support using **Speech Recognizer**
 
-- Android Studio Giraffe or newer  
-- Android SDK 33+  
-- JDK 17+  
-- Internet connection (for Firebase)
+### 💰 Monthly Budget
+- Set monthly spending limits  
+- Track real-time spending progress with **progress bars**  
+- Get alerts when exceeding limits
 
-### 📦 Steps
+### 📊 Reports & Analytics
+- Generate bar and pie charts for income vs. expense  
+- View total spending per category  
+- Compare performance over different months
 
-```bash
-# Clone the project
-git clone https://github.com/Truongson-erorr/PersonalExpenseTracker.git
-cd PersonalExpenseTracker
+### 🪙 Saving Jars
+- Create “money jars” for savings goals  
+- Contribute periodically  
+- Track your saving progress visually  
 
-# Open the project in Android Studio
-# Sync Gradle and build the project
+### 💵 Loans & Debts
+- Add new loans or borrowed amounts  
+- Confirm when payments are completed  
+- Maintain clear financial records
 
-# Add your own Firebase config (google-services.json)
-# Then run on emulator or device
+### 👤 Personal Profile
+- Update personal information and preferences  
+- Data securely synced with Firebase
+
+### 🤖 AI Smart Prediction
+- Predict next month’s expected spending based on user habits  
+- Provide insights for better budgeting decisions  
+
+### 🔔 Notifications
+- Real-time notifications for login, budget limits, new updates, and reminders  
+- Stored and managed in Firestore
+
+### 🧭 Support Center
+- Access FAQs and troubleshooting tips right inside the app  
+- Help users understand app features and resolve issues quickly  
+
+---
+
+## 🧱 Project Structure
+
