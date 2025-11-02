@@ -90,7 +90,7 @@ fun RegisterScreen(navController: NavController) {
             TextField(
                 value = name,
                 onValueChange = { name = it },
-                placeholder = { Text("Họ và tên", fontSize = 12.sp) },
+                placeholder = { Text("Họ và tên", fontSize = 16.sp) },
                 leadingIcon = { Icon(Icons.Default.Person, contentDescription = null) },
                 shape = MaterialTheme.shapes.extraSmall,
                 colors = TextFieldDefaults.textFieldColors(
@@ -106,7 +106,7 @@ fun RegisterScreen(navController: NavController) {
             TextField(
                 value = email,
                 onValueChange = { email = it },
-                placeholder = { Text("Địa chỉ Email", fontSize = 12.sp) },
+                placeholder = { Text("Địa chỉ Email", fontSize = 16.sp) },
                 leadingIcon = { Icon(Icons.Default.Email, contentDescription = null) },
                 shape = MaterialTheme.shapes.extraSmall,
                 colors = TextFieldDefaults.textFieldColors(
@@ -122,7 +122,7 @@ fun RegisterScreen(navController: NavController) {
             TextField(
                 value = password,
                 onValueChange = { password = it },
-                placeholder = { Text("Mật khẩu", fontSize = 12.sp) },
+                placeholder = { Text("Mật khẩu", fontSize = 16.sp) },
                 leadingIcon = { Icon(Icons.Default.Lock, contentDescription = null) },
                 visualTransformation = PasswordVisualTransformation(),
                 shape = MaterialTheme.shapes.extraSmall,
@@ -139,7 +139,7 @@ fun RegisterScreen(navController: NavController) {
             TextField(
                 value = confirmPassword,
                 onValueChange = { confirmPassword = it },
-                placeholder = { Text("Xác nhận mật khẩu", fontSize = 12.sp) },
+                placeholder = { Text("Xác nhận mật khẩu", fontSize = 16.sp) },
                 leadingIcon = { Icon(Icons.Default.Lock, contentDescription = null) },
                 visualTransformation = PasswordVisualTransformation(),
                 shape = MaterialTheme.shapes.extraSmall,
@@ -151,7 +151,7 @@ fun RegisterScreen(navController: NavController) {
                 modifier = Modifier.fillMaxWidth()
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(50.dp))
 
             errorMessage?.let {
                 Text(
@@ -211,7 +211,7 @@ fun RegisterScreen(navController: NavController) {
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(56.dp),
+                    .height(48.dp),
                 shape = MaterialTheme.shapes.extraSmall,
                 enabled = !isLoading,
                 colors = ButtonDefaults.buttonColors(

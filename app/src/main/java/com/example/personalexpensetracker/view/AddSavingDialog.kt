@@ -1,22 +1,14 @@
 package com.example.personalexpensetracker.view
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.personalexpensetracker.model.Saving
 
@@ -32,60 +24,33 @@ fun AddSavingDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
+        shape = RoundedCornerShape(20.dp),
+        containerColor = Color(0xFFFDFDFD),
         title = {
             Text(
-                text = "Thêm Hũ Tiết Kiệm",
-                style = MaterialTheme.typography.titleLarge
+                text = "💰 Thêm Hũ Tiết Kiệm",
+                style = MaterialTheme.typography.titleLarge.copy(
+                    color = Color.Black,
+                    fontWeight = FontWeight.Bold
+                ),
+                modifier = Modifier.padding(top = 8.dp)
             )
         },
         text = {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(top = 4.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                OutlinedTextField(
-                    value = title,
-                    onValueChange = { title = it },
-                    label = { Text("Tên hũ") },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 6.dp),
-                    singleLine = true,
-                    shape = RoundedCornerShape(12.dp)
-                )
-                OutlinedTextField(
-                    value = amountText,
-                    onValueChange = { amountText = it },
-                    label = { Text("Số tiền hiện tại") },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 6.dp),
-                    singleLine = true,
-                    shape = RoundedCornerShape(12.dp)
-                )
-                OutlinedTextField(
-                    value = goalText,
-                    onValueChange = { goalText = it },
-                    label = { Text("Mục tiêu (tùy chọn)") },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 6.dp),
-                    singleLine = true,
-                    shape = RoundedCornerShape(12.dp)
-                )
-                OutlinedTextField(
-                    value = note,
-                    onValueChange = { note = it },
-                    label = { Text("Ghi chú") },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 6.dp),
-                    shape = RoundedCornerShape(12.dp)
-                )
+                CustomInputField(value = title, onValueChange = { title = it }, label = "Tên hũ")
+                CustomInputField(value = amountText, onValueChange = { amountText = it }, label = "Số tiền hiện tại")
+                CustomInputField(value = goalText, onValueChange = { goalText = it }, label = "Mục tiêu (tùy chọn)")
+                CustomInputField(value = note, onValueChange = { note = it }, label = "Ghi chú", singleLine = false)
             }
         },
         confirmButton = {
-            TextButton(
+            Button(
                 onClick = {
                     val amount = amountText.toDoubleOrNull() ?: 0.0
                     val goal = goalText.toDoubleOrNull()
@@ -98,25 +63,47 @@ fun AddSavingDialog(
                         )
                     )
                 },
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
+                shape = RoundedCornerShape(14.dp),
                 modifier = Modifier
-                    .padding(4.dp)
-                    .background(color = Color.Black, shape = RoundedCornerShape(26.dp))
+                    .padding(horizontal = 8.dp)
+                    .height(46.dp)
             ) {
-                Text(
-                    text = "Thêm",
-                    color = Color.White,
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)
-                )
+                Text("Thêm", color = Color.White, fontWeight = FontWeight.SemiBold)
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Huỷ")
+                Text("Huỷ", color = Color.Gray)
             }
-        },
-        containerColor = Color.White,
-        shape = RoundedCornerShape(24.dp)
+        }
     )
 }
 
-
+@Composable
+fun CustomInputField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    label: String,
+    singleLine: Boolean = true
+) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        label = { Text(label) },
+        singleLine = singleLine,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 6.dp),
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedBorderColor = Color.Transparent,
+            unfocusedBorderColor = Color.Transparent,
+            focusedContainerColor = Color(0xFFF7F7F7),
+            unfocusedContainerColor = Color(0xFFF7F7F7),
+            cursorColor = Color.Black,
+            focusedLabelColor = Color.Black,
+            unfocusedLabelColor = Color.Gray
+        ),
+        shape = RoundedCornerShape(14.dp)
+    )
+}

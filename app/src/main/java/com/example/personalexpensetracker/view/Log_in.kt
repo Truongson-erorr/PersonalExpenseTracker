@@ -135,7 +135,7 @@ fun LoginScreen(navController: NavController) {
         TextField(
             value = email,
             onValueChange = { email = it },
-            placeholder = { Text("Email", fontSize =12.sp) },
+            placeholder = { Text("Email", fontSize =16.sp) },
             leadingIcon = { Icon(Icons.Default.Email, contentDescription = null) },
             singleLine = true,
             modifier = Modifier
@@ -153,7 +153,7 @@ fun LoginScreen(navController: NavController) {
         TextField(
             value = password,
             onValueChange = { password = it },
-            placeholder = { Text("Mật khẩu", fontSize =12.sp) },
+            placeholder = { Text("Mật khẩu", fontSize =16.sp) },
             leadingIcon = { Icon(imageVector = Icons.Default.Lock, contentDescription = null) },
             visualTransformation = PasswordVisualTransformation(),
             singleLine = true,
@@ -167,7 +167,7 @@ fun LoginScreen(navController: NavController) {
                 disabledIndicatorColor = Color.Transparent
             )
         )
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(60.dp))
 
         Button(
             onClick = {

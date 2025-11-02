@@ -31,6 +31,7 @@ import com.example.personalexpensetracker.view.LoginScreen
 import com.example.personalexpensetracker.view.NotificationScreen
 import com.example.personalexpensetracker.view.RegisterScreen
 import com.example.personalexpensetracker.view.SavingsScreen
+import com.example.personalexpensetracker.view.SplashScreen
 import com.example.personalexpensetracker.viewmodel.BudgetViewModel
 import com.example.personalexpensetracker.viewmodel.LoanViewModel
 import com.example.personalexpensetracker.viewmodel.NotificationViewModel
@@ -54,13 +55,16 @@ fun AppNavigation() {
     val notificationViewmodel: NotificationViewModel = viewModel()
     AnimatedNavHost(
         navController = navController,
-        startDestination = "LoginScreen",
+        startDestination = "SplashScreen",
         enterTransition = { slideInHorizontally { it } + fadeIn() },
         exitTransition = { slideOutHorizontally { -it } + fadeOut() },
         popEnterTransition = { slideInHorizontally { -it } + fadeIn() },
         popExitTransition = { slideOutHorizontally { it } + fadeOut() }
     ) {
         //navigation phia client
+        composable("SplashScreen") {
+            SplashScreen(navController = navController)
+        }
         composable("RegisterScreen") {
             RegisterScreen(navController = navController)
         }

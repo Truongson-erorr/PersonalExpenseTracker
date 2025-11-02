@@ -2,18 +2,17 @@ package com.example.personalexpensetracker.view
 
 import android.app.Activity
 import android.content.Intent
-import android.provider.MediaStore
 import android.speech.RecognizerIntent
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBackIosNew
+import androidx.compose.material.icons.filled.AttachMoney
+import androidx.compose.material.icons.filled.Category
 import androidx.compose.material.icons.filled.Mic
+import androidx.compose.material.icons.filled.Note
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -21,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -69,10 +67,7 @@ fun AddTransactionDialog(
     fun startSpeech(isCategory: Boolean) {
         isSpeakingCategory = isCategory
         val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
-            putExtra(
-                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
-            )
+            putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
             putExtra(RecognizerIntent.EXTRA_LANGUAGE, "vi-VN")
             putExtra(RecognizerIntent.EXTRA_PROMPT, "Nói gì đó…")
         }
@@ -81,63 +76,42 @@ fun AddTransactionDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
+        shape = RoundedCornerShape(20.dp),
+        containerColor = Color(0xFFFDFDFD),
         title = {
-            Text("Thêm giao dịch", fontWeight = FontWeight.Bold)
+            Text(
+                "💸 Thêm Giao Dịch",
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp,
+                color = Color.Black
+            )
         },
         text = {
-            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                TextField(
+            Column(
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                TransactionInputField(
                     value = category,
                     onValueChange = { category = it },
-                    label = { Text("Danh mục") },
-                    shape = RoundedCornerShape(12.dp),
-                    modifier = Modifier.fillMaxWidth(),
-                    trailingIcon = {
-                        IconButton(onClick = { startSpeech(true) }) {
-                            Icon(
-                                imageVector = Icons.Default.Mic,
-                                contentDescription = "Nói danh mục"
-                            )
-                        }
-                    },
-                    colors = TextFieldDefaults.colors(
-                        focusedContainerColor = Color.Transparent,
-                        unfocusedContainerColor = Color.Transparent
-                    )
+                    label = "Danh mục",
+                    onMicClick = { startSpeech(true) }
                 )
 
-                TextField(
+                TransactionInputField(
                     value = amount,
                     onValueChange = { amount = it },
-                    label = { Text("Số tiền") },
-                    shape = RoundedCornerShape(12.dp),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = TextFieldDefaults.colors(
-                        focusedContainerColor = Color.Transparent,
-                        unfocusedContainerColor = Color.Transparent
-                    )
+                    label = "Số tiền",
+                    keyboardType = KeyboardOptions(keyboardType = androidx.compose.ui.text.input.KeyboardType.Number)
                 )
 
-                TextField(
+                TransactionInputField(
                     value = note,
                     onValueChange = { note = it },
-                    label = { Text("Ghi chú") },
-                    shape = RoundedCornerShape(12.dp),
-                    modifier = Modifier.fillMaxWidth(),
-                    trailingIcon = {
-                        IconButton(onClick = { startSpeech(false) }) {
-                            Icon(
-                                imageVector = Icons.Default.Mic,
-                                contentDescription = "Nói ghi chú"
-                            )
-                        }
-                    },
-                    colors = TextFieldDefaults.colors(
-                        focusedContainerColor = Color.Transparent,
-                        unfocusedContainerColor = Color.Transparent
-                    )
+                    label = "Ghi chú",
+                    onMicClick = { startSpeech(false) }
                 )
+
 
                 DropdownMenuBox(
                     selectedType = type,
@@ -178,20 +152,57 @@ fun AddTransactionDialog(
                         onFailure = { onDismiss() }
                     )
                 },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Black,
-                    contentColor = Color.White
-                )
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
+                shape = RoundedCornerShape(14.dp),
+                modifier = Modifier
+                    .padding(horizontal = 8.dp)
+                    .height(46.dp)
             ) {
-                Text("Lưu")
+                Text("Lưu", color = Color.White, fontWeight = FontWeight.SemiBold)
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
                 Text("Hủy", color = Color.Gray)
             }
+        }
+    )
+}
+
+@Composable
+fun TransactionInputField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    label: String,
+    keyboardType: KeyboardOptions = KeyboardOptions.Default,
+    onMicClick: (() -> Unit)? = null
+) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        label = { Text(label) },
+        singleLine = true,
+        trailingIcon = {
+            if (onMicClick != null) {
+                IconButton(onClick = onMicClick) {
+                    Icon(imageVector = Icons.Default.Mic, contentDescription = null, tint = Color.Black)
+                }
+            }
         },
-        shape = RoundedCornerShape(16.dp)
+        keyboardOptions = keyboardType,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 2.dp),
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedBorderColor = Color.Transparent,
+            unfocusedBorderColor = Color.Transparent,
+            focusedContainerColor = Color(0xFFF7F7F7),
+            unfocusedContainerColor = Color(0xFFF7F7F7),
+            cursorColor = Color.Black,
+            focusedLabelColor = Color.Black,
+            unfocusedLabelColor = Color.Gray
+        ),
+        shape = RoundedCornerShape(14.dp)
     )
 }
 
@@ -203,7 +214,11 @@ fun DropdownMenuBox(
     var expanded by remember { mutableStateOf(false) }
 
     Box {
-        Button(onClick = { expanded = true }, colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFEEEEEE))) {
+        Button(
+            onClick = { expanded = true },
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFEEEEEE)),
+            shape = RoundedCornerShape(12.dp)
+        ) {
             Text(
                 when (selectedType) {
                     TransactionType.EXPENSE -> "Chi tiêu"
@@ -213,7 +228,10 @@ fun DropdownMenuBox(
             )
         }
 
-        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+        ) {
             DropdownMenuItem(
                 text = { Text("Chi tiêu") },
                 onClick = {

@@ -16,7 +16,7 @@ class AnalysisViewModel(
     val analysisResult: StateFlow<String> = _analysisResult
 
     private val model = GenerativeModel(
-        modelName = "gemini-1.5-flash",
+        modelName = "gemini-2.5-flash",
         apiKey = "AIzaSyBlQlyzrqhS_QZVLqPAwU8ppZyPUMKeTIA"
     )
 

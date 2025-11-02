@@ -69,7 +69,7 @@ fun ForgotPasswordScreen(navController: NavController) {
         TextField(
             value = email,
             onValueChange = { email = it },
-            placeholder = { Text("Email", fontSize = 12.sp) },
+            placeholder = { Text("Email", fontSize = 16.sp) },
             leadingIcon = { Icon(Icons.Default.Email, contentDescription = null) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(
@@ -90,7 +90,7 @@ fun ForgotPasswordScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(8.dp))
             Text(text = errorMessage, color = Color.Red, fontSize = 12.sp)
         }
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(40.dp))
 
         Button(
             onClick = {
