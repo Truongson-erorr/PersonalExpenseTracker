@@ -10,15 +10,15 @@ This app provides an intuitive way to track spending, set budgets, visualize exp
 
 With **Personal Expense Tracker**, users can:
 
-- 💸 **Add, edit, and delete transactions** (income & expenses)  
-- 📊 **Visualize financial data** through interactive **bar and pie charts**  
-- 💰 **Create and monitor monthly budgets**, receive alerts when limits are exceeded  
-- 🪙 **Manage savings goals (Money Jars)** and contribute progressively  
-- 💵 **Track loans & debts**, and mark them as paid  
-- 👤 **Edit personal information** easily  
-- 🤖 **AI-powered prediction** of next month’s spending based on transaction history  
-- 🔔 **Get notifications** for new activities, app updates, and important reminders  
-- 🧩 **In-app Support Center** for FAQs, guides, and troubleshooting tips  
+- ✅ **Add, edit, and delete transactions** (income & expenses)  
+- ✅ **Visualize financial data** through interactive **bar and pie charts**  
+- ✅ **Create and monitor monthly budgets**, receive alerts when limits are exceeded  
+- ✅ **Manage savings goals (Money Jars)** and contribute progressively  
+- ✅ **Track loans & debts**, and mark them as paid  
+- ✅ **Edit personal information** easily  
+- ✅ **AI-powered prediction** of next month’s spending based on transaction history  
+- ✅ **Get notifications** for new activities, app updates, and important reminders  
+- ✅ **In-app Support Center** for FAQs, guides, and troubleshooting tips  
 
 ---
 
@@ -28,21 +28,6 @@ The project is built using the **MVVM (Model - ViewModel - View)** architecture 
 - Clear separation of UI, data, and logic layers  
 - Reactive and responsive UI with **Jetpack Compose**  
 - Scalable and maintainable structure suitable for future updates  
-
----
-
-## ⚙️ Tech Stack
-
-| Layer | Technology |
-|-------|-------------|
-| **Language** | Kotlin |
-| **UI Framework** | Jetpack Compose |
-| **Architecture** | MVVM + ViewModel + State Management |
-| **Backend / Cloud** | Firebase (Authentication, Firestore, Storage) |
-| **Local Database** | Room (planned for offline mode) |
-| **Async / Performance** | Kotlin Coroutines & Flow |
-| **Charts** | Compose Charts for bar/pie visualization |
-| **AI Prediction** | TensorFlow Lite / simple regression via Kotlin logic (based on transaction history) |
 
 ---
 
@@ -63,7 +48,7 @@ The project is built using the **MVVM (Model - ViewModel - View)** architecture 
 - View total spending per category  
 - Compare performance over different months
 
-### 🪙 Saving Jars
+### ✅ Saving Jars
 - Create “money jars” for savings goals  
 - Contribute periodically  
 - Track your saving progress visually  
@@ -92,4 +77,14 @@ The project is built using the **MVVM (Model - ViewModel - View)** architecture 
 ---
 
 ## 🧱 Project Structure
+com.example.personalexpensetracker/
+│
+├── model/ # Data models (Transaction, Budget, Notification, etc.)
+├── view/ # Jetpack Compose UI Screens & Dialogs
+├── viewmodel/ # ViewModels managing UI state & logic
+├── repository/ # Firebase interaction and data logic
+├── navigation/ # NavHost and route management
+└── utils/ # Constants, formatters, and helpers
 
+## 📷 Screenshots
+...
