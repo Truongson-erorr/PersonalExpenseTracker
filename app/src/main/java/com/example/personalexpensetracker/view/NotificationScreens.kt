@@ -47,7 +47,7 @@ fun NotificationScreen(
                 )
             }
             Text(
-                text = "Hoạt động gần đây",
+                text = "Thông báo",
                 fontSize = 22.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.Black
