@@ -92,7 +92,6 @@ https://drive.google.com/drive/folders/1Sv8bTc8RPHhmkRba83s0J4gA8TyqVWiD?hl=vi
   <img src="https://res.cloudinary.com/dq64aidpx/image/upload/v1762153347/z7184192948890_903d3b274db3a2ba11450645d9fe79bc_jdardr.jpg" width="160"/>
   <img src="https://res.cloudinary.com/dq64aidpx/image/upload/v1762153347/z7184192902830_878f21738ac2da99d9b30a4ff50c863c_jcvr8c.jpg" width="160"/>
   <img src="https://res.cloudinary.com/dq64aidpx/image/upload/v1762153348/z7184192913486_96292f278d30d6b1b9d2f3224216380a_uaplba.jpg" width="160"/>
-  <img src="https://res.cloudinary.com/dq64aidpx/image/upload/v1762153347/z7184192949867_4e9c1fc4065cb86656dc185422eed768_suskmu.jpg" width="160"/>
 </div>
 
 ### 3. Monthly budget management screen
