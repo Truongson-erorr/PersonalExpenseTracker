@@ -92,52 +92,53 @@ https://drive.google.com/drive/folders/1Sv8bTc8RPHhmkRba83s0J4gA8TyqVWiD?hl=vi
   <img src="https://res.cloudinary.com/dq64aidpx/image/upload/v1762153347/z7184192948890_903d3b274db3a2ba11450645d9fe79bc_jdardr.jpg" width="160"/>
   <img src="https://res.cloudinary.com/dq64aidpx/image/upload/v1762153347/z7184192902830_878f21738ac2da99d9b30a4ff50c863c_jcvr8c.jpg" width="160"/>
   <img src="https://res.cloudinary.com/dq64aidpx/image/upload/v1762153348/z7184192913486_96292f278d30d6b1b9d2f3224216380a_uaplba.jpg" width="160"/>
+  <img src="https://res.cloudinary.com/dq64aidpx/image/upload/v1762153347/z7184192949867_4e9c1fc4065cb86656dc185422eed768_suskmu.jpg" width="160"/>
 </div>
 
 ### 3. Monthly budget management screen
 <div style="display:flex; gap:10px; flex-wrap:wrap;">
-  <img src="https://res.cloudinary.com/dq64aidpx/image/upload/v1762153347/z7184192949867_4e9c1fc4065cb86656dc185422eed768_suskmu.jpg" width="160"/>
   <img src="https://res.cloudinary.com/dq64aidpx/image/upload/v1762153347/z7184192949991_4dbf652d4abe46458f01df2973bfaca2_y7pkj5.jpg" width="160"/>
   <img src="https://res.cloudinary.com/dq64aidpx/image/upload/v1762153348/z7184192953869_37d83bab33f4dbc877e8f1b8b85d9a41_ic17eo.jpg" width="160"/>
   <img src="https://res.cloudinary.com/dq64aidpx/image/upload/v1762153348/z7184193014053_5ade615ea117f87a275cbe7be88ba988_kj1jcv.jpg" width="160"/>
+  <img src="https://res.cloudinary.com/dq64aidpx/image/upload/v1762153347/z7184193018345_3db84fc3df41b475c192f235f288285e_tcamox.jpg" width="160"/>
 </div>
 
 ### 4. Notification screen
 <div style="display:flex; gap:10px; flex-wrap:wrap;">
-  <img src="https://res.cloudinary.com/dq64aidpx/image/upload/v1762153347/z7184193018345_3db84fc3df41b475c192f235f288285e_tcamox.jpg" width="160"/>
   <img src="https://res.cloudinary.com/dq64aidpx/image/upload/v1762153347/z7184193017254_ebcf1dddfba1483db24a76ab4e506287_ykwgvi.jpg" width="160"/>
+  <img src="https://res.cloudinary.com/dq64aidpx/image/upload/v1762153348/z7184193019618_4f9f00adf3635eda666cd63a525c9a1c_vy1cef.jpg" width="160"/>
 </div>
 
 ### 5. Spending statistics according to the chart
 <div style="display:flex; gap:10px; flex-wrap:wrap;">
-  <img src="https://res.cloudinary.com/dq64aidpx/image/upload/v1762153348/z7184193019618_4f9f00adf3635eda666cd63a525c9a1c_vy1cef.jpg" width="160"/>
   <img src="https://res.cloudinary.com/dq64aidpx/image/upload/v1762153347/z7184193017527_dd8d8c22792eb10028692d94fcead7bd_taappm.jpg" width="160"/>
+  <img src="https://res.cloudinary.com/dq64aidpx/image/upload/v1762153348/z7184193029404_959fe23e505bbbdb6c67ac12182edea0_mjufis.jpg" width="160"/>
 </div>
 
 ## 6. Personal profile
 <div style="display:flex; gap:10px; flex-wrap:wrap;">
-  <img src="https://res.cloudinary.com/dq64aidpx/image/upload/v1762153348/z7184193029404_959fe23e505bbbdb6c67ac12182edea0_mjufis.jpg" width="160"/>
   <img src="https://res.cloudinary.com/dq64aidpx/image/upload/v1762153348/z7184193023448_f418c71c9697c7203514670d6c87f64b_jje95u.jpg" width="160"/>
+    <img src="https://res.cloudinary.com/dq64aidpx/image/upload/v1762153349/z7184193034345_1be10b8ae0921ccb6ecd3669822106b5_jm8n1e.jpg" width="160"/>
 </div>
 
 ### 7. Personal savings jar 
 <div style="display:flex; gap:10px; flex-wrap:wrap;">
-  <img src="https://res.cloudinary.com/dq64aidpx/image/upload/v1762153349/z7184193034345_1be10b8ae0921ccb6ecd3669822106b5_jm8n1e.jpg" width="160"/>
   <img src="https://res.cloudinary.com/dq64aidpx/image/upload/v1762153349/z7184193090393_76c00739b91bb2f91c06fe7d3d411a21_rn5dlz.jpg" width="160"/>
   <img src="https://res.cloudinary.com/dq64aidpx/image/upload/v1762153349/z7184193108655_f724e660c49158e46498247a9ba69570_n6j45e.jpg" width="160"/>
   <img src="https://res.cloudinary.com/dq64aidpx/image/upload/v1762153349/z7184193110876_1d954c3c0bff264f190a3f459e4e8ef3_lagkeu.jpg" width="160"/>
+    <img src="https://res.cloudinary.com/dq64aidpx/image/upload/v1762153349/z7184193105204_587682b9869ed932592cd1d25f1cdd09_cqzxgv.jpg" width="160"/>
 </div>
 
 ### 8. Loan/debt management 
 <div style="display:flex; gap:10px; flex-wrap:wrap;">
-  <img src="https://res.cloudinary.com/dq64aidpx/image/upload/v1762153349/z7184193105204_587682b9869ed932592cd1d25f1cdd09_cqzxgv.jpg" width="160"/>
+
   <img src="https://res.cloudinary.com/dq64aidpx/image/upload/v1762153349/z7184193109979_b131548dbd2652cff17fc58645e16361_xtdpw2.jpg" width="160"/>
   <img src="https://res.cloudinary.com/dq64aidpx/image/upload/v1762153349/z7184193111133_428c4676e114c74278d571679127774c_cmsso0.jpg" width="160"/>
+  <img src="https://res.cloudinary.com/dq64aidpx/image/upload/v1762153350/z7184193157634_63501239915d19895603043a2f335b38_qubrv0.jpg" width="160"/>
 </div>
 
 ### 9. Predict spending with AI 
 <div style="display:flex; gap:10px; flex-wrap:wrap;">
-  <img src="https://res.cloudinary.com/dq64aidpx/image/upload/v1762153350/z7184193157634_63501239915d19895603043a2f335b38_qubrv0.jpg" width="160"/>
   <img src="https://res.cloudinary.com/dq64aidpx/image/upload/v1762153751/z7184241958754_1b489e2454905291c40160fbaff9ab44_x1fuhw.jpg" width="160"/>
   <img src="https://res.cloudinary.com/dq64aidpx/image/upload/v1762153363/z7184193160353_511e9b3b22133d4e585d953eb082457a_p1ffaw.jpg" width="160"/>
 </div>
